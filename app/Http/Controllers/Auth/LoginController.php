@@ -51,6 +51,9 @@ class LoginController extends Controller
         $this->validateLogin($request);
         if ($this->attemptLogin($request)) {
             $user = $this->guard()->user();
+            if (!$user->email_verified_at) {
+                return $this->sendFailedLoginResponse($request, 'not_verified');
+            }
             $user->generateToken();
             return response()->json([
                 'data' => $user->toArray(),
@@ -83,9 +86,9 @@ class LoginController extends Controller
      * @param Request $request
      * @return mixed
      */
-    protected function sendFailedLoginResponse(Request $request)
+    protected function sendFailedLoginResponse(Request $request, $type = 'auth')
     {
-        $errors = [ 'error' => trans('auth.failed') ];
+        $errors = [ 'error' => $type === 'not_verified' ? 'Please verify your account.' : trans('auth.failed') ];
         return response()->json($errors, 422);
     }
 }
