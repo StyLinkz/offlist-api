@@ -2,6 +2,7 @@
 
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
@@ -24,17 +25,25 @@ class UsersTableSeeder extends Seeder
         $password = Hash::make('offlist');
 
         User::create([
+            'prename' => 'Admin',
             'name' => 'Admin',
             'email' => 'offlist@mailinator.com',
-            'password' => $password
+            'password' => $password,
+            'role' => 'admin',
         ]);
 
         // And now let's generate a few dozen users for our app
         for ($i = 0; $i < 10; $i++) {
             User::create([
-                'name' => $faker->name,
+                'name' => $faker->firstName,
+                'prename' => $faker->lastName,
+                'company' => $faker->company,
+                'phone' => $faker->phoneNumber,
                 'email' => $faker->email,
-                'password' => $password
+                'password' => $password,
+                'role' => 'user',
+                'offer_types' => '1,2,3',
+                'api_token' => Str::random(60),
             ]);
         }
     }

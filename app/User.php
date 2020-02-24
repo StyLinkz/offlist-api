@@ -11,8 +11,13 @@ use Illuminate\Notifications\Notifiable;
  * App\User
  *
  * @property int $id
+ * @property string $prename
  * @property string $name
  * @property string $email
+ * @property string $phone
+ * @property string $company
+ * @property string $offer_types
+ * @property string $role
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
@@ -34,7 +39,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -44,7 +49,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'prename',
+        'name',
+        'email',
+        'phone',
+        'company',
+        'offer_types',
+        'password',
+        'role',
     ];
 
     /**
