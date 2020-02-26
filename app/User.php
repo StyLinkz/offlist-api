@@ -2,11 +2,14 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyApiEmail;
+use App\Notifications\PasswordResetNotification;
 
 /**
  * App\User
@@ -23,6 +26,8 @@ use App\Notifications\VerifyApiEmail;
  * @property string $password
  * @property string|null $remember_token
  * @property string|null $api_token
+ * @property string|null $reset_password_token
+ * @property datetime|null $reset_password_token_expired_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -66,7 +71,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'api_token',
+        'reset_password_token',
+        'reset_password_token_expired_at',
     ];
 
     /**
@@ -89,12 +98,38 @@ class User extends Authenticatable
     /**
      * Generate token
      *
-     * @return mixed
+     * @return string $apiToken
      */
     public function generateToken()
     {
         $this->api_token = Str::random(60);
         $this->save();
         return $this->api_token;
+    }
+
+    /**
+     * Generate reset-password token
+     *
+     * @return string $resetPasswordToken
+     */
+    public function generateResetPasswordToken()
+    {
+        $this->reset_password_token = Str::random(6);
+        $this->reset_password_token_expired_at = Carbon::now()->addHour();
+        $this->save();
+        return $this->reset_password_token;
+    }
+
+    /**
+     * Reset password
+     *
+     * @param string $password
+     * @return void
+     */
+    public function resetPassword($password) {
+        $this->password = Hash::make($password);
+        $this->reset_password_token = null;
+        $this->reset_password_token_expired_at = null;
+        $this->save();
     }
 }

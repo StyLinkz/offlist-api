@@ -1,6 +1,5 @@
 <?php
 
-use App\Offer;
 use Illuminate\Http\Request;
 
 /*
@@ -22,24 +21,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register', 'Auth\RegisterController@register');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout');
-Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verificationapi.verify');
-Route::get('email/resend', 'VerificationApiController@resend')->name('verificationapi.resend');
+Route::get('email/verify/{id}', 'Api\Auth\VerificationController@verify')->name('verificationapi.verify');
+Route::get('email/resend', 'Api\Auth\VerificationController@resend')->name('verificationapi.resend');
+Route::post('password/email', 'Api\Auth\ForgotPasswordController@sendResetCodeEmail');
+Route::post('password/verify', 'Api\Auth\ForgotPasswordController@verifyResetCode');
+Route::post('password/reset', 'Api\Auth\ResetPasswordController@reset');
 
 /* Authenticated Resources*/
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => ['auth:api', 'verified']], function () {
 
     /* Offer */
-    Route::get('offers', 'OfferController@index')->middleware('verified');
-    Route::get('offers/{offer}', 'OfferController@show')->middleware('verified');
-    Route::post('offers', 'OfferController@store')->middleware('verified');
-    Route::put('offers/{offer}', 'OfferController@update')->middleware('verified');
-    Route::delete('offers/{offer}', 'OfferController@delete')->middleware('verified');
+    Route::get('offers', 'OfferController@index');
+    Route::get('offers/{offer}', 'OfferController@show');
+    Route::post('offers', 'OfferController@store');
+    Route::put('offers/{offer}', 'OfferController@update');
+    Route::delete('offers/{offer}', 'OfferController@delete');
 
     /* Invitation */
-    Route::get('invitations', 'InvitationController@index')->middleware('verified');
-    Route::get('invitations/{invitation}', 'InvitationController@show')->middleware('verified');
-    Route::post('invitations', 'InvitationController@store')->middleware('verified');
-    Route::put('invitations/{invitation}', 'InvitationController@update')->middleware('verified');
-    Route::delete('invitations/{invitation}', 'InvitationController@delete')->middleware('verified');
+    Route::get('invitations', 'InvitationController@index');
+    Route::get('invitations/{invitation}', 'InvitationController@show');
+    Route::post('invitations', 'InvitationController@store');
+    Route::put('invitations/{invitation}', 'InvitationController@update');
+    Route::delete('invitations/{invitation}', 'InvitationController@delete');
 
 });

@@ -19,6 +19,10 @@ class AddsUserInfoToUsersTable extends Migration
             $table->string('company')->after('phone')->nullable();
             $table->string('offer_types')->after('company')->nullable();
             $table->string('role', 8)->after('offer_types')->default('user');
+            $table->string('reset_password_token', 8)->after('api_token')->nullable();
+            $table->timestamp('reset_password_token_expired_at')
+                  ->after('reset_password_token')
+                  ->nullable();
         });
     }
 
