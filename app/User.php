@@ -20,6 +20,10 @@ use App\Notifications\PasswordResetNotification;
  * @property string $email
  * @property string $phone
  * @property string $company
+ * @property string $address
+ * @property string $city
+ * @property string $zip_code
+ * @property string $website
  * @property string $offer_types
  * @property string $role
  * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -37,7 +41,11 @@ use App\Notifications\PasswordResetNotification;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCompany($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereZipCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
@@ -55,14 +63,20 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'avatar',
         'prename',
         'name',
         'email',
         'phone',
         'company',
+        'address',
+        'city',
+        'zip_code',
+        'website',
         'offer_types',
         'password',
         'role',
+        'api_token',
     ];
 
     /**
@@ -73,7 +87,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'api_token',
         'reset_password_token',
         'reset_password_token_expired_at',
     ];

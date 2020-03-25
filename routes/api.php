@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::post('offers', 'OfferController@store');
     Route::put('offers/{offer}', 'OfferController@update');
     Route::delete('offers/{offer}', 'OfferController@delete');
+    Route::post('offer-files', 'OfferController@uploadFiles');
 
     /* Invitation */
     Route::get('invitations', 'InvitationController@index');
@@ -43,5 +44,10 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::post('invitations', 'InvitationController@store');
     Route::put('invitations/{invitation}', 'InvitationController@update');
     Route::delete('invitations/{invitation}', 'InvitationController@delete');
+
+    /* User */
+    Route::get('profile', 'UserController@show');
+    Route::put('profile', 'UserController@update');
+    Route::post('avatar', 'UserController@updateAvatar');
 
 });

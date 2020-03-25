@@ -22,9 +22,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverPrename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereUpdatedAt($value)
  * @mixin \Eloquent
  */

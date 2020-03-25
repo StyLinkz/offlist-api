@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereDisplayName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OfferType whereUpdatedAt($value)
  * @mixin \Eloquent
  */
