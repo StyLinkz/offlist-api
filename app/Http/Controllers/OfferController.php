@@ -40,7 +40,7 @@ class OfferController extends Controller
     {
         $this->validate($request, [
             'file' => 'required',
-            'file.*' => 'mimes:jpg,jpeg,png,doc,pdf,docx,xls,xlsx,ppt,pptx'
+//            'file.*' => 'mimes:jpg,jpeg,png,doc,pdf,docx,xls,xlsx,ppt,pptx'
         ]);
 
         if ($request->hasFile('file')) {
@@ -51,11 +51,11 @@ class OfferController extends Controller
                 $extension = $file->getClientOriginalExtension();
 
                 /* Max file size is 2MB */
-//            $fileSize = $file->getSize();
-//            $maxFileSize = 2097152;
-//            if ($fileSize > $maxFileSize) {
-//                return response()->json('File\'s size must be less than 2MB.', 422);
-//            }
+//                $fileSize = $file->getSize();
+//                $maxFileSize = 2097152;
+//                if ($fileSize > $maxFileSize) {
+//                    return response()->json('File\'s size must be less than 2MB.', 422);
+//                }
                 if (in_array($extension, ['jpg','jpeg','png'])) {
                     $type = 'images';
                 } else {
