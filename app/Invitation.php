@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Invitation
  *
  * @property int $id
- * @property int $sender_id
+ * @property int $user_id
  * @property int $receiver_id
  * @property string $receiver_email
  * @property string $receiver_prename
@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Invitation whereReceiverName($value)
@@ -42,7 +42,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'sender_id',
+        'user_id',
         'receiver_id',
         'receiver_email',
         'receiver_prename',
@@ -51,4 +51,27 @@ class Invitation extends Model
         'expired_at',
         'status',
     ];
+
+    /**
+     * Get the user that owns the invitation.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Scope for the authed user
+     *
+     * @param $query
+     * @param User $user
+     */
+    public function scopeAuth($query, User $user)
+    {
+        $user_id = $user->id;
+        $query->where(function ($query) use ($user_id) {
+            $query->where('user_id', '=', $user_id);
+        });
+    }
+
 }

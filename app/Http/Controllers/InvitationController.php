@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
+use App\Contact;
 use App\Invitation;
 use Illuminate\Http\Request;
 
@@ -19,7 +21,37 @@ class InvitationController extends Controller
 
     public function store(Request $request)
     {
-        $invitation = Invitation::create($request->all());
+        $user = auth()->user();
+
+        /// Generate invitation code
+        $code = $this->_generateInvitationCode();
+
+        /// Send the invitation code
+        $this->_sendInvitationCode(array_merge(
+            $request->all(),
+            [
+                'code' => $code,
+                'sender_name' => $user->prename . ' ' . $user->name,
+            ]
+        ));
+
+        /// Save the invitation
+        $invitation = Invitation::create(
+            array_merge(
+                $request->all(),
+                [
+                    'user_id' => $user->id,
+                    'code' => $code,
+                    'expired_at' => date('Y-m-d H:i:s', strtotime(' + 14 days'))
+                ]
+            )
+        );
+
+        /// Reduce the invitation limit
+        $user->update([
+            'invitation_limit' => $user->invitation_limit - 1,
+        ]);
+
         return response()->json($invitation, 201);
     }
 
@@ -34,4 +66,68 @@ class InvitationController extends Controller
         $invitation->delete();
         return response()->json(null, 204);
     }
+
+    public function showAuthInvitations() {
+        $user = auth()->user();
+        return Invitation::auth($user)
+            ->with(['user'])
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function checkInvitation(Request $request) {
+        if ($code = $request->input('code')) {
+            $invitation = Invitation::where('code', '=', $code)
+                ->where('status', '=', 'pending');
+            if (!$invitation->count()) {
+                return response()->json('Invitation is not found', 404);
+            }
+            return response()->json($invitation->get()[0], 200);
+        }
+        return response()->json('Some data is not correct.', 422);
+    }
+
+    public function updateInvitationStatus(Request $request, Invitation $invitation) {
+        /* Set the registered user as a new contact of the invitation sender */
+        $status = $request->input('status');
+        if ($status == 'accepted') {
+            Contact::create([
+                'user_id' => $invitation->user_id,
+                'contact_user_id' => $request->input('contact_user_id'),
+                'name' => $request->input('contact_name'),
+                'prename' => $request->input('contact_prename'),
+                'email' => $request->input('contact_email'),
+            ]);
+        }
+
+        /* Update the status of the invitation */
+        $invitation->update([
+            'status' => $status,
+        ]);
+
+        return response()->json($invitation, 200);
+    }
+
+    protected function _generateInvitationCode($length = 6) {
+        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
+    }
+
+    protected function _sendInvitationCode($invitation) {
+        $to_name = $invitation['receiver_prename'] . ' ' . $invitation['receiver_name'];
+        $to_email = $invitation['receiver_email'];
+        $data = [
+            'invitation' => $invitation,
+        ];
+        Mail::send(
+            'templates.mail.invitation',
+            $data,
+            function($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)
+                        ->subject('Invitation to join Offlist');
+                $message->from('info@offlist.de', 'Offlist');
+            }
+        );
+    }
+
 }

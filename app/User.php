@@ -26,8 +26,8 @@ use App\Notifications\PasswordResetNotification;
  * @property string $website
  * @property string $offer_types
  * @property string $role
- * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
+ * @property int $invitation_limit
  * @property string|null $remember_token
  * @property string|null $api_token
  * @property string|null $reset_password_token
@@ -77,6 +77,7 @@ class User extends Authenticatable
         'password',
         'role',
         'api_token',
+        'invitation_limit',
     ];
 
     /**
@@ -99,6 +100,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Wishlist offers
+     *
+     * @return mixed
+     */
+    public function wishlistOffers() {
+        return $this->belongsToMany('App\Offer', 'wishlists', 'user_id', 'offer_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * applications
+     *
+     * @return mixed
+     */
+    public function applications() {
+        return $this->belongsToMany('App\Application')
+                    ->withTimestamps();
+    }
+
+    /**
+     * invitations
+     *
+     * @return mixed
+     */
+    public function invitations() {
+        return $this->hasMany('App\Invitation')
+                    ->withTimestamps();
+    }
 
     /**
      * Send API email verification notification

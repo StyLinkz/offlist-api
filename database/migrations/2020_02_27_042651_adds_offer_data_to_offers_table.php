@@ -24,7 +24,7 @@ class AddsOfferDataToOffersTable extends Migration
             $table->json('documents')->after('location')->nullable();
             $table->json('seller')->after('documents');
             $table->json('data')->after('seller');
-            $table->string('publish_type', 8)->default('public')->after('data');
+            $table->string('privacy', 8)->default('public')->after('data');
             $table->enum('status', ['activated', 'deactivated'])->default('activated')->after('publish_type');
         });
     }
@@ -36,17 +36,6 @@ class AddsOfferDataToOffersTable extends Migration
      */
     public function down()
     {
-        Schema::table('offers', function (Blueprint $table) {
-            $table->dropColumn(['type']);
-            $table->dropColumn(['group_type']);
-            $table->dropColumn(['price']);
-            $table->dropColumn(['commission']);
-            $table->dropColumn(['tax']);
-            $table->dropColumn(['images']);
-            $table->dropColumn(['location']);
-            $table->dropColumn(['documents']);
-            $table->dropColumn(['seller']);
-            $table->dropColumn(['data']);
-        });
+        Schema::dropIfExists('offers');
     }
 }

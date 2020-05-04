@@ -21,6 +21,3 @@
 @section('foot-note')
     If you did not request a password reset on <a href="{{ env('APP_URL') }}" style="color:#787878">offlist.de</a> simply ignore this e-mail.
 @endsection
-
-
-

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOfferTagTable extends Migration
+class CreateOfferGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateOfferTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('offer_tag', function (Blueprint $table) {
+        Schema::create('offer_groups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('offer_id');
-            $table->bigInteger('tag_id');
+            $table->bigInteger('group_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateOfferTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offer_tag');
+        Schema::dropIfExists('offer_groups');
     }
 }

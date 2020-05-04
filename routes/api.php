@@ -26,9 +26,13 @@ Route::get('email/resend', 'Api\Auth\VerificationController@resend')->name('veri
 Route::post('password/email', 'Api\Auth\ForgotPasswordController@sendResetCodeEmail');
 Route::post('password/verify', 'Api\Auth\ForgotPasswordController@verifyResetCode');
 Route::post('password/reset', 'Api\Auth\ResetPasswordController@reset');
+Route::post('check-invitation', 'InvitationController@checkInvitation');
+Route::post('update-invitation/{invitation}', 'InvitationController@updateInvitationStatus');
 
 /* Authenticated Resources*/
 Route::group(['middleware' => ['auth:api', 'verified']], function () {
+    /* Common */
+    Route::post('files', 'ApiController@uploadFiles');
 
     /* Offer */
     Route::get('offers', 'OfferController@index');
@@ -37,6 +41,37 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::put('offers/{offer}', 'OfferController@update');
     Route::delete('offers/{offer}', 'OfferController@delete');
     Route::post('offer-files', 'OfferController@uploadFiles');
+    Route::post('offer-images', 'OfferController@uploadImages');
+    Route::get('feed-offers', 'OfferController@showFeedOffers');
+    Route::get('auth-offers', 'OfferController@showUserOffers');
+
+    /* Application */
+    Route::get('applications', 'ApplicationController@index');
+    Route::get('applications/{application}', 'ApplicationController@show');
+    Route::post('applications', 'ApplicationController@store');
+    Route::delete('applications/{application}', 'ApplicationController@delete');
+    Route::get('auth-applications', 'ApplicationController@showAuthApplications');
+    Route::get('receive-applications', 'ApplicationController@showReceiveApplications');
+
+    /* Group */
+    Route::get('groups', 'GroupController@index');
+    Route::get('groups/{group}', 'GroupController@show');
+    Route::post('groups', 'GroupController@store');
+    Route::put('groups/{group}', 'GroupController@update');
+    Route::delete('groups/{group}', 'GroupController@delete');
+
+    /* Contact */
+    Route::get('contacts', 'ContactController@index');
+    Route::get('contacts/{contact}', 'ContactController@show');
+    Route::post('contacts', 'ContactController@store');
+    Route::put('contacts/{contact}', 'ContactController@update');
+    Route::delete('contacts/{contact}', 'ContactController@delete');
+    Route::delete('search-contacts', 'ContactController@delete');
+
+    /* Wishlist */
+    Route::get('wishlist', 'WishlistController@show');
+    Route::post('offers/{id}/wishlist/add', 'WishlistController@add');
+    Route::delete('offers/{id}/wishlist/remove', 'WishlistController@remove');
 
     /* Invitation */
     Route::get('invitations', 'InvitationController@index');
@@ -44,6 +79,10 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::post('invitations', 'InvitationController@store');
     Route::put('invitations/{invitation}', 'InvitationController@update');
     Route::delete('invitations/{invitation}', 'InvitationController@delete');
+    Route::get('auth-invitations', 'InvitationController@showAuthInvitations');
+
+    /* Tags */
+    Route::get('tags', 'TagController@index');
 
     /* User */
     Route::get('profile', 'UserController@show');
