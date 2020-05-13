@@ -12,6 +12,7 @@ class WishlistController extends Controller
         $user = auth()->user();
         return $user
             ->wishlistOffers()
+            ->with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers'])
             ->orderByDesc('created_at')
             ->get();
     }

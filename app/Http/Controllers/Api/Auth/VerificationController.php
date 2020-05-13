@@ -12,7 +12,7 @@ class VerificationController extends Controller
 {
     use VerifiesEmails;
 
-    protected $redirectTo = '/email-verified';
+    protected $redirectTo = '/verify-email-success';
 
     /**
      * Show the email verification notice.
@@ -35,8 +35,8 @@ class VerificationController extends Controller
         $date = date('Y-m-d g:i:s');
         $user->email_verified_at = $date; // to enable the “email_verified_at field of that user be a current time stamp by mimicing the must verify email feature
         $user->save();
-        return response()->json('Email verified!');
-//        return redirect($this->redirectPath());
+//        return response()->json('Email verified!');
+        return redirect($this->redirectPath());
     }
 
     /**

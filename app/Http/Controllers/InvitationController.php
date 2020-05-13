@@ -77,12 +77,22 @@ class InvitationController extends Controller
 
     public function checkInvitation(Request $request) {
         if ($code = $request->input('code')) {
-            $invitation = Invitation::where('code', '=', $code)
+            $results = Invitation::where('code', '=', $code)
                 ->where('status', '=', 'pending');
-            if (!$invitation->count()) {
+            if (!$results->count()) {
                 return response()->json('Invitation is not found', 404);
             }
-            return response()->json($invitation->get()[0], 200);
+            $invitation = $results->get()[0];
+
+            /* Check if the invitation is expired or not */
+            if ($invitation->expired_at < date('Y-m-d 00:00:00')) {
+                $invitation->update([
+                    'status' => 'expired',
+                ]);
+                return response()->json('The invitation is expired', 406);
+            }
+
+            return response()->json($invitation, 200);
         }
         return response()->json('Some data is not correct.', 422);
     }
@@ -97,6 +107,11 @@ class InvitationController extends Controller
                 'name' => $request->input('contact_name'),
                 'prename' => $request->input('contact_prename'),
                 'email' => $request->input('contact_email'),
+            ]);
+
+            /* Set the receiver_id of the invitation */
+            $invitation->update([
+                'receiver_id' => $request->input('contact_user_id'),
             ]);
         }
 

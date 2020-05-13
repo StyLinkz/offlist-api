@@ -99,7 +99,7 @@ class Offer extends Model
      * @return mixed
      */
     public function wishlistUsers() {
-        return $this->belongToMany('App\User', 'wishlists', 'offer_id', 'user_id')
+        return $this->belongsToMany('App\User', 'wishlists', 'offer_id', 'user_id')
                     ->withTimestamps();
     }
 

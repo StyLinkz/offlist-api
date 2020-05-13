@@ -91,7 +91,7 @@ class OfferController extends Controller
     {
         $user = auth()->user();
         return Offer::feed($user)
-            ->with(['user', 'type', 'category', 'tags', 'groups'])
+            ->with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers'])
             ->orderByDesc('created_at')
             ->get();
     }

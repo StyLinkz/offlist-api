@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $receiver_prename
  * @property string $receiver_name
  * @property string $code
- * @property timestamp $expired_at
+ * @property datetime $expired_at
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
