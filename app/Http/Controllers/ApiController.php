@@ -18,11 +18,11 @@ class ApiController extends Controller
             foreach ($request->file('file') as $i => $file) {
                 $name = $file->getClientOriginalName();
 
-                Cloudder::upload($file);
+                Cloudder::upload($file, null, array('quality' => 'auto'));
                 $result = Cloudder::getResult();
 
                 $uploadedFileUrls[] = [
-                    'name' => $name,
+                    'name' => time() . '_' . $name,
                     'url' => $result['secure_url'],
                 ];
             }

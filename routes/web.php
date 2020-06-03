@@ -12,8 +12,23 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+Route::get('/offers', function () {
+    return view('offers');
+});
+Route::get('/offers/create', function () {
+    return view('offerCreate');
+});
+Route::get('/offers/{offerId}/edit', function ($offerId) {
+    return view('offerCreate', [
+        'offerId' => 48
+    ]);
 });
 Route::get('/verify-email-success', function () {
     return view('verifyEmailSuccess');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

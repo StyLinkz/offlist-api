@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use JD\Cloudder\Facades\Cloudder;
 
 class UserController extends Controller
 {
@@ -33,27 +34,26 @@ class UserController extends Controller
 
             /* Get file's detail */
             $filename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
             $fileSize = $file->getSize();
 
             /* Valid avatar extension */
+            $extension = $file->getClientOriginalExtension();
             $validExtensions = array('jpg', 'jpeg', 'png');
-
-            /* Max file size is 2MB */
-            $maxFileSize = 2097152;
-
             if (!in_array(strtolower($extension), $validExtensions)) {
                 return response()->json('Invalid file extension.', 422);
             }
 
+//            /* Max file size is 2MB */
+//            $maxFileSize = 2097152;
 //            if ($fileSize > $maxFileSize) {
 //                return response()->json('File\'s size must be less than 2MB.', 422);
 //            }
 
             /* Handle upload the avatar */
-            $file->move(public_path('upload/user'), $filename);
+            Cloudder::upload($file, null, array('quality' => 'auto'));
+            $result = Cloudder::getResult();
 
-            return response()->json(array( "avatar_url" => URL::asset('upload/user/' . $filename) ), 200);
+            return response()->json(array( "avatar_url" => $result['secure_url'] ), 200);
         }
     }
 }

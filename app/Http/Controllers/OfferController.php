@@ -20,7 +20,8 @@ class OfferController extends Controller
 
     public function show(Offer $offer)
     {
-        return $offer->load(['tags', 'groups']);
+        return $offer
+            ->load(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers']);
     }
 
     public function store(Request $request)
@@ -87,6 +88,14 @@ class OfferController extends Controller
         return response()->json(null, 204);
     }
 
+    public function updateStatus(Request $request, Offer $offer) {
+        $status = $request->input('status');
+        $offer->update([
+            'status' => $status,
+        ]);
+        return response()->json($offer, 200);
+    }
+
     public function showFeedOffers()
     {
         $user = auth()->user();
@@ -103,6 +112,28 @@ class OfferController extends Controller
             ->orderByDesc('created_at')
             ->get();
     }
+
+    public function import(Request $request)
+    {
+        $requestOffers = $request->input('offers');
+        foreach ($requestOffers as $requestOffer) {
+            $offer = Offer::create($requestOffer);
+
+            /* Save tags */
+            if ($requestOffer['tags']) {
+                $tags = Tag::find($requestOffer['tags']);
+                $offer->tags()->attach($tags);
+            }
+
+            /* Save groups */
+            if ($requestOffer['groups']) {
+                $groups = Group::find($requestOffer['groups']);
+                $offer->groups()->attach($groups);
+            }
+        }
+        return response()->json($offer, 201);
+    }
+
 
     public function uploadImages(Request $request)
     {
@@ -142,23 +173,26 @@ class OfferController extends Controller
                 $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
 
+                Cloudder::upload($file);
+                $result = Cloudder::getResult();
+
                 /* Max file size is 2MB */
 //                $fileSize = $file->getSize();
 //                $maxFileSize = 2097152;
 //                if ($fileSize > $maxFileSize) {
 //                    return response()->json('File\'s size must be less than 2MB.', 422);
 //                }
-                if (in_array($extension, ['jpg','jpeg','png'])) {
-                    $type = 'images';
-                } else {
-                    $type = 'files';
-                }
+//                if (in_array($extension, ['jpg','jpeg','png'])) {
+//                    $type = 'images';
+//                } else {
+//                    $type = 'files';
+//                }
+//                $file->move(public_path('upload/offer/' . $type), $filename);
 
                 /* Handle upload the avatar */
-                $file->move(public_path('upload/offer/' . $type), $filename);
                 $uploadedFileUrls[] = [
                     'name' => $filename,
-                    'url' => URL::asset('upload/offer/' . $type . '/' . $filename),
+                    'url' => $result['secure_url'],
                 ];
             }
 

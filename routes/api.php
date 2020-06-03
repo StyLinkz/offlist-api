@@ -38,7 +38,9 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::get('offers', 'OfferController@index');
     Route::get('offers/{offer}', 'OfferController@show');
     Route::post('offers', 'OfferController@store');
+    Route::post('offers/import', 'OfferController@import');
     Route::put('offers/{offer}', 'OfferController@update');
+    Route::put('offers/{offer}/status', 'OfferController@updateStatus');
     Route::delete('offers/{offer}', 'OfferController@delete');
     Route::post('offer-files', 'OfferController@uploadFiles');
     Route::post('offer-images', 'OfferController@uploadImages');
