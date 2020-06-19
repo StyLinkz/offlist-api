@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-    You have received an invitation to join Offlist network from {{ $invitation['sender_name'] }}.
+    You have received an invitation to join the exclusive Offlist network from {{ $invitation['sender_name'] }}.<br>
     Please use the code below to register an account in the app.
 @endsection
 
@@ -15,6 +15,6 @@
 @endsection
 
 @section('content2')
-    If you don't want to join the Offlist network, you don't have to do anything. So that's easy.<br><br>
-    <em>This code will be valid in 14 days.</em>
+    If you don't want to join the Offlist network, you don't have to do anything.<br><br>
+    <em>This code will be valid for 14 days.</em>
 @endsection

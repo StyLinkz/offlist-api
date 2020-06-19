@@ -13,7 +13,7 @@ class OfferController extends Controller
 {
     public function index()
     {
-        return Offer::with(['user', 'type', 'category', 'tags', 'groups'])
+        return Offer::with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers'])
             ->orderByDesc('created_at')
             ->get();
     }
@@ -108,7 +108,7 @@ class OfferController extends Controller
     public function showUserOffers() {
         $user = auth()->user();
         return Offer::auth($user)
-            ->with(['user', 'type', 'category', 'tags', 'groups'])
+            ->with(['user', 'type', 'category', 'tags', 'groups', "wishlistUsers"])
             ->orderByDesc('created_at')
             ->get();
     }
