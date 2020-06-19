@@ -123,7 +123,7 @@ class Offer extends Model
     {
         $user_id = $user->id;
         $query->where(function ($query) use ($user_id) {
-            $query->where('user_id', '!=', $user_id);
+            // $query->where('user_id', '!=', $user_id);
             $query->where('privacy', '=', 'public');
             $query->where('status', '=', 'activated');
         });
