@@ -50,7 +50,9 @@
                 class="form-create-offer"
             >
                 <v-row justify="space-between" align="center" class="mb-3">
-                    <h1 class="headline text-uppercase ml-3">Create Offer</h1>
+                    <h1 class="headline text-uppercase ml-3">
+                        {{ form.id ? 'Edit Offer' : 'Create Offer' }}
+                    </h1>
                     <v-btn
                         dark
                         color="primary"
@@ -182,7 +184,7 @@
                                     <v-radio label="Use from my profile" value="profile"></v-radio>
                                     <v-radio label="Enter new contact" value="new"></v-radio>
                                 </v-radio-group>
-                                <div class="offer__seller" v-show="form.seller.contact_mode === 'new'">
+                                <div class="offer__seller" v-if="form.seller.contact_mode === 'new'">
                                     <v-row justify="center" align="center">
                                         <v-avatar width="130" height="130">
                                             <img
@@ -204,7 +206,7 @@
                                             <v-text-field
                                                 v-model="form.seller.name"
                                                 label="Name"
-                                                required
+                                                :required="form.seller.contact_mode === 'new'"
                                                 :error-messages="sellerNameErrors"
                                             ></v-text-field>
                                         </v-col>
@@ -212,7 +214,7 @@
                                             <v-text-field
                                                 v-model="form.seller.prename"
                                                 label="Prename"
-                                                required
+                                                :required="form.seller.contact_mode === 'new'"
                                                 :error-messages="sellerPrenameErrors"
                                             ></v-text-field>
                                         </v-col>
@@ -222,7 +224,7 @@
                                             <v-text-field
                                                 v-model="form.seller.email"
                                                 label="Email"
-                                                required
+                                                :required="form.seller.contact_mode === 'new'"
                                                 :error-messages="sellerEmailErrors"
                                             ></v-text-field>
                                         </v-col>
@@ -230,7 +232,7 @@
                                             <v-text-field
                                                 v-model="form.seller.phone"
                                                 label="Phone number"
-                                                required
+                                                :required="form.seller.contact_mode === 'new'"
                                                 :error-messages="sellerPhoneErrors"
                                             ></v-text-field>
                                         </v-col>
@@ -320,23 +322,20 @@
                                     <v-expansion-panel-content>
                                         <v-row>
                                             <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.currency"
+                                                    :items="currencyOptions"
+                                                    label="Currency"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
                                                 <v-text-field
                                                     v-model="form.price"
                                                     label="Price"
                                                     name="primary.price"
                                                     required
-                                                    suffix="$"
+                                                    :suffix="getCurrencySign(form.data.primary.currency)"
                                                     :error-messages="priceErrors"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" md="4">
-                                                <v-text-field
-                                                    v-model="form.priceTax"
-                                                    label="Price incl VAT"
-                                                    name="primary.priceTax"
-                                                    required
-                                                    suffix="$"
-                                                    :error-messages="priceTaxErrors"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="4">
@@ -599,7 +598,7 @@
                 </v-row>
                 <v-snackbar
                     v-model="showNotification"
-                    :timeout="3000"
+                    :timeout="100000"
                     :color="notificationColor"
                 >
                     {{ notificationMessage }}
@@ -671,7 +670,9 @@
                     },
                     sellerAvatarPreview: 'https://via.placeholder.com/200x200',
                     data: {
-                        primary: {},
+                        primary: {
+                            currency: 'EUR',
+                        },
                         secondary: {},
                         building_fabric: {},
                         furnishing: {},
@@ -709,6 +710,9 @@
                         value: 7,
                     },
                 ],
+
+                currencyOptions: ['EUR', 'GBP', 'USD', 'RMB', 'JPY'],
+
                 groupOptions: [],
                 tagOptions: [],
                 selectedPanels: [0, 1],
@@ -737,7 +741,7 @@
 
         computed: {
             rules () {
-                return {
+                const validationRules = {
                     title: {
                         required
                     },
@@ -751,27 +755,8 @@
                         required,
                         numeric
                     },
-                    priceTax: {
-                        required,
-                        numeric
-                    },
                     commission: {
                         required,
-                    },
-                    seller: {
-                        name: {
-                            required,
-                        },
-                        prename: {
-                            required,
-                        },
-                        email: {
-                            required,
-                            email,
-                        },
-                        phone: {
-                            required,
-                        },
                     },
                     data: {
                         primary: {
@@ -780,17 +765,37 @@
                                 numeric
                             },
                             year_of_construction: {
-                                required,
+                                required
                             },
                             free_from: {
-                                required,
+                                required
                             },
                             status: {
-                                required,
+                                required
                             },
                         },
                     },
+                };
+
+                if (this.form.seller.contact_mode === 'new') {
+                    validationRules['seller'] = {
+                        name: {
+                            required
+                        },
+                        prename: {
+                            required
+                        },
+                        email: {
+                            required,
+                                email
+                        },
+                        phone: {
+                            required
+                        },
+                    };
                 }
+
+                return validationRules;
             },
 
             yearOptions () {
@@ -813,6 +818,7 @@
                 const errors = []
                 if (!this.$v.form.title.$dirty) return errors
                 !this.$v.form.title.required && errors.push('Please enter your offer\'s title.')
+
                 return errors
             },
 
@@ -820,6 +826,7 @@
                 const errors = []
                 if (!this.$v.form.offer_category_id.$dirty) return errors
                 !this.$v.form.offer_category_id.required && errors.push('Please select your offer\'s type.')
+
                 return errors
             },
 
@@ -841,20 +848,6 @@
                 if (!this.$v.form.price.$dirty) return errors
                 !this.$v.form.price.required && errors.push('This field is required.')
                 !this.$v.form.price.numeric && errors.push('Please enter a valid price.')
-
-                /* Open the general information panel */
-                if (errors.length && !this.selectedPanels.includes(1)) {
-                    this.selectedPanels.push(1);
-                }
-
-                return errors
-            },
-
-            priceTaxErrors () {
-                const errors = []
-                if (!this.$v.form.priceTax.$dirty) return errors
-                !this.$v.form.priceTax.required && errors.push('This field is required.')
-                !this.$v.form.priceTax.numeric && errors.push('Please enter a valid price.')
 
                 /* Open the general information panel */
                 if (errors.length && !this.selectedPanels.includes(1)) {
@@ -937,6 +930,7 @@
                 const errors = []
                 if (!this.$v.form.seller.name.$dirty) return errors
                 !this.$v.form.seller.name.required && errors.push('This field is required.')
+
                 return errors
             },
 
@@ -947,6 +941,7 @@
                 const errors = []
                 if (!this.$v.form.seller.prename.$dirty) return errors
                 !this.$v.form.seller.prename.required && errors.push('This field is required.')
+
                 return errors
             },
 
@@ -958,6 +953,7 @@
                 if (!this.$v.form.seller.email.$dirty) return errors
                 !this.$v.form.seller.email.required && errors.push('This field is required.')
                 !this.$v.form.seller.email.email && errors.push('Please enter a valid email.')
+
                 return errors
             },
 
@@ -968,6 +964,7 @@
                 const errors = []
                 if (!this.$v.form.seller.phone.$dirty) return errors
                 !this.$v.form.seller.phone.required && errors.push('This field is required.')
+
                 return errors
             },
         },
@@ -1021,7 +1018,6 @@
                             this.form.status = data.status === 'activated';
                             this.form.tags = data.tags.map((tag) => tag.id);
                             this.form.price = data.price;
-                            this.form.priceTax = data.price_tax;
                             this.form.commission = data.commission;
                             this.form.seller = data.seller;
 
@@ -1105,6 +1101,7 @@
 
                             /* Primary */
                             this.form.data.primary = {
+                                currency: primary.currency.value,
                                 size: primary.size.value,
                                 free_from: primary.free_from.value,
                                 year_of_construction: primary.year_of_construction.value,
@@ -1227,6 +1224,23 @@
                 this.form.privacyGroups = this.form.privacyGroups.filter(groupIndex => groupIndex != index);
             },
 
+            getCurrencySign($currency) {
+                switch ($currency) {
+                    case 'EUR':
+                        return '€';
+                    case 'GBP':
+                        return '£';
+                    case 'USD':
+                        return '\$';
+                    case 'RMB':
+                        return '元';
+                    case 'JPY':
+                        return '¥';
+                    default:
+                        return '€';
+                }
+            },
+
             validate () {
                 this.$v.form.$touch()
                 if (this.$v.form.$invalid) {
@@ -1243,7 +1257,7 @@
 
                 const user = JSON.parse(localStorage.getItem('user'));
                 const submittedData = await this.getSubmittedData();
-                const submittedUrl = this.form.id ? `/api/offers/${this.form.id}` : 'api/offers';
+                const submittedUrl = this.form.id ? `/api/offers/${this.form.id}` : '/api/offers';
                 const submittedMethod = this.form.id ? 'put' : 'post';
                 axios({
                     method: submittedMethod,
@@ -1452,6 +1466,10 @@
                 const data = {
                     primary: {
                         data: {
+                            currency: {
+                                name: 'Currency',
+                                value: this.form.data.primary.currency
+                            },
                             size: {
                                 name: 'Size',
                                 value: this.form.data.primary.size
@@ -1548,7 +1566,6 @@
                     offer_type_id: 1, // Default to real estate
                     offer_category_id: this.form.offer_category_id,
                     price: this.form.price,
-                    price_tax: this.form.priceTax,
                     commission: this.form.commission,
                     location: this.form.location,
                     tags: this.form.tags,

@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property int $price
  * @property string $commission
- * @property string $tax
  * @property string $images
  * @property string $location
  * @property string $documents
@@ -35,7 +34,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereOfferCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereCommission($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereTax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePrivacy($value)
@@ -59,7 +57,6 @@ class Offer extends Model
         'offer_type_id',
         'offer_category_id',
         'price',
-        'price_tax',
         'commission',
         'tax',
         'images',

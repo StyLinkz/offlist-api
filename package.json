@@ -28,7 +28,7 @@
         "vue-material": "^1.0.0-beta-13",
         "vue2-dropzone": "^3.6.0",
         "vuelidate": "^0.7.5",
-        "vuetify": "^2.2.29",
+        "vuetify": "^2.3.1",
         "vuetify-google-autocomplete": "^2.0.1"
     }
 }
