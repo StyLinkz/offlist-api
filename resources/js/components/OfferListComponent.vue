@@ -89,6 +89,9 @@
                         @change="handleChangeStatus(item)"
                     ></v-switch>
                 </template>
+                <template v-slot:item.price="{ item }">
+                    {{ item.price | currency(item.currency, 0, { thousandsSeparator: '.' })}}
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <a
                         :href="`/offers/${item.id}/edit`"
@@ -271,16 +274,23 @@
                     .then((response) => {
                         if (response.status === 200) {
                             const { data } = response;
-                            this.offers = data.map((item) => ({
-                                id: item.id,
-                                title: item.title,
-                                category: item.category.display_name,
-                                price: `$${item.price}`,
-                                commission: `${item.commission}%`,
-                                privacy: item.privacy === 'public' ? 'Public' : 'Private',
-                                status: item.status === 'activated',
-                                createdAt: item.created_at,
-                            }));
+                            this.offers = data.map((item) => {
+                                const currency = item.data.primary.data.currency
+                                    ? item.data.primary.data.currency.value
+                                    : 'EUR';
+                                const commission = item.commission.replace(',', '.');
+                                return {
+                                    id: item.id,
+                                    title: item.title,
+                                    category: item.category.display_name,
+                                    price: item.price,
+                                    currency: this.getCurrencySign(currency),
+                                    commission: `${commission}%`,
+                                    privacy: item.privacy === 'public' ? 'Public Offerwall' : 'Closed Group',
+                                    status: item.status === 'activated',
+                                    createdAt: item.created_at,
+                                };
+                            });
                         }
                         this.loading = false;
                     })
@@ -657,7 +667,25 @@
                     },
                     documents: null,
                 };
-            }
+            },
+
+            getCurrencySign(currency) {
+                switch (currency) {
+                    case 'EUR':
+                        return '€';
+                    case 'GBP':
+                        return '£';
+                    case 'USD':
+                        return '\$';
+                    case 'RMB':
+                        return '元';
+                    case 'JPY':
+                        return '¥';
+                    default:
+                        return '€';
+                }
+            },
+
         },
     }
 </script>

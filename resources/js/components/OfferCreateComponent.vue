@@ -95,8 +95,8 @@
                             </v-card-title>
                             <v-card-text>
                                 <v-radio-group v-model="form.privacy" row>
-                                    <v-radio label="Public" value="public"></v-radio>
-                                    <v-radio label="Private" value="private"></v-radio>
+                                    <v-radio label="Public Offerwall" value="public"></v-radio>
+                                    <v-radio label="Closed Group" value="private"></v-radio>
                                 </v-radio-group>
                                 <div class="offer__group" v-show="form.privacy === 'private'">
                                     <v-row justify="space-between" align="center" class="px-4">
@@ -186,11 +186,11 @@
                                 </v-radio-group>
                                 <div class="offer__seller" v-if="form.seller.contact_mode === 'new'">
                                     <v-row justify="center" align="center">
-                                        <v-avatar width="130" height="130">
-                                            <img
+                                        <v-avatar size="130px" class="offer__seller__avatar">
+                                            <v-img
                                                 :src="this.form.sellerAvatarPreview"
                                                 alt="Seller"
-                                            >
+                                            />
                                         </v-avatar>
                                         <div class="upload-btn-wrapper">
                                             <input name="sellerAvatar" type="file" id="sellerAvatar" @change="handleChangeSellerAvatar" />
@@ -330,7 +330,8 @@
                                             </v-col>
                                             <v-col cols="12" md="4">
                                                 <v-text-field
-                                                    v-model="form.price"
+                                                    :value="form.price | currency('', 0, { thousandsSeparator: '.' })"
+                                                    @input="value => form.price = value"
                                                     label="Price"
                                                     name="primary.price"
                                                     required
@@ -502,34 +503,38 @@
                                     <v-expansion-panel-content>
                                         <v-row>
                                             <v-col cols="12" md="4">
-                                                <v-text-field
+                                                <v-select
                                                     v-model="form.data.building_fabric.object_state"
+                                                    :items="objectStateOptions"
                                                     label="Object state"
                                                     name="secondary.object_state"
-                                                ></v-text-field>
+                                                ></v-select>
                                             </v-col>
                                             <v-col cols="12" md="4">
-                                                <v-text-field
+                                                <v-select
                                                     v-model="form.data.building_fabric.equipment"
+                                                    :items="equipmentOptions"
                                                     label="Equipment"
                                                     name="secondary.equipment"
-                                                ></v-text-field>
+                                                ></v-select>
                                             </v-col>
                                             <v-col cols="12" md="4">
-                                                <v-text-field
+                                                <v-select
                                                     v-model="form.data.building_fabric.energy_source"
                                                     label="Energy source"
                                                     name="secondary.energy_source"
-                                                ></v-text-field>
+                                                    :items="energySourceOptions"
+                                                ></v-select>
                                             </v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col cols="12" md="4">
-                                                <v-text-field
+                                                <v-select
                                                     v-model="form.data.building_fabric.heating_type"
                                                     label="Heating type"
                                                     name="secondary.heating_type"
-                                                ></v-text-field>
+                                                    :items="heatingTypeOptions"
+                                                ></v-select>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-content>
@@ -617,6 +622,10 @@
         email,
         numeric
     } from 'vuelidate/lib/validators'
+    require('jquery-ui');
+    require('jquery-ui/ui/widgets/sortable');
+    require('jquery-ui/ui/disable-selection');
+
     export default {
         name: 'FormCreateOffer',
         components: {
@@ -629,6 +638,32 @@
             if (!jsonUser) {
                 window.location.replace('/');
             }
+        },
+
+        mounted() {
+            const offerImages = this.$refs.offerImages;
+            $('#offerImages').sortable({
+                items:'.dz-preview',
+                cursor: 'grab',
+                opacity: 0.5,
+                containment: '#offerImages',
+                distance: 20,
+                tolerance: 'pointer',
+                stop: function () {
+                    // const queue = offerImages.dropzone.getAcceptedFiles();
+                    const queue = offerImages.dropzone.files;
+                    let newQueue = [];
+                    $('#offerImages .dz-preview .dz-filename [data-dz-name]').each(function (count, el) {
+                        const name = el.innerHTML;
+                        queue.forEach(function(file) {
+                            if (file.name === name) {
+                                newQueue.push(file);
+                            }
+                        });
+                    });
+                    offerImages.dropzone.files = newQueue;
+                }
+            });
         },
 
         data() {
@@ -713,6 +748,36 @@
 
                 currencyOptions: ['EUR', 'GBP', 'USD', 'RMB', 'JPY'],
 
+                objectStateOptions: [
+                    'First occupancy',
+                    'Renovated',
+                    'In need of renovation',
+                ],
+
+                equipmentOptions: [
+                    'Standard',
+                    'Raised',
+                    'Luxury',
+                ],
+
+                energySourceOptions: [
+                    'Natural gas',
+                    'Oil',
+                    'Renewable Energies',
+                    'District heating',
+                    'Coal',
+                    'Electricity',
+                ],
+
+                heatingTypeOptions: [
+                    'Heat pump',
+                    'Fuel cell heating',
+                    'Wood heating',
+                    'Oil heating',
+                    'Gas heating',
+                    'Electric heating',
+                ],
+
                 groupOptions: [],
                 tagOptions: [],
                 selectedPanels: [0, 1],
@@ -734,6 +799,8 @@
                     autoProcessQueue: false,
                     dictRemoveFile: 'Remove',
                     dictDefaultMessage: 'Drop your pictures here',
+                    thumbnailWidth: 140,
+                    thumbnailHeight: 140,
                     // headers: { Authorization: `Bearer ${user.api_token}` }
                 }
             };
@@ -1224,8 +1291,8 @@
                 this.form.privacyGroups = this.form.privacyGroups.filter(groupIndex => groupIndex != index);
             },
 
-            getCurrencySign($currency) {
-                switch ($currency) {
+            getCurrencySign(currency) {
+                switch (currency) {
                     case 'EUR':
                         return '€';
                     case 'GBP':
@@ -1259,6 +1326,7 @@
                 const submittedData = await this.getSubmittedData();
                 const submittedUrl = this.form.id ? `/api/offers/${this.form.id}` : '/api/offers';
                 const submittedMethod = this.form.id ? 'put' : 'post';
+
                 axios({
                     method: submittedMethod,
                     url: submittedUrl,

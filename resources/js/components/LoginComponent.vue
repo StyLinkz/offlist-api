@@ -76,7 +76,7 @@
             :timeout="3000"
             :color="isLoginSuccess ? 'success' : 'error'"
         >
-            {{ isLoginSuccess ? 'Login success!' : 'Email or Password is incorrect!' }}
+            {{ isLoginSuccess ? 'Login successful!' : 'Email or Password is incorrect!' }}
         </v-snackbar>
     </div>
 </template>

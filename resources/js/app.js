@@ -18,6 +18,10 @@ import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
 Vue.use(VuetifyGoogleAutocomplete, {
     apiKey: 'AIzaSyBmyaXLRg7yZ--rvspkdZAYY1e5OZaGYtU', // Can also be an object. E.g, for Google Maps Premium API, pass `{ client: <YOUR-CLIENT-ID> }`
 });
+
+import Vue2Filters from 'vue2-filters';
+Vue.use(Vue2Filters);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -29,6 +33,7 @@ Vue.use(VuetifyGoogleAutocomplete, {
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+/* Components */
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-component', require('./components/LoginComponent.vue').default);
 Vue.component('offer-list-component', require('./components/OfferListComponent.vue').default);

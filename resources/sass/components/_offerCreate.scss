@@ -15,10 +15,19 @@
 
     > .dz-preview {
         .dz-image {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: 140px;
             height: 140px;
+            > img {
+                width: 140px;
+                height: 87px;
+            }
         }
         .dz-remove {
+            top: auto;
             font-size: 0.6rem;
             padding: 6px;
             border: none;
@@ -67,4 +76,8 @@
 }
 .upload-btn-wrapper label {
     cursor: pointer;
+}
+
+.offer__seller__avatar {
+    border: 1px solid rgba(0, 0, 0, 0.6);
 }
