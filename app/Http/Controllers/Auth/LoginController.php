@@ -54,9 +54,12 @@ class LoginController extends Controller
             if (!$user->email_verified_at) {
                 return $this->sendFailedLoginResponse($request, 'not_verified');
             }
-            $user->generateToken();
+
+            /* Generate api token */
+            $api_token = $user->generateApiToken();
+
             return response()->json([
-                'data' => $user->toArray(),
+                'data' => array_merge($user->toArray(), ['api_token' => $api_token]),
             ]);
         }
         return $this->sendFailedLoginResponse($request);
@@ -70,11 +73,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::guard('api')->user();
-        if ($user) {
-            $user->api_token = null;
-            $user->save();
-        }
+        /* Log out to delete the current API token */
+        auth()->logout();
+
+        /* Return success message */
         return response()->json([
             'data' => 'User logged out'
         ], 200);

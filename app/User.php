@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyApiEmail;
 use App\Notifications\PasswordResetNotification;
+use Livijn\MultipleTokensAuth\Traits\HasApiTokens;
 
 /**
  * App\User
@@ -55,7 +56,14 @@ use App\Notifications\PasswordResetNotification;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 
     /**
      * The attributes that are mass assignable.
@@ -76,7 +84,7 @@ class User extends Authenticatable
         'offer_types',
         'password',
         'role',
-        'api_token',
+//        'api_token',
         'invitation_limit',
     ];
 

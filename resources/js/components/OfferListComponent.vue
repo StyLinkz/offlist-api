@@ -361,10 +361,27 @@
             },
 
             handleLogout () {
-                if (localStorage.getItem('user')) {
-                    localStorage.removeItem('user');
-                }
-                window.location.replace('/');
+                const user = JSON.parse(localStorage.getItem('user'));
+                axios.post(
+                    '/api/logout',
+                    {
+                        headers: { Authorization: `Bearer ${user.api_token}` }
+                    }
+                )
+                    .then((response) => {
+                        if (response.status === 200) {
+                            /* Remove user from local storage */
+                            if (localStorage.getItem('user')) {
+                                localStorage.removeItem('user');
+                            }
+
+                            /* Redirect users to the login page */
+                            window.location.replace('/');
+                        }
+                    })
+                    .catch((error) => {
+                        console.log({ error });
+                    });
             },
 
             handleOpenImportDialog () {

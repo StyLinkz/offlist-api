@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b240d76956cd1f0492d7a9685fb310e6",
+    "content-hash": "c2c5cad9b4ad7f4dd11137b429bdadd9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1077,6 +1077,54 @@
                 "storage"
             ],
             "time": "2020-02-05T18:14:17+00:00"
+        },
+        {
+            "name": "livijn/multiple-tokens-auth",
+            "version": "0.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Livijn/multiple-tokens-auth.git",
+                "reference": "bf300a23a499eb7962704beddcfe8560ca70bfbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Livijn/multiple-tokens-auth/zipball/bf300a23a499eb7962704beddcfe8560ca70bfbe",
+                "reference": "bf300a23a499eb7962704beddcfe8560ca70bfbe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Livijn\\MultipleTokensAuth\\MultipleTokensAuthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Livijn\\MultipleTokensAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fredrik Livijn",
+                    "email": "ouff@live.se"
+                }
+            ],
+            "description": "Adds the ability to use multiple tokens for the auth:api middleware.",
+            "homepage": "https://github.com/livijn/multiple-tokens-auth",
+            "time": "2020-01-21T12:56:56+00:00"
         },
         {
             "name": "monolog/monolog",
