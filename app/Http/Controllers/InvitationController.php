@@ -23,10 +23,18 @@ class InvitationController extends Controller
     {
         $user = auth()->user();
 
-        /// Generate invitation code
+        /* Return error if the email was used */
+        if ($receiver_email = $request->input('receiver_email')) {
+            $found_invitations = Invitation::auth($user)->where('receiver_email', $receiver_email)->count();
+            if ($found_invitations > 0) {
+                return response()->json(['error' => 'The email is used for another contact.'], 422);
+            }
+        }
+
+        /* Generate invitation code */
         $code = $this->_generateInvitationCode();
 
-        /// Send the invitation code
+        /* Send the invitation code */
         $this->_sendInvitationCode(array_merge(
             $request->all(),
             [
@@ -35,7 +43,7 @@ class InvitationController extends Controller
             ]
         ));
 
-        /// Save the invitation
+        /* Save the invitation */
         $invitation = Invitation::create(
             array_merge(
                 $request->all(),
@@ -47,7 +55,7 @@ class InvitationController extends Controller
             )
         );
 
-        /// Reduce the invitation limit
+        /* Reduce the invitation limit */
         $user->update([
             'invitation_limit' => $user->invitation_limit - 1,
         ]);
@@ -73,6 +81,11 @@ class InvitationController extends Controller
             ->with(['user'])
             ->orderByDesc('created_at')
             ->get();
+    }
+
+    public function getInvitationLimit() {
+        $user = auth()->user();
+        return $user->invitation_limit;
     }
 
     public function checkInvitation(Request $request) {

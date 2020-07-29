@@ -82,6 +82,7 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::put('invitations/{invitation}', 'InvitationController@update');
     Route::delete('invitations/{invitation}', 'InvitationController@delete');
     Route::get('auth-invitations', 'InvitationController@showAuthInvitations');
+    Route::get('invitation-limit', 'InvitationController@getInvitationLimit');
 
     /* Tags */
     Route::get('tags', 'TagController@index');
