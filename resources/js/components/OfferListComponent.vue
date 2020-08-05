@@ -246,7 +246,7 @@
                     label: 'Art',
                 },
             ],
-            categoryOptions: [
+            realEstateCategoryOptions: [
                 {
                     text: 'Apartment',
                     value: 1,
@@ -335,7 +335,7 @@
                                 return {
                                     id: item.id,
                                     title: item.title,
-                                    category: item.category.display_name,
+                                    category: this.getOfferCategory(item),
                                     price: item.price,
                                     currency: this.getCurrencySign(currency),
                                     commission: `${commission}%`,
@@ -595,121 +595,223 @@
 
             getSubmittedData (row) {
                 const user = JSON.parse(localStorage.getItem('user'));
-                const data = {
-                    primary: {
-                        data: {
-                            size: {
-                                name: 'Size',
-                                value: row['Size'],
-                            },
-                            year_of_construction: {
-                                name: 'Year of Construction',
-                                value: parseInt(row['Year of construction']),
-                            },
-                            free_from: {
-                                name: 'Free from',
-                                value: row['Free from'],
-                            },
-                            status: {
-                                name: 'Status',
-                                value: row['Sale status'],
-                            },
-                        },
-                    },
-                    secondary: {
-                        data: {
-                            rooms: {
-                                name: 'Rooms',
-                                value: row['Rooms'] || '',
-                            },
-                            bedroom: {
-                                name: 'Bedroom',
-                                value: row['Bedroom'] || '',
-                            },
-                            living_room: {
-                                name: 'Living room',
-                                value: row['Living room'] || '',
-                            },
-                            bath_room: {
-                                name: 'Bathroom',
-                                value: row['Bathroom'] || '',
-                            },
-                            cellars: {
-                                name: 'Cellars',
-                                value: row['Cellars'] || '',
-                            },
-                            floor_in_total: {
-                                name: 'Floor in total',
-                                value: row['Floor in total'] || '',
-                            },
-                            parking_space: {
-                                name: 'Parking space',
-                                value: row['Parking space'] || '',
-                            },
-                        },
-                    },
-                    building_fabric: {
-                        name: 'Building fabric & energy certificate',
-                        data: {
-                            object_state: {
-                                name: 'Object state',
-                                value: row['Object state'] || '',
-                            },
-                            equipment: {
-                                name: 'Equipment',
-                                value: row['Equipment'] || '',
-                            },
-                            energy_source: {
-                                name: 'Energy source',
-                                value: row['Energy source'] || '',
-                            },
-                            heating_type: {
-                                name: 'Heating type',
-                                value: row['Heating type'] || '',
-                            },
-                        },
-                    },
-                    furnishing: {
-                        name: 'Furnishing',
-                        data: {
-                            description: {
-                                value: row['Furnishing'] || ''
-                            },
-                        },
-                    },
-                    floor_plan: {
-                        name: 'Floor plan',
-                        data: {
-                            images: {
-                                value: null
-                            },
-                        },
-                    },
-                };
+                const offerType = row['Category'].toLowerCase().split(' ').join('_');
+                const typeId = this.getOfferTypeId(offerType);
+                let data;
+                let categoryId;
 
-                /* Get the category */
-                const category = this.categoryOptions.find(option => option.text === row['Type']);
-                const categoryId = category ? category.value : 1;
+                if (offerType === 'real estate') {
+                    data = {
+                        primary: {
+                            data: {
+                                currency: {
+                                    name: 'Currency',
+                                    value: row['Currency'] ? row['Currency'].toUpperCase() : 'EUR',
+                                },
+                                size: {
+                                    name: 'Size',
+                                    value: row['Size'],
+                                },
+                                year_of_construction: {
+                                    name: 'Year of Construction',
+                                    value: parseInt(row['Year of construction']),
+                                },
+                                free_from: {
+                                    name: 'Free from',
+                                    value: row['Free from'],
+                                },
+                                status: {
+                                    name: 'Status',
+                                    value: row['Sale status'],
+                                },
+                            },
+                        },
+                        secondary: {
+                            data: {
+                                rooms: {
+                                    name: 'Rooms',
+                                    value: row['Rooms'] || '',
+                                },
+                                bedroom: {
+                                    name: 'Bedroom',
+                                    value: row['Bedroom'] || '',
+                                },
+                                living_room: {
+                                    name: 'Living room',
+                                    value: row['Living room'] || '',
+                                },
+                                bath_room: {
+                                    name: 'Bathroom',
+                                    value: row['Bathroom'] || '',
+                                },
+                                cellars: {
+                                    name: 'Cellars',
+                                    value: row['Cellars'] || '',
+                                },
+                                floor_in_total: {
+                                    name: 'Floor in total',
+                                    value: row['Floor in total'] || '',
+                                },
+                                parking_space: {
+                                    name: 'Parking space',
+                                    value: row['Parking space'] || '',
+                                },
+                            },
+                        },
+                        building_fabric: {
+                            name: 'Building fabric & energy certificate',
+                            data: {
+                                object_state: {
+                                    name: 'Object state',
+                                    value: row['Object state'] || '',
+                                },
+                                equipment: {
+                                    name: 'Equipment',
+                                    value: row['Equipment'] || '',
+                                },
+                                energy_source: {
+                                    name: 'Energy source',
+                                    value: row['Energy source'] || '',
+                                },
+                                heating_type: {
+                                    name: 'Heating type',
+                                    value: row['Heating type'] || '',
+                                },
+                            },
+                        },
+                        furnishing: {
+                            name: 'Furnishing',
+                            data: {
+                                description: {
+                                    value: row['Furnishing'] || ''
+                                },
+                            },
+                        },
+                        floor_plan: {
+                            name: 'Floor plan',
+                            data: {
+                                images: {
+                                    value: null
+                                },
+                            },
+                        },
+                    };
+
+                    /* Get the category */
+                    const category = this.realEstateCategoryOptions.find(option => option.text === row['Type']);
+                    categoryId = category ? category.value : 1;
+                } else if (offerType === 'car') {
+                    data = {
+                        primary: {
+                            data: {
+                                currency: {
+                                    name: 'Currency',
+                                    value: row['Currency'] ? row['Currency'].toUpperCase() : 'EUR',
+                                },
+                                brand: {
+                                    name: 'Brand',
+                                    value: row['Brand'],
+                                },
+                                model: {
+                                    name: 'Model',
+                                    value: row['Model'],
+                                },
+                                year_of_construction: {
+                                    name: 'Year',
+                                    value: parseInt(row['Year']),
+                                },
+                                status: {
+                                    name: 'Status',
+                                    value: row['Sale status'],
+                                },
+                                variant: {
+                                    name: 'Variant',
+                                    value: row['Variant']
+                                },
+                                mileage: {
+                                    name: 'Mileage',
+                                    value: row['Mileage']
+                                },
+                                gearbox: {
+                                    name: 'Gearbox',
+                                    value: row['Gearbox']
+                                },
+                                fuel_type: {
+                                    name: 'Fuel type',
+                                    value: row['Fuel type']
+                                },
+                                color: {
+                                    name: 'Color',
+                                    value: row['Color']
+                                },
+                                interior_color: {
+                                    name: 'Interior color',
+                                    value: row['Interior color']
+                                },
+                            },
+                        },
+                    };
+
+                    /* Category is default */
+                    categoryId = 1;
+                } else if (offerType === 'art') {
+                    data = {
+                        primary: {
+                            data: {
+                                currency: {
+                                    name: 'Currency',
+                                    value: row['Currency'] ? row['Currency'].toUpperCase() : 'EUR',
+                                },
+                                artist_name: {
+                                    name: 'Artist name',
+                                    value: row['Artist'],
+                                },
+                                technique: {
+                                    name: 'Technique',
+                                    value: row['Technique'],
+                                },
+                                year_of_construction: {
+                                    name: 'Year',
+                                    value: parseInt(row['Year']),
+                                },
+                                dimensions: {
+                                    name: 'Dimensions',
+                                    value: row['Dimensions']
+                                },
+                                fabrication: {
+                                    name: 'Fabrication',
+                                    value: row['Fabrication']
+                                },
+                            },
+                        },
+                    };
+
+                    /* Category is default */
+                    categoryId = 1;
+                }
+
 
                 /* Get the tag ids */
                 const tagIds = [];
-                const tags = row['Tags'].split(',');
-                tags.forEach((tag) => {
-                    const tagOption = this.tagOptions.find(item => item.label.toLowerCase() === tag.toLowerCase());
-                    if (tagOption) {
-                        tagIds.push(tagOption.value);
-                    }
-                });
+                if (offerType === 'real_estate') {
+                    const tags = row['Tags'].split(',');
+                    tags.forEach((tag) => {
+                        const tagOption = this.tagOptions.find(item => item.label.toLowerCase() === tag.toLowerCase());
+                        if (tagOption) {
+                            tagIds.push(tagOption.value);
+                        }
+                    });
+                }
 
                 return {
                     data,
                     title: row['Title'],
                     user_id: user.id,
-                    offer_type_id: 1, // Default to real estate
+                    offer_type_id: typeId, // Default to real estate
                     offer_category_id: categoryId,
                     price: row['Price'],
-                    price_tax: row['Price incl tax'],
-                    commission: row['Commission'],
+                    price_tax: 0,
+                    commission: offerType === 'car' ? 0 : row['Commission'],
                     location: {
                         address: row['Location'] || '',
                         street: '',
@@ -767,6 +869,47 @@
                         return '€';
                 }
             },
+
+            getOfferTypeId (type) {
+                const types = [
+                    'none',
+                    'real_estate',
+                    'car',
+                    'art',
+                    'horse',
+                    'yacht',
+                    'jet',
+                ];
+                const index = types.indexOf(type);
+                return index !== -1 ? index : 1;
+            },
+
+            getOfferType (typeId) {
+                const types = [
+                    'none',
+                    'real_estate',
+                    'car',
+                    'art',
+                    'horse',
+                    'yacht',
+                    'jet',
+                ];
+                return types[typeId];
+            },
+
+            getOfferCategory (offer) {
+                const type = this.getOfferType(offer.offer_type_id);
+                switch (type) {
+                    case 'real_estate':
+                        return offer.category.display_name;
+                    case 'car':
+                        return 'Luxury Cars';
+                    case 'art':
+                        return 'Art';
+                    default:
+                        return '';
+                }
+            }
 
         },
     }
