@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Mail;
 use App\Contact;
 use App\Invitation;
@@ -23,13 +24,20 @@ class InvitationController extends Controller
     {
         $user = auth()->user();
 
-        /* Return error if the email was used */
         if ($receiver_email = $request->input('receiver_email')) {
-            $found_invitations = Invitation::auth($user)->where('receiver_email', $receiver_email)->count();
-            if ($found_invitations > 0) {
-                return response()->json(['error' => 'The email is used for another contact.'], 422);
+            /* Return error if the email was used for another contact */
+            $found_invitation_number = Invitation::auth($user)->where('receiver_email', $receiver_email)->count();
+            if ($found_invitation_number > 0) {
+                return response()->json(['error' => 'The email was used for another contact.'], 422);
+            }
+
+            /* Return error if the email was used for an available user */
+            $found_user_number = User::whereEmail($receiver_email)->count();
+            if ($found_user_number > 0) {
+                return response()->json(['error' => 'This email was used by another user.'], 422);
             }
         }
+
 
         /* Generate invitation code */
         $code = $this->_generateInvitationCode();
@@ -93,7 +101,7 @@ class InvitationController extends Controller
             $results = Invitation::where('code', '=', $code)
                 ->where('status', '=', 'pending');
             if (!$results->count()) {
-                return response()->json('Invitation is not found', 404);
+                return response()->json(['error' => 'Invitation is not found'], 404);
             }
             $invitation = $results->get()[0];
 
@@ -102,12 +110,12 @@ class InvitationController extends Controller
                 $invitation->update([
                     'status' => 'expired',
                 ]);
-                return response()->json('The invitation is expired', 406);
+                return response()->json(['error' => 'The invitation is expired'], 406);
             }
 
             return response()->json($invitation, 200);
         }
-        return response()->json('Some data is not correct.', 422);
+        return response()->json(['error' => 'Some data is not correct.'], 422);
     }
 
     public function updateInvitationStatus(Request $request, Invitation $invitation) {

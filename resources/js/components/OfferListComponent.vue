@@ -68,7 +68,7 @@
                                 color="primary"
                                 dark
                                 class="mb-2"
-                                href="/offers/create"
+                                @click="handleOpenTypeDialog"
                             >
                                 Create Offer
                             </v-btn>
@@ -142,6 +142,43 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
+            <v-dialog
+                v-model="showTypeDialog"
+                width="500"
+            >
+                <v-card>
+                    <v-card-title>Select a type</v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <v-radio-group v-model="selectedType">
+                            <v-radio
+                                v-for="type in types"
+                                :key="type.value"
+                                :label="`${type.label}`"
+                                :value="type.value"
+                            ></v-radio>
+                        </v-radio-group>
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="handleCloseTypeDialog"
+                        >
+                            Close
+                        </v-btn>
+                        <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="handleCreate"
+                        >
+                            Continue
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-container>
         <v-snackbar
             v-model="showNotification"
@@ -172,6 +209,8 @@
             notificationMessage: '',
             notificationColor: 'success',
             showImportDialog: false,
+            selectedType: 'real_estate',
+            showTypeDialog: false,
             dialog: false,
             headers: [
                 {
@@ -193,6 +232,20 @@
             importFile: null,
             importFileError: null,
             tagOptions: [],
+            types: [
+                {
+                    value: 'real_estate',
+                    label: 'Real Estate',
+                },
+                {
+                    value: 'car',
+                    label: 'Luxury Cars',
+                },
+                {
+                    value: 'art',
+                    label: 'Art',
+                },
+            ],
             categoryOptions: [
                 {
                     text: 'Apartment',
@@ -382,6 +435,18 @@
                     .catch((error) => {
                         console.log({ error });
                     });
+            },
+
+            handleCreate () {
+                window.location = `/offers/create?type=${this.selectedType}`;
+            },
+
+            handleOpenTypeDialog () {
+                this.showTypeDialog = true;
+            },
+
+            handleCloseTypeDialog () {
+                this.showTypeDialog = false;
             },
 
             handleOpenImportDialog () {

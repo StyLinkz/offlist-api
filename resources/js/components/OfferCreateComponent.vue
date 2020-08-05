@@ -276,19 +276,24 @@
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-text-field
-                            v-model="form.title"
-                            label="Headline"
-                            required
-                            :error-messages="titleErrors"
-                        ></v-text-field>
                         <v-select
+                            v-if="form.type === 'real_estate'"
                             v-model="form.offer_category_id"
                             :items="categoryOptions"
                             :error-messages="categoryErrors"
                             label="Type"
                             required
                         ></v-select>
+                        <div class="offer__category--static" v-if="form.type === 'car'">
+                            <span class="subtitle-1 font-weight-bold">Type:&nbsp;</span>
+                            <span>Luxury Car</span>
+                        </div>
+                        <v-text-field
+                            v-model="form.title"
+                            label="Headline"
+                            required
+                            :error-messages="titleErrors"
+                        ></v-text-field>
                         <div class="offer__data mt-5">
                             <v-expansion-panels
                                 v-model="selectedPanels"
@@ -339,7 +344,7 @@
                                                     :error-messages="priceErrors"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="4">
+                                            <v-col cols="12" md="4" v-if="form.type !== 'car'">
                                                 <v-text-field
                                                     v-model="form.commission"
                                                     label="Commission"
@@ -349,9 +354,18 @@
                                                     :error-messages="commissionErrors"
                                                 ></v-text-field>
                                             </v-col>
+                                            <v-col cols="12" md="4" v-if="form.type === 'car'">
+                                                <v-select
+                                                    v-model="form.data.primary.brand"
+                                                    :items="carBrandOptions"
+                                                    label="Brand"
+                                                    required
+                                                    :error-messages="carBrandErrors"
+                                                ></v-select>
+                                            </v-col>
                                         </v-row>
-                                        <v-row>
-                                            <v-col cols="12" md="6">
+                                        <v-row v-if="form.type === 'real_estate'">
+                                            <v-col cols="12" md="4">
                                                 <v-text-field
                                                     v-model="form.data.primary.size"
                                                     label="Size"
@@ -361,7 +375,7 @@
                                                     :error-messages="sizeErrors"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="6">
+                                            <v-col cols="12" md="4">
                                                 <v-select
                                                     v-model="form.data.primary.year_of_construction"
                                                     :items="yearOptions"
@@ -371,7 +385,36 @@
                                                 ></v-select>
                                             </v-col>
                                         </v-row>
-                                        <v-row>
+                                        <v-row v-if="form.type === 'car'">
+                                            <v-col cols="12" md="4">
+                                                <v-text-field
+                                                    v-model="form.data.primary.model"
+                                                    label="Model"
+                                                    name="primary.model"
+                                                    required
+                                                    :error-messages="carBrandErrors"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.year_of_construction"
+                                                    :items="yearOptions"
+                                                    label="Year"
+                                                    required
+                                                    :error-messages="yearOfConstructionErrors"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.status"
+                                                    :items="carStatusOptions"
+                                                    label="Status"
+                                                    required
+                                                    :error-messages="statusErrors"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="form.type === 'real_estate'">
                                             <v-col cols="12" md="6">
                                                 <v-dialog
                                                     ref="freeFromDialog"
@@ -405,9 +448,100 @@
                                                 ></v-select>
                                             </v-col>
                                         </v-row>
+                                        <v-row v-if="form.type === 'car'">
+                                            <v-col cols="12" md="4">
+                                                <v-text-field
+                                                    v-model="form.data.primary.variant"
+                                                    label="Variant"
+                                                    name="primary.variant"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.mileage"
+                                                    :items="carMileageOptions"
+                                                    label="Mileage"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.gearbox"
+                                                    :items="carGearboxOptions"
+                                                    label="Gearbox"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="form.type === 'car'">
+                                            <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.fuel_type"
+                                                    :items="carFuelTypeOptions"
+                                                    label="Fuel type"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-text-field
+                                                    v-model="form.data.primary.color"
+                                                    label="Color"
+                                                    name="primary.color"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-text-field
+                                                    v-model="form.data.primary.interior_color"
+                                                    label="Interior color"
+                                                    name="primary.interior_color"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="form.type === 'art'">
+                                            <v-col cols="12" md="4">
+                                                <v-text-field
+                                                    v-model="form.data.primary.artist_name"
+                                                    label="Artist name"
+                                                    name="primary.artist_name"
+                                                    required
+                                                    :error-messages="artArtistErrors"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-text-field
+                                                    v-model="form.data.primary.technique"
+                                                    label="Technique"
+                                                    name="primary.technique"
+                                                    required
+                                                    :error-messages="artTechniqueErrors"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.year_of_construction"
+                                                    :items="yearOptions"
+                                                    label="Year"
+                                                    required
+                                                    :error-messages="yearOfConstructionErrors"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="form.type === 'art'">
+                                            <v-col cols="12" md="6">
+                                                <v-text-field
+                                                    v-model="form.data.primary.dimensions"
+                                                    label="Dimensions"
+                                                    name="primary.dimensions"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                <v-text-field
+                                                    v-model="form.data.primary.fabrication"
+                                                    label="Fabrication"
+                                                    name="primary.fabrication"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
-                                <v-expansion-panel>
+                                <v-expansion-panel v-if="form.type === 'real_estate'">
                                     <v-expansion-panel-header>
                                         <h3 class="subtitle-1 font-weight-bold text-uppercase">Tags</h3>
                                     </v-expansion-panel-header>
@@ -430,7 +564,7 @@
                                         </v-row>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
-                                <v-expansion-panel>
+                                <v-expansion-panel v-if="form.type === 'real_estate'">
                                     <v-expansion-panel-header>
                                         <h3 class="subtitle-1 font-weight-bold text-uppercase">
                                             Property Information
@@ -494,7 +628,7 @@
                                         </v-row>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
-                                <v-expansion-panel>
+                                <v-expansion-panel v-if="form.type === 'real_estate'">
                                     <v-expansion-panel-header>
                                         <h3 class="subtitle-1 font-weight-bold text-uppercase">
                                             Building fabric & energy certificate
@@ -539,7 +673,7 @@
                                         </v-row>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
-                                <v-expansion-panel>
+                                <v-expansion-panel v-if="form.type === 'real_estate'">
                                     <v-expansion-panel-header>
                                         <h3 class="subtitle-1 font-weight-bold text-uppercase">
                                             Furnishing
@@ -554,7 +688,7 @@
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                             </v-expansion-panels>
-                            <v-card class="mt-4">
+                            <v-card class="mt-4" v-if="form.type === 'real_estate'">
                                 <v-card-title class="subtitle-1 text-uppercase font-weight-bold ml-1">
                                     Floor Plan
                                 </v-card-title>
@@ -570,7 +704,7 @@
                                     ></vue-dropzone>
                                 </v-card-text>
                             </v-card>
-                            <v-card class="mt-4">
+                            <v-card class="mt-4" v-if="form.type === 'real_estate'">
                                 <v-card-title class="subtitle-1 text-uppercase font-weight-bold ml-1">
                                     Documents
                                 </v-card-title>
@@ -778,6 +912,266 @@
                     'Electric heating',
                 ],
 
+                carBrandOptions: [
+                    'AC',
+                    'AMC',
+                    'ASA',
+                    'ASM',
+                    'Abarth',
+                    'Acura',
+                    'Ada',
+                    'Ahrens-Fox',
+                    'Alfa Romeo',
+                    'Alpina',
+                    'Amer',
+                    'Amphicar',
+                    'Ariel',
+                    'Armoury',
+                    'Aston Martin',
+                    'Asve',
+                    'Auburn',
+                    'Audi',
+                    'Austin',
+                    'Austin-Healy',
+                    'Autobianchi',
+                    'B Class Lakester',
+                    'BAC',
+                    'BMW',
+                    'Backdraft',
+                    'Backdraft Racing',
+                    'Bentley',
+                    'Bettenhausen',
+                    'Big Dog',
+                    'Boss Hoss',
+                    'Brabus',
+                    'Bricklin',
+                    'Brockway',
+                    'Bugatti',
+                    'Buick',
+                    'Chevy',
+                    'Cadillac',
+                    'Can-Am',
+                    'Chevrolet',
+                    'Chrysler',
+                    'Citronën',
+                    'Club Car',
+                    'Cobra',
+                    'Concept',
+                    'Continental',
+                    'Cooper',
+                    'Cord',
+                    'Corvette',
+                    'Cushman',
+                    'Custom',
+                    'Daimler',
+                    'Datsun',
+                    'De Tomaso',
+                    'DeLorean',
+                    'DeSoto',
+                    'Delage',
+                    'Dent',
+                    'Destiny',
+                    'Dodge',
+                    'Donkervoort',
+                    'Ducati',
+                    'E.C. OnlyOne',
+                    'Earl',
+                    'Edsel',
+                    'Enzmann',
+                    'Erskine',
+                    'Evanta Motors',
+                    'Excalibur',
+                    'Factory Five',
+                    'Ferrari',
+                    'Fisker',
+                    'Ford',
+                    'Formula Freeway',
+                    'Freightliner',
+                    'GMC',
+                    'Genesis',
+                    'Graham',
+                    'Gumpert',
+                    'Hale',
+                    'Harley-Davidson',
+                    'Heartland',
+                    'Henry J',
+                    'Hilltop',
+                    'Honda',
+                    'Horch',
+                    'Hudson',
+                    'Hummer',
+                    'Indian',
+                    'Infiniti',
+                    'Intermeccanica',
+                    'International',
+                    'Jaguar',
+                    'Jayco',
+                    'Jeep',
+                    'Jensen',
+                    'John Deere',
+                    'Knight',
+                    'KTM',
+                    'Kaiser',
+                    'Karma',
+                    'Kawasaki',
+                    'Kirkham',
+                    'Koenigsegg',
+                    'La France',
+                    'Lagonda',
+                    'Lamborghini',
+                    'Lancia',
+                    'Land Rover',
+                    'Las Vegas Trike',
+                    'Le Grand',
+                    'Lexus',
+                    'Lincoln',
+                    'Lotus',
+                    'MCI',
+                    'MG',
+                    'MTT',
+                    'Marchi Mobile',
+                    'Maserati',
+                    'Maxi',
+                    'Maybach',
+                    'Mazda',
+                    'McCormick & Deering',
+                    'McLaren',
+                    'Mehari Loisirs Technologie',
+                    'Meng',
+                    'Mercedes-Benz',
+                    'Mercury',
+                    'Merlin',
+                    'Meyers',
+                    'Mil',
+                    'Mini',
+                    'Mitsubsishi',
+                    'Monarch',
+                    'Monteverdi',
+                    'Morgan',
+                    'Morris',
+                    'Moto Guzzi',
+                    'Nash',
+                    'Nissan',
+                    'Norton',
+                    'OK',
+                    'Oreion',
+                    'Oakland',
+                    'Oldsmobile',
+                    'Opel',
+                    'Other',
+                    'PR',
+                    'Packrd',
+                    'Pagani',
+                    'Panther',
+                    'Pierce-Arrow',
+                    'Pininfarina',
+                    'Plymouth',
+                    'Polaris',
+                    'Pontiac',
+                    'Porsche',
+                    'Prevost',
+                    'RUF',
+                    'Radio Flyer',
+                    'Redneck',
+                    'Renault',
+                    'Renegade',
+                    'Reo',
+                    'Replica',
+                    'Riley',
+                    'Rimac',
+                    'Rolls-Royce',
+                    'Rover',
+                    'Rupp',
+                    'Skoda',
+                    'Saab',
+                    'Saleen',
+                    'Saturn',
+                    'Scion',
+                    'Shelby',
+                    'Smart',
+                    'Special Construction',
+                    'Spyker',
+                    'Stewart',
+                    'Studebaker',
+                    'Stutz',
+                    'Su',
+                    'Sunbeam',
+                    'Superformance',
+                    'Suzuki',
+                    'TNT',
+                    'Tesla',
+                    'Tiffany',
+                    'Tor',
+                    'Toyota',
+                    'Tramontana',
+                    'Trasco',
+                    'Triumph',
+                    'Ural',
+                    'VCYC',
+                    'VLF',
+                    'VW',
+                    'Volvo',
+                    'Willys',
+                    'Workhorse',
+                    'Yamaha',
+                    'Z Lightning McQueen',
+                    'Z Lil Mater',
+                    'Z Movie Car'
+                ],
+
+                carMileageOptions: [
+                    '5.000',
+                    '10.000',
+                    '15.000',
+                    '20.000',
+                    '25.000',
+                    '30.000',
+                    '35.000',
+                    '40.000',
+                    '45.000',
+                    '50.000',
+                    '55.000',
+                    '60.000',
+                    '65.000',
+                    '70.000',
+                    '75.000',
+                    '80.000',
+                    '85.000',
+                    '90.000',
+                    '95.0000',
+                    '100.000',
+                    '105.000',
+                    '110.000',
+                    '115.000',
+                    '120.000',
+                    '125.000',
+                    '130.000',
+                    '135.000',
+                    '145.000',
+                    '150.000',
+                    '155.000',
+                    '160.000',
+                    '165.000',
+                    '170.000',
+                    '175.000',
+                    '180.000',
+                    '185.000',
+                    '190.000',
+                    '195.000',
+                    '200.000 and more',
+                ],
+
+                carFuelTypeOptions: [
+                    'Petrol',
+                    'Diesel',
+                    'Electic',
+                ],
+
+                carGearboxOptions: [
+                    'Automatic',
+                    'Manual',
+                ],
+
                 groupOptions: [],
                 tagOptions: [],
                 selectedPanels: [0, 1],
@@ -808,11 +1202,8 @@
 
         computed: {
             rules () {
-                const validationRules = {
+                let validationRules = {
                     title: {
-                        required
-                    },
-                    offer_category_id: {
                         required
                     },
                     locationText: {
@@ -822,27 +1213,76 @@
                         required,
                         numeric
                     },
-                    commission: {
-                        required,
-                    },
-                    data: {
-                        primary: {
-                            size: {
-                                required,
-                                numeric
-                            },
-                            year_of_construction: {
-                                required
-                            },
-                            free_from: {
-                                required
-                            },
-                            status: {
-                                required
+                };
+
+                if (this.form.type === 'real_estate') {
+                    validationRules = {
+                        ...validationRules,
+                        offer_category_id: {
+                            required
+                        },
+                        commission: {
+                            required
+                        },
+                        data: {
+                            primary: {
+                                size: {
+                                    required,
+                                    numeric
+                                },
+                                year_of_construction: {
+                                    required
+                                },
+                                free_from: {
+                                    required
+                                },
+                                status: {
+                                    required
+                                },
                             },
                         },
-                    },
-                };
+                    };
+                } else if (this.form.type === 'car') {
+                    validationRules = {
+                        ...validationRules,
+                        data: {
+                            primary: {
+                                brand: {
+                                    required,
+                                },
+                                model: {
+                                    required,
+                                },
+                                year_of_construction: {
+                                    required
+                                },
+                                status: {
+                                    required
+                                },
+                            },
+                        },
+                    };
+                } else if (this.form.type === 'art') {
+                    validationRules = {
+                        ...validationRules,
+                        commission: {
+                            required
+                        },
+                        data: {
+                            primary: {
+                                artist_name: {
+                                    required,
+                                },
+                                technique: {
+                                    required,
+                                },
+                                year_of_construction: {
+                                    required
+                                },
+                            },
+                        },
+                    };
+                }
 
                 if (this.form.seller.contact_mode === 'new') {
                     validationRules['seller'] = {
@@ -881,6 +1321,14 @@
                 ];
             },
 
+            carStatusOptions () {
+                return [
+                    'New',
+                    'Used',
+                ];
+            },
+
+
             titleErrors () {
                 const errors = []
                 if (!this.$v.form.title.$dirty) return errors
@@ -890,6 +1338,9 @@
             },
 
             categoryErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type === 'car') return [];
+
                 const errors = []
                 if (!this.$v.form.offer_category_id.$dirty) return errors
                 !this.$v.form.offer_category_id.required && errors.push('Please select your offer\'s type.')
@@ -925,6 +1376,9 @@
             },
 
             commissionErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type === 'car') return [];
+
                 const errors = []
                 if (!this.$v.form.commission.$dirty) return errors
                 !this.$v.form.commission.required && errors.push('This field is required.')
@@ -938,6 +1392,9 @@
             },
 
             sizeErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'real_estate') return [];
+
                 const errors = []
                 if (!this.$v.form.data.primary.size.$dirty) return errors
                 !this.$v.form.data.primary.size.required && errors.push('This field is required.')
@@ -952,6 +1409,9 @@
             },
 
             freeFromErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'real_estate') return [];
+
                 const errors = []
                 if (!this.$v.form.data.primary.free_from.$dirty) return errors
                 !this.$v.form.data.primary.free_from.required && errors.push('This field is required.')
@@ -978,6 +1438,9 @@
             },
 
             statusErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'art') return [];
+
                 const errors = []
                 if (!this.$v.form.data.primary.status.$dirty) return errors
                 !this.$v.form.data.primary.status.required && errors.push('This field is required.')
@@ -1034,6 +1497,71 @@
 
                 return errors
             },
+
+            carBrandErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'car') return [];
+
+                const errors = []
+                if (!this.$v.form.data.primary.brand.$dirty) return errors
+                !this.$v.form.data.primary.brand.required && errors.push('This field is required.')
+
+                /* Open the general information panel */
+                if (errors.length && !this.selectedPanels.includes(1)) {
+                    this.selectedPanels.push(1);
+                }
+
+                return errors
+            },
+
+            carModelErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'car') return [];
+
+                const errors = []
+                if (!this.$v.form.data.primary.model.$dirty) return errors
+                !this.$v.form.data.primary.model.required && errors.push('This field is required.')
+
+                /* Open the general information panel */
+                if (errors.length && !this.selectedPanels.includes(1)) {
+                    this.selectedPanels.push(1);
+                }
+
+                return errors
+            },
+
+            artArtistErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'art') return [];
+
+                const errors = []
+                if (!this.$v.form.data.primary.artist_name.$dirty) return errors
+                !this.$v.form.data.primary.artist_name.required && errors.push('This field is required.')
+
+                /* Open the general information panel */
+                if (errors.length && !this.selectedPanels.includes(1)) {
+                    this.selectedPanels.push(1);
+                }
+
+                return errors
+            },
+
+            artTechniqueErrors () {
+                /* Only validate if the field is available */
+                if (!this.form.type || this.form.type !== 'art') return [];
+
+                const errors = []
+                if (!this.$v.form.data.primary.technique.$dirty) return errors
+                !this.$v.form.data.primary.technique.required && errors.push('This field is required.')
+
+                /* Open the general information panel */
+                if (errors.length && !this.selectedPanels.includes(1)) {
+                    this.selectedPanels.push(1);
+                }
+
+                return errors
+            },
+
         },
 
         validations () {
@@ -1047,6 +1575,18 @@
             if (!jsonUser) {
                 window.location.replace('/');
             } else {
+                /* Get the offer type */
+                const { search } = window.location;
+                if (search.length) {
+                    let params = search.substring(1).split('&');
+                    for (let param of params) {
+                        const [paramName, paramVal] = param.split('=');
+                        if (paramName === 'type') {
+                            this.form.type = paramVal;
+                        }
+                    }
+                }
+
                 this.fetchTags();
                 this.fetchGroups();
 
@@ -1072,16 +1612,12 @@
                     .then((response) => {
                         if (response.status === 200) {
                             const { data } = response;
-                            const primary = data.data.primary.data;
-                            const secondary = data.data.secondary.data;
-                            const floorPlan = data.data.floor_plan.data.images.value;
-                            const buildingFabric = data.data.building_fabric.data;
-                            const furnishing = data.data.furnishing.data;
-                            const documents = data.documents;
 
                             this.form.id = data.id;
                             this.form.title = data.title;
-                            this.form.offer_category_id = data.type.id;
+                            this.form.offer_type_id = data.offer_type_id;
+                            this.form.offer_category_id = data.offer_category_id;
+                            this.form.type = this.getOfferType(data.offer_type_id);
                             this.form.status = data.status === 'activated';
                             this.form.tags = data.tags.map((tag) => tag.id);
                             this.form.price = data.price;
@@ -1096,6 +1632,10 @@
                                     return index;
                                 });
                             }
+
+                            /* Populate location */
+                            this.form.location = data.location;
+                            this.form.locationText = data.location.address;
 
                             /* Seller avatar */
                             if (data.seller.contact_mode === 'new'
@@ -1124,78 +1664,108 @@
                                 });
                             }
 
-                            /* Floor Plan */
-                            const floorPlanKeys = floorPlan ? Object.keys(floorPlan) : [];
-                            if (floorPlanKeys.length) {
-                                const offerFloorPlan = this.$refs.offerFloorPlan;
-                                floorPlanKeys.forEach((key) => {
-                                    const image = floorPlan[key];
-                                    const mockFile = {
-                                        name: image.name,
-                                        size: 999,
-                                        type: 'image/jpeg',
-                                        url: image.url,
-                                    };
-                                    offerFloorPlan.dropzone.files.push(mockFile);
-                                    offerFloorPlan.dropzone.emit('addedfile', mockFile);
-                                    offerFloorPlan.dropzone.emit('thumbnail', mockFile, image.url);
-                                    offerFloorPlan.dropzone.emit('complete', mockFile);
-                                });
+                            const primary = data.data.primary.data;
+                            if (data.type.name === 'real_estate') {
+                                const secondary = data.data.secondary.data;
+                                const floorPlan = data.data.floor_plan.data.images.value;
+                                const buildingFabric = data.data.building_fabric.data;
+                                const furnishing = data.data.furnishing.data;
+                                const documents = data.documents;
+
+                                /* Floor Plan */
+                                const floorPlanKeys = floorPlan ? Object.keys(floorPlan) : [];
+                                if (floorPlanKeys.length) {
+                                    const offerFloorPlan = this.$refs.offerFloorPlan;
+                                    floorPlanKeys.forEach((key) => {
+                                        const image = floorPlan[key];
+                                        const mockFile = {
+                                            name: image.name,
+                                            size: 999,
+                                            type: 'image/jpeg',
+                                            url: image.url,
+                                        };
+                                        offerFloorPlan.dropzone.files.push(mockFile);
+                                        offerFloorPlan.dropzone.emit('addedfile', mockFile);
+                                        offerFloorPlan.dropzone.emit('thumbnail', mockFile, image.url);
+                                        offerFloorPlan.dropzone.emit('complete', mockFile);
+                                    });
+                                }
+
+                                /* Documents */
+                                const documentKeys = documents ? Object.keys(documents) : [];
+                                if (documentKeys.length) {
+                                    const offerDocuments = this.$refs.offerDocuments;
+                                    documentKeys.forEach((key) => {
+                                        const image = documents[key];
+                                        const mockFile = {
+                                            name: image.name,
+                                            size: 999,
+                                            type: 'image/jpeg',
+                                            url: image.url,
+                                        };
+                                        offerDocuments.dropzone.files.push(mockFile);
+                                        offerDocuments.dropzone.emit('addedfile', mockFile);
+                                        offerDocuments.dropzone.emit('thumbnail', mockFile, image.url);
+                                        offerDocuments.dropzone.emit('complete', mockFile);
+                                    });
+                                }
+
+                                /* Primary */
+                                this.form.data.primary = {
+                                    currency: primary.currency.value,
+                                    size: primary.size.value,
+                                    free_from: primary.free_from.value,
+                                    year_of_construction: primary.year_of_construction.value,
+                                    status: primary.status.value,
+                                };
+
+                                /* Secondary */
+                                this.form.data.secondary = {
+                                    rooms: secondary.rooms.value,
+                                    bedroom: secondary.bedroom.value,
+                                    bath_room: secondary.bath_room.value,
+                                    living_room: secondary.living_room.value,
+                                    parking_space: secondary.parking_space.value,
+                                    cellars: secondary.cellars.value,
+                                    floor_in_total: secondary.floor_in_total.value,
+                                };
+
+                                /* Building Fabric */
+                                this.form.data.building_fabric = {
+                                    object_state: buildingFabric.object_state.value,
+                                    equipment: buildingFabric.equipment.value,
+                                    energy_source: buildingFabric.energy_source.value,
+                                    heating_type: buildingFabric.heating_type.value,
+                                };
+
+                                /* Furnishing */
+                                this.form.data.furnishing = furnishing.description.value;
+
+                            } else if (data.type.name === 'car') {
+                                /* Primary */
+                                this.form.data.primary = {
+                                    currency: primary.currency.value,
+                                    brand: primary.brand.value,
+                                    model: primary.model.value,
+                                    year_of_construction: primary.year_of_construction.value,
+                                    status: primary.status.value,
+                                    variant: primary.variant.value,
+                                    mileage: primary.mileage.value,
+                                    gearbox: primary.gearbox.value,
+                                    fuel_type: primary.fuel_type.value,
+                                    color: primary.color.value,
+                                    interior_color: primary.interior_color.value,
+                                };
+                            } else if (data.type.name === 'art') {
+                                this.form.data.primary = {
+                                    currency: primary.currency.value,
+                                    artist_name: primary.artist_name.value,
+                                    technique: primary.technique.value,
+                                    year_of_construction: primary.year_of_construction.value,
+                                    dimensions: primary.dimensions.value,
+                                    fabrication: primary.fabrication.value,
+                                };
                             }
-
-                            /* Documents */
-                            const documentKeys = documents ? Object.keys(documents) : [];
-                            if (documentKeys.length) {
-                                const offerDocuments = this.$refs.offerDocuments;
-                                documentKeys.forEach((key) => {
-                                    const image = documents[key];
-                                    const mockFile = {
-                                        name: image.name,
-                                        size: 999,
-                                        type: 'image/jpeg',
-                                        url: image.url,
-                                    };
-                                    offerDocuments.dropzone.files.push(mockFile);
-                                    offerDocuments.dropzone.emit('addedfile', mockFile);
-                                    offerDocuments.dropzone.emit('thumbnail', mockFile, image.url);
-                                    offerDocuments.dropzone.emit('complete', mockFile);
-                                });
-                            }
-
-                            /* Populate location */
-                            this.form.location = data.location;
-                            this.form.locationText = data.location.address;
-
-                            /* Primary */
-                            this.form.data.primary = {
-                                currency: primary.currency.value,
-                                size: primary.size.value,
-                                free_from: primary.free_from.value,
-                                year_of_construction: primary.year_of_construction.value,
-                                status: primary.status.value,
-                            };
-
-                            /* Secondary */
-                            this.form.data.secondary = {
-                                rooms: secondary.rooms.value,
-                                bedroom: secondary.bedroom.value,
-                                bath_room: secondary.bath_room.value,
-                                living_room: secondary.living_room.value,
-                                parking_space: secondary.parking_space.value,
-                                cellars: secondary.cellars.value,
-                                floor_in_total: secondary.floor_in_total.value,
-                            };
-
-                            /* Building Fabric */
-                            this.form.data.building_fabric = {
-                                object_state: buildingFabric.object_state.value,
-                                equipment: buildingFabric.equipment.value,
-                                energy_source: buildingFabric.energy_source.value,
-                                heating_type: buildingFabric.heating_type.value,
-                            };
-
-                            /* Furnishing */
-                            this.form.data.furnishing = furnishing.description.value;
                         }
                     })
                     .catch((error) => {
@@ -1548,110 +2118,195 @@
                     });
                 }
 
-                const data = {
-                    primary: {
-                        data: {
-                            currency: {
-                                name: 'Currency',
-                                value: this.form.data.primary.currency
-                            },
-                            size: {
-                                name: 'Size',
-                                value: this.form.data.primary.size
-                            },
-                            year_of_construction: {
-                                name: 'Year of Construction',
-                                value: this.form.data.primary.year_of_construction
-                            },
-                            free_from: {
-                                name: 'Free from',
-                                value: this.form.data.primary.free_from
-                            },
-                            status: {
-                                name: 'Status',
-                                value: this.form.data.primary.status
-                            },
-                        },
-                    },
-                    secondary: {
-                        data: {
-                            rooms: {
-                                name: 'Rooms',
-                                value: this.form.data.secondary.rooms || ''
-                            },
-                            bedroom: {
-                                name: 'Bedroom',
-                                value: this.form.data.secondary.bedroom || ''
-                            },
-                            living_room: {
-                                name: 'Living room',
-                                value: this.form.data.secondary.living_room || ''
-                            },
-                            bath_room: {
-                                name: 'Bathroom',
-                                value: this.form.data.secondary.bath_room || ''
-                            },
-                            cellars: {
-                                name: 'Cellars',
-                                value: this.form.data.secondary.cellars || ''
-                            },
-                            floor_in_total: {
-                                name: 'Floor in total',
-                                value: this.form.data.secondary.floor_in_total || ''
-                            },
-                            parking_space: {
-                                name: 'Parking space',
-                                value: this.form.data.secondary.parking_space || ''
+                let data;
+                if (this.form.type === 'real_estate') {
+                    data = {
+                        primary: {
+                            data: {
+                                currency: {
+                                    name: 'Currency',
+                                    value: this.form.data.primary.currency
+                                },
+                                size: {
+                                    name: 'Size',
+                                    value: this.form.data.primary.size
+                                },
+                                year_of_construction: {
+                                    name: 'Year of Construction',
+                                    value: this.form.data.primary.year_of_construction
+                                },
+                                free_from: {
+                                    name: 'Free from',
+                                    value: this.form.data.primary.free_from
+                                },
+                                status: {
+                                    name: 'Status',
+                                    value: this.form.data.primary.status
+                                },
                             },
                         },
-                    },
-                    building_fabric: {
-                        name: 'Building fabric & energy certificate',
-                        data: {
-                            object_state: {
-                                name: 'Object state',
-                                value: this.form.data.building_fabric.object_state || '',
-                            },
-                            equipment: {
-                                name: 'Equipment',
-                                value: this.form.data.building_fabric.equipment || '',
-                            },
-                            energy_source: {
-                                name: 'Energy source',
-                                value: this.form.data.building_fabric.energy_source || '',
-                            },
-                            heating_type: {
-                                name: 'Heating type',
-                                value: this.form.data.building_fabric.heating_type || '',
-                            },
-                        },
-                    },
-                    furnishing: {
-                        name: 'Furnishing',
-                        data: {
-                            description: {
-                                value: this.form.data.furnishing || ''
-                            },
-                        },
-                    },
-                    floor_plan: {
-                        name: 'Floor plan',
-                        data: {
-                            images: {
-                                value: floorPlan['file_0'] ? floorPlan : null
+                        secondary: {
+                            data: {
+                                rooms: {
+                                    name: 'Rooms',
+                                    value: this.form.data.secondary.rooms || ''
+                                },
+                                bedroom: {
+                                    name: 'Bedroom',
+                                    value: this.form.data.secondary.bedroom || ''
+                                },
+                                living_room: {
+                                    name: 'Living room',
+                                    value: this.form.data.secondary.living_room || ''
+                                },
+                                bath_room: {
+                                    name: 'Bathroom',
+                                    value: this.form.data.secondary.bath_room || ''
+                                },
+                                cellars: {
+                                    name: 'Cellars',
+                                    value: this.form.data.secondary.cellars || ''
+                                },
+                                floor_in_total: {
+                                    name: 'Floor in total',
+                                    value: this.form.data.secondary.floor_in_total || ''
+                                },
+                                parking_space: {
+                                    name: 'Parking space',
+                                    value: this.form.data.secondary.parking_space || ''
+                                },
                             },
                         },
-                    },
-                };
+                        building_fabric: {
+                            name: 'Building fabric & energy certificate',
+                            data: {
+                                object_state: {
+                                    name: 'Object state',
+                                    value: this.form.data.building_fabric.object_state || '',
+                                },
+                                equipment: {
+                                    name: 'Equipment',
+                                    value: this.form.data.building_fabric.equipment || '',
+                                },
+                                energy_source: {
+                                    name: 'Energy source',
+                                    value: this.form.data.building_fabric.energy_source || '',
+                                },
+                                heating_type: {
+                                    name: 'Heating type',
+                                    value: this.form.data.building_fabric.heating_type || '',
+                                },
+                            },
+                        },
+                        furnishing: {
+                            name: 'Furnishing',
+                            data: {
+                                description: {
+                                    value: this.form.data.furnishing || ''
+                                },
+                            },
+                        },
+                        floor_plan: {
+                            name: 'Floor plan',
+                            data: {
+                                images: {
+                                    value: floorPlan['file_0'] ? floorPlan : null
+                                },
+                            },
+                        },
+                    };
+                } else if (this.form.type === 'car') {
+                    data = {
+                        primary: {
+                            data: {
+                                currency: {
+                                    name: 'Currency',
+                                    value: this.form.data.primary.currency
+                                },
+                                brand: {
+                                    name: 'Brand',
+                                    value: this.form.data.primary.brand
+                                },
+                                model: {
+                                    name: 'Model',
+                                    value: this.form.data.primary.model
+                                },
+                                year_of_construction: {
+                                    name: 'Year',
+                                    value: this.form.data.primary.year_of_construction
+                                },
+                                status: {
+                                    name: 'Status',
+                                    value: this.form.data.primary.status
+                                },
+                                variant: {
+                                    name: 'Variant',
+                                    value: this.form.data.primary.variant
+                                },
+                                mileage: {
+                                    name: 'Mileage',
+                                    value: this.form.data.primary.mileage
+                                },
+                                gearbox: {
+                                    name: 'Gearbox',
+                                    value: this.form.data.primary.gearbox
+                                },
+                                fuel_type: {
+                                    name: 'Fuel type',
+                                    value: this.form.data.primary.fuel_type
+                                },
+                                color: {
+                                    name: 'Color',
+                                    value: this.form.data.primary.color
+                                },
+                                interior_color: {
+                                    name: 'Interior color',
+                                    value: this.form.data.primary.interior_color
+                                },
+                            },
+                        },
+                    };
+                } else if (this.form.type === 'art') {
+                    data = {
+                        primary: {
+                            data: {
+                                currency: {
+                                    name: 'Currency',
+                                    value: this.form.data.primary.currency
+                                },
+                                artist_name: {
+                                    name: 'Artist name',
+                                    value: this.form.data.primary.artist_name
+                                },
+                                technique: {
+                                    name: 'Technique',
+                                    value: this.form.data.primary.technique
+                                },
+                                year_of_construction: {
+                                    name: 'Year',
+                                    value: this.form.data.primary.year_of_construction
+                                },
+                                dimensions: {
+                                    name: 'Dimensions',
+                                    value: this.form.data.primary.dimensions
+                                },
+                                fabrication: {
+                                    name: 'Fabrication',
+                                    value: this.form.data.primary.fabrication
+                                },
+                            },
+                        },
+                    };
+                }
 
                 return {
                     data,
                     title: this.form.title,
                     user_id: user.id,
-                    offer_type_id: 1, // Default to real estate
-                    offer_category_id: this.form.offer_category_id,
+                    offer_type_id: this.getOfferTypeId(), // Default to real estate
+                    offer_category_id: this.getOfferCategoryId(),
                     price: this.form.price,
-                    commission: this.form.commission,
+                    commission: this.form.type === 'car' ? 0 : this.form.commission,
                     location: this.form.location,
                     tags: this.form.tags,
                     privacy: this.form.privacy,
@@ -1668,6 +2323,41 @@
                     images: images['file_0'] ? images : null,
                     documents: documents['file_0'] ? documents : null,
                 };
+            },
+
+            getOfferTypeId () {
+                const types = [
+                    'none',
+                    'real_estate',
+                    'car',
+                    'art',
+                    'horse',
+                    'yacht',
+                    'jet',
+                ];
+                const index = types.indexOf(this.form.type);
+                return index !== -1 ? index : 1;
+            },
+
+            getOfferType (typeId) {
+                const types = [
+                    'none',
+                    'real_estate',
+                    'car',
+                    'art',
+                    'horse',
+                    'yacht',
+                    'jet',
+                ];
+                return types[typeId] ? types[typeId] : 'real_estate';
+            },
+
+
+            getOfferCategoryId () {
+                if (['car', 'art'].indexOf(this.form.type) != -1) {
+                    return 1;
+                }
+                return this.form.offer_category_id;
             }
 
         }
