@@ -28,6 +28,9 @@ Route::get('/offers/{offerId}/edit', function ($offerId) {
 Route::get('/verify-email-success', function () {
     return view('verifyEmailSuccess');
 });
+Route::get('/imprint', function () {
+    return view('imprint');
+});
 
 Auth::routes();
 

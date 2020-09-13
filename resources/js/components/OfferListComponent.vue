@@ -18,7 +18,7 @@
                             <v-btn icon href="/offers">
                                 <v-icon>view_list</v-icon>
                             </v-btn>
-                            <v-btn icon href="/offers/create">
+                            <v-btn icon @click="handleOpenTypeDialog">
                                 <v-icon>add_circle</v-icon>
                             </v-btn>
                             <v-menu
@@ -65,20 +65,22 @@
                         <v-spacer></v-spacer>
                         <div class="offer__grid__buttons">
                             <v-btn
-                                color="primary"
                                 dark
-                                class="mb-2"
+                                color="primary"
+                                class="offer__grid__button"
                                 @click="handleOpenTypeDialog"
                             >
-                                Create Offer
+                                <v-icon left>add</v-icon>
+                                Create
                             </v-btn>
                             <v-btn
                                 color="secondary"
                                 dark
-                                class="mb-2"
+                                class="offer__grid__button"
                                 @click="handleOpenImportDialog"
                             >
-                                Import from CSV
+                                <v-icon left>backup</v-icon>
+                                Import
                             </v-btn>
                         </div>
                     </v-toolbar>

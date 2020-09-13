@@ -38,6 +38,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('login-component', require('./components/LoginComponent.vue').default);
 Vue.component('offer-list-component', require('./components/OfferListComponent.vue').default);
 Vue.component('offer-create-component', require('./components/OfferCreateComponent.vue').default);
+Vue.component('imprint-component', require('./components/ImprintComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

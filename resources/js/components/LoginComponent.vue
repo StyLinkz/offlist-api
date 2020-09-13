@@ -1,76 +1,88 @@
 <template>
-    <div class="page-login bg-full bg-cover bg-overlay" :style="{ backgroundImage: 'url(' + backgroundImage + ')' }">
-        <v-row justify="center" align="center" class="page-login__inner">
-            <v-container>
-                <v-row justify="center">
-                    <v-col cols="12">
-                        <v-container>
-                            <v-row justify="center" align="center">
-                                <v-col cols="8">
-                                    <div class="login-content">
-                                        <img :src="logoImage" class="logo" alt="offlist" />
-                                        <p class="title text-white mt-6 mb-8 font-normal">
-                                            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                                            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                                        </p>
-                                        <div class="d-flex flex-row">
-                                            <a href="https://itunes.apple.com" target="_blank" class="btn-download-app mr-2">
-                                                <img :src="appStoreImage" alt="offlist" />
-                                            </a>
-                                            <a href="https://play.google.com" target="_blank" class="btn-download-app">
-                                                <img :src="googlePlayImage" alt="offlist" />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </v-col>
-                                <v-col cols="4">
-                                    <form
-                                        novalidate
-                                        @submit.prevent="validate"
-                                        class="login-form"
-                                    >
-                                        <v-card class="mx-auto">
-                                            <v-card-title class="justify-center">Member Login</v-card-title>
-                                            <v-card-text class="pt-0">
-                                                <v-text-field
-                                                    v-model="email"
-                                                    label="Email"
-                                                    name="email"
-                                                    required
-                                                    :error-messages="emailErrors"
-                                                    @input="$v.email.$touch()"
-                                                    @blur="$v.email.$touch()"
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    v-model="password"
-                                                    label="Password"
-                                                    name="password"
-                                                    type="password"
-                                                    required
-                                                    :error-messages="passwordErrors"
-                                                    @input="$v.password.$touch()"
-                                                    @blur="$v.password.$touch()"
-                                                ></v-text-field>
-                                                <v-btn
-                                                    block
-                                                    dark
-                                                    color="primary"
-                                                    type="submit"
-                                                    class="mt-6"
-                                                    :loading="sending"
-                                                >
-                                                    Sign In
-                                                </v-btn>
-                                            </v-card-text>
-                                        </v-card>
-                                    </form>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-col>
-                </v-row>
+    <div class="page-login">
+        <a href="/imprint" target="_blank" class="login-imprint">Imprint</a>
+        <v-carousel
+            cycle
+            hide-delimiters
+            hide-delimiter-background
+            :show-arrows="false"
+            height="100%"
+            interval="3000"
+        >
+            <v-carousel-item
+                v-for="(slide, i) in slides"
+                class="login-slide bg-full bg-cover bg-overlay fill-height"
+                :key="i"
+                :style="{ backgroundImage: 'url(' + slide + ')' }"
+            >
+            </v-carousel-item>
+        </v-carousel>
+        <div class="login-container">
+            <v-container class="h-100">
+                <div class="d-flex flex-column align-center fill-height">
+                    <v-row justify="center" align="center">
+                        <v-col cols="12" sm="8" md="8">
+                            <div class="login-content">
+                                <img :src="logoImage" class="logo" alt="offlist" />
+                                <p class="title text-white mt-6 mb-8 font-normal">
+                                    The closed off-market marketplace for real estate, luxury cars, art, horses, yachts, private jets and other luxury goods that are not traded in public.
+                                </p>
+                                <div class="login-app-download d-flex flex-row">
+                                    <a href="https://itunes.apple.com" target="_blank" class="btn-download-app mr-2">
+                                        <img :src="appStoreImage" alt="offlist" />
+                                    </a>
+                                    <a href="https://play.google.com" target="_blank" class="btn-download-app">
+                                        <img :src="googlePlayImage" alt="offlist" />
+                                    </a>
+                                </div>
+                            </div>
+                        </v-col>
+                        <v-col cols="12" sm="4" md="4">
+                            <form
+                                novalidate
+                                @submit.prevent="validate"
+                                class="login-form"
+                            >
+                                <v-card class="mx-auto">
+                                    <v-card-title class="justify-center">Member Login</v-card-title>
+                                    <v-card-text class="pt-0">
+                                        <v-text-field
+                                            v-model="email"
+                                            label="Email"
+                                            name="email"
+                                            required
+                                            :error-messages="emailErrors"
+                                            @input="$v.email.$touch()"
+                                            @blur="$v.email.$touch()"
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="password"
+                                            label="Password"
+                                            name="password"
+                                            type="password"
+                                            required
+                                            :error-messages="passwordErrors"
+                                            @input="$v.password.$touch()"
+                                            @blur="$v.password.$touch()"
+                                        ></v-text-field>
+                                        <v-btn
+                                            block
+                                            dark
+                                            color="primary"
+                                            type="submit"
+                                            class="mt-6"
+                                            :loading="sending"
+                                        >
+                                            Sign In
+                                        </v-btn>
+                                    </v-card-text>
+                                </v-card>
+                            </form>
+                        </v-col>
+                    </v-row>
+                </div>
             </v-container>
-        </v-row>
+        </div>
         <v-snackbar
             v-model="showNotification"
             :timeout="3000"
@@ -120,6 +132,14 @@
                 appStoreImage: '/images/app-store.png',
                 googlePlayImage: '/images/google-play.png',
                 backgroundImage: '/images/bg-login.jpg',
+                slides: [
+                    '/images/slides/bg-real-estate.jpg',
+                    '/images/slides/bg-car.jpg',
+                    '/images/slides/bg-art.jpg',
+                    '/images/slides/bg-horse.jpg',
+                    '/images/slides/bg-yatch.jpg',
+                    '/images/slides/bg-jet.jpg',
+                ],
             };
         },
         computed: {
