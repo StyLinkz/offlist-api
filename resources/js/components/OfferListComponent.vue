@@ -228,7 +228,12 @@
                 { text: 'Privacy', value: 'privacy' },
                 { text: 'Status', value: 'status' },
                 { text: 'Created At', value: 'createdAt' },
-                { text: 'Actions', value: 'actions', sortable: false },
+                {
+                    text: 'Actions',
+                    value: 'actions',
+                    sortable: false,
+                    width: '8%',
+                }
             ],
             offers: [],
             importFile: null,

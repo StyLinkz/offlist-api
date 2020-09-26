@@ -797,6 +797,14 @@
     require('jquery-ui/ui/widgets/sortable');
     require('jquery-ui/ui/disable-selection');
 
+    const isValidPrice = (price) => {
+        const formatted_price = price.replace('.', '');
+        if (!/^[0-9]+$/.test(formatted_price)) {
+            return false;
+        }
+        return true;
+    }
+
     export default {
         name: 'FormCreateOffer',
         components: {
@@ -1265,7 +1273,7 @@
                     },
                     price: {
                         required,
-                        numeric
+                        isValidPrice
                     },
                 };
 
@@ -1419,7 +1427,7 @@
                 const errors = []
                 if (!this.$v.form.price.$dirty) return errors
                 !this.$v.form.price.required && errors.push('This field is required.')
-                !this.$v.form.price.numeric && errors.push('Please enter a valid price.')
+                !this.$v.form.price.isValidPrice && errors.push('Please enter a valid price.')
 
                 /* Open the general information panel */
                 if (errors.length && !this.selectedPanels.includes(1)) {
