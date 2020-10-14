@@ -346,7 +346,7 @@
                                     price: item.price,
                                     currency: this.getCurrencySign(currency),
                                     commission: `${commission}%`,
-                                    privacy: item.privacy === 'public' ? 'Public Offerwall' : 'Closed Group',
+                                    privacy: item.privacy === 'public' ? 'Public Offerboard' : 'Private Group',
                                     status: item.status === 'activated',
                                     createdAt: item.created_at,
                                 };
