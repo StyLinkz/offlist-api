@@ -1,5 +1,21 @@
 <template>
     <div id="wrapper">
+        <v-overlay
+            :value="showOverlay"
+            :z-index="100"
+            :dark="false"
+            color="#fff"
+            :opacity="0.75"
+        >
+            <div class="d-flex flex-column align-center fill-height">
+                <v-row justify="center" align="center">
+                    <v-progress-circular
+                        indeterminate
+                        color="primary"
+                    ></v-progress-circular>
+                </v-row>
+            </div>
+        </v-overlay>
         <v-toolbar dark dense>
             <v-container>
                 <v-row
@@ -344,7 +360,7 @@
                                                     :error-messages="priceErrors"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" md="4" v-if="form.type !== 'car'">
+                                            <v-col cols="12" md="4">
                                                 <v-text-field
                                                     v-model="form.commission"
                                                     label="Commission"
@@ -353,15 +369,6 @@
                                                     suffix="%"
                                                     :error-messages="commissionErrors"
                                                 ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" md="4" v-if="form.type === 'car'">
-                                                <v-select
-                                                    v-model="form.data.primary.brand"
-                                                    :items="carBrandOptions"
-                                                    label="Brand"
-                                                    required
-                                                    :error-messages="carBrandErrors"
-                                                ></v-select>
                                             </v-col>
                                         </v-row>
                                         <v-row v-if="form.type === 'real_estate'">
@@ -386,6 +393,15 @@
                                             </v-col>
                                         </v-row>
                                         <v-row v-if="form.type === 'car'">
+                                            <v-col cols="12" md="4" v-if="form.type === 'car'">
+                                                <v-select
+                                                    v-model="form.data.primary.brand"
+                                                    :items="carBrandOptions"
+                                                    label="Brand"
+                                                    required
+                                                    :error-messages="carBrandErrors"
+                                                ></v-select>
+                                            </v-col>
                                             <v-col cols="12" md="4">
                                                 <v-text-field
                                                     v-model="form.data.primary.model"
@@ -402,15 +418,6 @@
                                                     label="Year"
                                                     required
                                                     :error-messages="yearOfConstructionErrors"
-                                                ></v-select>
-                                            </v-col>
-                                            <v-col cols="12" md="4">
-                                                <v-select
-                                                    v-model="form.data.primary.status"
-                                                    :items="carStatusOptions"
-                                                    label="Status"
-                                                    required
-                                                    :error-messages="statusErrors"
                                                 ></v-select>
                                             </v-col>
                                         </v-row>
@@ -450,6 +457,15 @@
                                         </v-row>
                                         <v-row v-if="form.type === 'car'">
                                             <v-col cols="12" md="4">
+                                                <v-select
+                                                    v-model="form.data.primary.status"
+                                                    :items="carStatusOptions"
+                                                    label="Status"
+                                                    required
+                                                    :error-messages="statusErrors"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4">
                                                 <v-text-field
                                                     v-model="form.data.primary.variant"
                                                     label="Variant"
@@ -457,12 +473,19 @@
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="4">
-                                                <v-select
+                                                <v-text-field
                                                     v-model="form.data.primary.mileage"
-                                                    :items="carMileageOptions"
-                                                    label="Mileage"
-                                                ></v-select>
+                                                    label="Mileage (km)"
+                                                    name="primary.mileage"
+                                                ></v-text-field>
+<!--                                                <v-select-->
+<!--                                                    v-model="form.data.primary.mileage"-->
+<!--                                                    :items="carMileageOptions"-->
+<!--                                                    label="Mileage"-->
+<!--                                                ></v-select>-->
                                             </v-col>
+                                        </v-row>
+                                        <v-row v-if="form.type === 'car'">
                                             <v-col cols="12" md="4">
                                                 <v-select
                                                     v-model="form.data.primary.gearbox"
@@ -470,8 +493,6 @@
                                                     label="Gearbox"
                                                 ></v-select>
                                             </v-col>
-                                        </v-row>
-                                        <v-row v-if="form.type === 'car'">
                                             <v-col cols="12" md="4">
                                                 <v-select
                                                     v-model="form.data.primary.fuel_type"
@@ -486,6 +507,8 @@
                                                     name="primary.color"
                                                 ></v-text-field>
                                             </v-col>
+                                        </v-row>
+                                        <v-row v-if="form.type === 'car'">
                                             <v-col cols="12" md="4">
                                                 <v-text-field
                                                     v-model="form.data.primary.interior_color"
@@ -798,7 +821,7 @@
     require('jquery-ui/ui/disable-selection');
 
     const isValidPrice = (price) => {
-        const formatted_price = price.replace('.', '');
+        const formatted_price = `${price}`.replace('.', '');
         if (!/^[0-9]+$/.test(formatted_price)) {
             return false;
         }
@@ -1259,6 +1282,8 @@
                         label: 'Art',
                     },
                 ],
+
+                showOverlay: true,
             };
         },
 
@@ -1649,238 +1674,245 @@
                     }
                 }
 
-                this.fetchTags();
-                this.fetchGroups();
-
                 /* In case edit offer, just fetch the offer data */
                 const { pathname } = window.location;
                 const matches = /^\/offers\/(\d+)\/edit$/.exec(pathname);
                 if (matches) {
                     const offerId = matches[1];
-                    this.getOffer(offerId);
+                    Promise.all([
+                        this.fetchTags(),
+                        this.fetchGroups(),
+                        this.getOffer(offerId),
+                    ])
+                        .then((values) => {
+                            const [tagResponse, groupResponse, offerResponse] = values;
+                            if (tagResponse.status === 200) {
+                                const { data } = tagResponse;
+                                this.tagOptions = data.map((item) => ({
+                                    value: item.id,
+                                    label: item.display_name
+                                }));
+                            }
+                            if (groupResponse.status === 200) {
+                                this.groupOptions = groupResponse.data;
+                            }
+                            if (offerResponse.status === 200) {
+                                const { data } = offerResponse;
+
+                                this.form.id = data.id;
+                                this.form.title = data.title;
+                                this.form.offer_type_id = data.offer_type_id;
+                                this.form.offer_category_id = data.offer_category_id;
+                                this.form.type = this.getOfferType(data.offer_type_id);
+                                this.form.status = data.status === 'activated';
+                                this.form.tags = data.tags.map((tag) => tag.id);
+                                this.form.price = data.price;
+                                this.form.commission = data.commission;
+                                this.form.seller = data.seller;
+
+                                /* Privacy */
+                                this.form.privacy = data.privacy;
+                                if (data.privacy === 'private') {
+                                    this.form.privacyGroups = data.groups.map((group) => {
+                                        const index = this.groupOptions.findIndex(item => item.id === group.id);
+                                        return index;
+                                    });
+                                }
+
+                                /* Populate location */
+                                this.form.location = data.location;
+                                this.form.locationText = data.location.address;
+
+                                /* Seller avatar */
+                                if (data.seller.contact_mode === 'new'
+                                    && data.seller.avatar
+                                    && data.seller.avatar.length
+                                ) {
+                                    this.form.sellerAvatarPreview = data.seller.avatar;
+                                }
+
+                                /* Images */
+                                const imageKeys = Object.keys(data.images);
+                                if (imageKeys.length) {
+                                    const offerImages = this.$refs.offerImages;
+                                    imageKeys.forEach((key) => {
+                                        const image = data.images[key];
+                                        const mockFile = {
+                                            name: image.name,
+                                            size: 999,
+                                            type: 'image/jpeg',
+                                            url: image.url,
+                                        };
+                                        offerImages.dropzone.files.push(mockFile);
+                                        offerImages.dropzone.emit('addedfile', mockFile);
+                                        offerImages.dropzone.emit('thumbnail', mockFile, image.url);
+                                        offerImages.dropzone.emit('complete', mockFile);
+                                    });
+                                }
+
+                                const primary = data.data.primary.data;
+                                if (data.type.name === 'real_estate') {
+                                    const secondary = data.data.secondary.data;
+                                    const floorPlan = data.data.floor_plan.data.images.value;
+                                    const buildingFabric = data.data.building_fabric.data;
+                                    const furnishing = data.data.furnishing.data;
+                                    const documents = data.documents;
+
+                                    /* Floor Plan */
+                                    const floorPlanKeys = floorPlan ? Object.keys(floorPlan) : [];
+                                    if (floorPlanKeys.length) {
+                                        const offerFloorPlan = this.$refs.offerFloorPlan;
+                                        floorPlanKeys.forEach((key) => {
+                                            const image = floorPlan[key];
+                                            const mockFile = {
+                                                name: image.name,
+                                                size: 999,
+                                                type: 'image/jpeg',
+                                                url: image.url,
+                                            };
+                                            offerFloorPlan.dropzone.files.push(mockFile);
+                                            offerFloorPlan.dropzone.emit('addedfile', mockFile);
+                                            offerFloorPlan.dropzone.emit('thumbnail', mockFile, image.url);
+                                            offerFloorPlan.dropzone.emit('complete', mockFile);
+                                        });
+                                    }
+
+                                    /* Documents */
+                                    const documentKeys = documents ? Object.keys(documents) : [];
+                                    if (documentKeys.length) {
+                                        const offerDocuments = this.$refs.offerDocuments;
+                                        documentKeys.forEach((key) => {
+                                            const image = documents[key];
+                                            const mockFile = {
+                                                name: image.name,
+                                                size: 999,
+                                                type: 'image/jpeg',
+                                                url: image.url,
+                                            };
+                                            offerDocuments.dropzone.files.push(mockFile);
+                                            offerDocuments.dropzone.emit('addedfile', mockFile);
+                                            offerDocuments.dropzone.emit('thumbnail', mockFile, image.url);
+                                            offerDocuments.dropzone.emit('complete', mockFile);
+                                        });
+                                    }
+
+                                    /* Primary */
+                                    this.form.data.primary = {
+                                        currency: primary.currency.value,
+                                        size: primary.size.value,
+                                        free_from: primary.free_from.value,
+                                        year_of_construction: primary.year_of_construction.value,
+                                        status: primary.status.value,
+                                    };
+
+                                    /* Secondary */
+                                    this.form.data.secondary = {
+                                        rooms: secondary.rooms.value,
+                                        bedroom: secondary.bedroom.value,
+                                        bath_room: secondary.bath_room.value,
+                                        living_room: secondary.living_room.value,
+                                        parking_space: secondary.parking_space.value,
+                                        cellars: secondary.cellars.value,
+                                        floor_in_total: secondary.floor_in_total.value,
+                                    };
+
+                                    /* Building Fabric */
+                                    this.form.data.building_fabric = {
+                                        object_state: buildingFabric.object_state.value,
+                                        equipment: buildingFabric.equipment.value,
+                                        energy_source: buildingFabric.energy_source.value,
+                                        heating_type: buildingFabric.heating_type.value,
+                                    };
+
+                                    /* Furnishing */
+                                    this.form.data.furnishing = furnishing.description.value;
+
+                                } else if (data.type.name === 'car') {
+                                    /* Primary */
+                                    this.form.data.primary = {
+                                        currency: primary.currency.value,
+                                        brand: primary.brand.value,
+                                        model: primary.model.value,
+                                        year_of_construction: primary.year_of_construction.value,
+                                        status: primary.status.value,
+                                        variant: primary.variant.value,
+                                        mileage: primary.mileage.value,
+                                        gearbox: primary.gearbox.value,
+                                        fuel_type: primary.fuel_type.value,
+                                        color: primary.color.value,
+                                        interior_color: primary.interior_color.value,
+                                    };
+                                } else if (data.type.name === 'art') {
+                                    this.form.data.primary = {
+                                        currency: primary.currency.value,
+                                        artist_name: primary.artist_name.value,
+                                        technique: primary.technique.value,
+                                        year_of_construction: primary.year_of_construction.value,
+                                        dimensions: primary.dimensions.value,
+                                        fabrication: primary.fabrication.value,
+                                    };
+                                }
+                            }
+                            this.showOverlay = false;
+                        });
+                } else {
+                    Promise.all([
+                        this.fetchTags(),
+                        this.fetchGroups(),
+                    ])
+                        .then((values) => {
+                            const [tagResponse, groupResponse] = values;
+                            if (tagResponse.status === 200) {
+                                const { data } = tagResponse;
+                                this.tagOptions = data.map((item) => ({
+                                    value: item.id,
+                                    label: item.display_name
+                                }));
+                            }
+                            if (groupResponse.status === 200) {
+                                this.groupOptions = groupResponse.data;
+                            }
+                            this.showOverlay = false;
+                        });
                 }
             }
         },
 
         methods: {
-            getOffer (offerId) {
+            async getOffer (offerId) {
                 const user = JSON.parse(localStorage.getItem('user'));
-                axios.get(
-                    `/api/offers/${offerId}`,
+                return axios.get(
+                    `https://offlist.de/api/offers/${offerId}`,
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
-                )
-                    .then((response) => {
-                        if (response.status === 200) {
-                            const { data } = response;
-
-                            this.form.id = data.id;
-                            this.form.title = data.title;
-                            this.form.offer_type_id = data.offer_type_id;
-                            this.form.offer_category_id = data.offer_category_id;
-                            this.form.type = this.getOfferType(data.offer_type_id);
-                            this.form.status = data.status === 'activated';
-                            this.form.tags = data.tags.map((tag) => tag.id);
-                            this.form.price = data.price;
-                            this.form.commission = data.commission;
-                            this.form.seller = data.seller;
-
-                            /* Privacy */
-                            this.form.privacy = data.privacy;
-                            if (data.privacy === 'private') {
-                                this.form.privacyGroups = data.groups.map((group) => {
-                                    const index = this.groupOptions.findIndex(item => item.id === group.id);
-                                    return index;
-                                });
-                            }
-
-                            /* Populate location */
-                            this.form.location = data.location;
-                            this.form.locationText = data.location.address;
-
-                            /* Seller avatar */
-                            if (data.seller.contact_mode === 'new'
-                                && data.seller.avatar
-                                && data.seller.avatar.length
-                            ) {
-                                this.form.sellerAvatarPreview = data.seller.avatar;
-                            }
-
-                            /* Images */
-                            const imageKeys = Object.keys(data.images);
-                            if (imageKeys.length) {
-                                const offerImages = this.$refs.offerImages;
-                                imageKeys.forEach((key) => {
-                                    const image = data.images[key];
-                                    const mockFile = {
-                                        name: image.name,
-                                        size: 999,
-                                        type: 'image/jpeg',
-                                        url: image.url,
-                                    };
-                                    offerImages.dropzone.files.push(mockFile);
-                                    offerImages.dropzone.emit('addedfile', mockFile);
-                                    offerImages.dropzone.emit('thumbnail', mockFile, image.url);
-                                    offerImages.dropzone.emit('complete', mockFile);
-                                });
-                            }
-
-                            const primary = data.data.primary.data;
-                            if (data.type.name === 'real_estate') {
-                                const secondary = data.data.secondary.data;
-                                const floorPlan = data.data.floor_plan.data.images.value;
-                                const buildingFabric = data.data.building_fabric.data;
-                                const furnishing = data.data.furnishing.data;
-                                const documents = data.documents;
-
-                                /* Floor Plan */
-                                const floorPlanKeys = floorPlan ? Object.keys(floorPlan) : [];
-                                if (floorPlanKeys.length) {
-                                    const offerFloorPlan = this.$refs.offerFloorPlan;
-                                    floorPlanKeys.forEach((key) => {
-                                        const image = floorPlan[key];
-                                        const mockFile = {
-                                            name: image.name,
-                                            size: 999,
-                                            type: 'image/jpeg',
-                                            url: image.url,
-                                        };
-                                        offerFloorPlan.dropzone.files.push(mockFile);
-                                        offerFloorPlan.dropzone.emit('addedfile', mockFile);
-                                        offerFloorPlan.dropzone.emit('thumbnail', mockFile, image.url);
-                                        offerFloorPlan.dropzone.emit('complete', mockFile);
-                                    });
-                                }
-
-                                /* Documents */
-                                const documentKeys = documents ? Object.keys(documents) : [];
-                                if (documentKeys.length) {
-                                    const offerDocuments = this.$refs.offerDocuments;
-                                    documentKeys.forEach((key) => {
-                                        const image = documents[key];
-                                        const mockFile = {
-                                            name: image.name,
-                                            size: 999,
-                                            type: 'image/jpeg',
-                                            url: image.url,
-                                        };
-                                        offerDocuments.dropzone.files.push(mockFile);
-                                        offerDocuments.dropzone.emit('addedfile', mockFile);
-                                        offerDocuments.dropzone.emit('thumbnail', mockFile, image.url);
-                                        offerDocuments.dropzone.emit('complete', mockFile);
-                                    });
-                                }
-
-                                /* Primary */
-                                this.form.data.primary = {
-                                    currency: primary.currency.value,
-                                    size: primary.size.value,
-                                    free_from: primary.free_from.value,
-                                    year_of_construction: primary.year_of_construction.value,
-                                    status: primary.status.value,
-                                };
-
-                                /* Secondary */
-                                this.form.data.secondary = {
-                                    rooms: secondary.rooms.value,
-                                    bedroom: secondary.bedroom.value,
-                                    bath_room: secondary.bath_room.value,
-                                    living_room: secondary.living_room.value,
-                                    parking_space: secondary.parking_space.value,
-                                    cellars: secondary.cellars.value,
-                                    floor_in_total: secondary.floor_in_total.value,
-                                };
-
-                                /* Building Fabric */
-                                this.form.data.building_fabric = {
-                                    object_state: buildingFabric.object_state.value,
-                                    equipment: buildingFabric.equipment.value,
-                                    energy_source: buildingFabric.energy_source.value,
-                                    heating_type: buildingFabric.heating_type.value,
-                                };
-
-                                /* Furnishing */
-                                this.form.data.furnishing = furnishing.description.value;
-
-                            } else if (data.type.name === 'car') {
-                                /* Primary */
-                                this.form.data.primary = {
-                                    currency: primary.currency.value,
-                                    brand: primary.brand.value,
-                                    model: primary.model.value,
-                                    year_of_construction: primary.year_of_construction.value,
-                                    status: primary.status.value,
-                                    variant: primary.variant.value,
-                                    mileage: primary.mileage.value,
-                                    gearbox: primary.gearbox.value,
-                                    fuel_type: primary.fuel_type.value,
-                                    color: primary.color.value,
-                                    interior_color: primary.interior_color.value,
-                                };
-                            } else if (data.type.name === 'art') {
-                                this.form.data.primary = {
-                                    currency: primary.currency.value,
-                                    artist_name: primary.artist_name.value,
-                                    technique: primary.technique.value,
-                                    year_of_construction: primary.year_of_construction.value,
-                                    dimensions: primary.dimensions.value,
-                                    fabrication: primary.fabrication.value,
-                                };
-                            }
-                        }
-                    })
-                    .catch((error) => {
-                        console.log({ error });
-                    })
+                );
             },
 
-            fetchTags () {
+            async fetchTags () {
                 const user = JSON.parse(localStorage.getItem('user'));
-                axios.get(
-                    '/api/tags',
+                return axios.get(
+                    'https://offlist.de/api/tags',
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
-                )
-                    .then((response) => {
-                        if (response.status === 200) {
-                            const { data } = response;
-                            this.tagOptions = data.map((item) => ({
-                                value: item.id,
-                                label: item.display_name
-                            }))
-                        }
-                    })
-                    .catch((error) => {
-                        console.log({ error });
-                    })
+                );
             },
 
-            fetchGroups () {
+            async fetchGroups () {
                 const user = JSON.parse(localStorage.getItem('user'));
-                axios.get(
-                    '/api/groups',
+                return axios.get(
+                    'https://offlist.de/api/groups',
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
-                )
-                    .then((response) => {
-                        if (response.status === 200) {
-                            const { data } = response;
-                            this.groupOptions = data;
-                        }
-                    })
-                    .catch((error) => {
-                        console.log({ error });
-                    })
-
+                );
             },
 
             handleLogout () {
                 const user = JSON.parse(localStorage.getItem('user'));
                 axios.post(
-                    '/api/logout',
+                    'https://offlist.de/api/logout',
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
@@ -1911,6 +1943,10 @@
 
             handleCloseTypeDialog () {
                 this.showTypeDialog = false;
+            },
+
+            handleHideOverlay () {
+                this.showOverlay = false;
             },
 
             handleChangeLocation (addressData, placeResultData, id) {
@@ -1985,7 +2021,7 @@
 
                 const user = JSON.parse(localStorage.getItem('user'));
                 const submittedData = await this.getSubmittedData();
-                const submittedUrl = this.form.id ? `/api/offers/${this.form.id}` : '/api/offers';
+                const submittedUrl = this.form.id ? `https://offlist.de/api/offers/${this.form.id}` : 'https://offlist.de/api/offers';
                 const submittedMethod = this.form.id ? 'put' : 'post';
 
                 axios({
@@ -2041,7 +2077,7 @@
                         });
                         uploadedImages = await axios
                             .post(
-                                '/api/offer-images',
+                                'https://offlist.de/api/offer-images',
                                 formData,
                                 {
                                     headers: {
@@ -2077,7 +2113,7 @@
                             });
                             uploadedFloorPlan = await axios
                                 .post(
-                                    '/api/offer-files',
+                                    'https://offlist.de/api/offer-files',
                                     formData,
                                     {
                                         headers: {
@@ -2114,7 +2150,7 @@
                             });
                             uploadedDocuments = await axios
                                 .post(
-                                    '/api/offer-files',
+                                    'https://offlist.de/api/offer-files',
                                     formData,
                                     {
                                         headers: {
@@ -2145,7 +2181,7 @@
                     formData.append('file[]', this.form.sellerAvatar);
                     sellerAvatar = await axios
                         .post(
-                            '/api/offer-images',
+                            'https://offlist.de/api/offer-images',
                             formData,
                             {
                                 headers: {
@@ -2373,6 +2409,32 @@
                     };
                 }
 
+                let seller;
+                if (this.form.seller.contact_mode === 'profile') {
+                    seller = {
+                        ...seller,
+                        contact_mode: 'profile',
+                        avatar: user.avatar,
+                        name: user.name,
+                        prename: user.prename,
+                        email: user.email,
+                        phone: user.phone || '',
+                        company: user.company || '',
+                        website: user.website || '',
+                        address: user.address || '',
+                        city: user.city || '',
+                        zipcode: user.zip_code || '',
+                    };
+                } else {
+                    seller = {
+                        ...this.form.seller,
+                        contact_mode: 'new',
+                        avatar: !!sellerAvatar
+                            ? sellerAvatar
+                            : (this.form.seller.avatar || ''),
+                    };
+                }
+
                 return {
                     data,
                     title: this.form.title,
@@ -2380,22 +2442,17 @@
                     offer_type_id: this.getOfferTypeId(), // Default to real estate
                     offer_category_id: this.getOfferCategoryId(),
                     price: this.form.price,
-                    commission: this.form.type === 'car' ? 0 : this.form.commission,
+                    commission: !!this.form.commission ? this.form.commission : 0,
                     location: this.form.location,
                     tags: this.form.tags,
                     privacy: this.form.privacy,
                     groups: this.form.privacy === 'private'
                         ? this.form.privacyGroups.map(i => this.groupOptions[i].id)
                         : [],
-                    seller: {
-                        ...this.form.seller,
-                        avatar: !!sellerAvatar
-                            ? sellerAvatar
-                            : (this.form.seller.avatar || ''),
-                    },
                     status: this.form.status ? 'activated' : 'deactivated',
                     images: images['file_0'] ? images : null,
                     documents: documents['file_0'] ? documents : null,
+                    seller,
                 };
             },
 

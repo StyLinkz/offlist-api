@@ -167,7 +167,7 @@
                 this.sending = true;
 
                 /* Handle submit here */
-                axios.post('/api/login', {
+                axios.post('https://offlist.de/api/login', {
                     email: this.email,
                     password: this.password,
                 })
