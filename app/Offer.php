@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $seller
  * @property string $data
  * @property string $status
+ * @property string $market_type
  * @property string $privacy
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -36,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereCommission($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereMarketType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePrivacy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -65,6 +68,7 @@ class Offer extends Model
         'seller',
         'data',
         'status',
+        'market_type',
         'privacy',
     ];
 
@@ -124,6 +128,26 @@ class Offer extends Model
             $query->where('privacy', '=', 'public');
             $query->where('status', '=', 'activated');
         });
+    }
+
+    /**
+     * Scope Filter
+     *
+     * @param $query
+     * @param Request $request
+     */
+    public function scopeFilter($query, Request $request) {
+        if ($types = $request->input('types')) {
+            $query->where(function ($query) use ($types) {
+                $query->whereIn('offer_type_id', explode(',', $types));
+            });
+        }
+
+        if ($market_types = $request->input('market_types')) {
+            $query->where(function ($query) use ($market_types) {
+                $query->whereIn('market_type', explode(',', $market_types));
+            });
+        }
     }
 
     /**

@@ -26,7 +26,10 @@ class OfferController extends Controller
 
     public function store(Request $request)
     {
-        $offer = Offer::create($request->all());
+        $offer_data = $request->all();
+        $offer_data['commission'] = str_replace(',', '.', $offer_data['commission']);
+        $offer_data['commission'] = str_replace('%', '', $offer_data['commission']);
+        $offer = Offer::create($offer_data);
 
         /* Save tags */
         if ($request->input('tags')) {
@@ -96,11 +99,18 @@ class OfferController extends Controller
         return response()->json($offer, 200);
     }
 
-    public function showFeedOffers()
+    public function showFeedOffers(Request $request)
     {
         $user = auth()->user();
-        return Offer::feed($user)
-            ->with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers'])
+        $query = Offer::feed($user)
+            ->with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers']);
+
+        /* Filter */
+        if ($request->input('categories') || $request->input('types')) {
+            $query->filter($request);
+        }
+
+        return $query
             ->orderByDesc('created_at')
             ->get();
     }
