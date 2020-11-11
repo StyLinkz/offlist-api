@@ -99,6 +99,14 @@ class OfferController extends Controller
         return response()->json($offer, 200);
     }
 
+    public function updatePublishType(Request $request, Offer $offer) {
+        $publish_type = $request->input('publish_type');
+        $offer->update([
+            'publish_type' => $publish_type,
+        ]);
+        return response()->json($offer, 200);
+    }
+
     public function showFeedOffers(Request $request)
     {
         $user = auth()->user();

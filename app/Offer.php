@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $data
  * @property string $status
  * @property string $market_type
+ * @property string $available_type
+ * @property string $publish_type
  * @property string $privacy
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -39,6 +41,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereMarketType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereAvailableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePublishType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePrivacy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -69,6 +73,8 @@ class Offer extends Model
         'data',
         'status',
         'market_type',
+        'available_type',
+        'publish_type',
         'privacy',
     ];
 

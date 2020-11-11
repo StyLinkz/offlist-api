@@ -28,6 +28,7 @@ Route::post('password/verify', 'Api\Auth\ForgotPasswordController@verifyResetCod
 Route::post('password/reset', 'Api\Auth\ResetPasswordController@reset');
 Route::post('check-invitation', 'InvitationController@checkInvitation');
 Route::post('update-invitation/{invitation}', 'InvitationController@updateInvitationStatus');
+Route::post('request-access', 'AccessRequestController@store');
 
 /* Authenticated Resources*/
 Route::group(['middleware' => ['auth:api', 'verified']], function () {
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::post('offers/import', 'OfferController@import');
     Route::put('offers/{offer}', 'OfferController@update');
     Route::put('offers/{offer}/status', 'OfferController@updateStatus');
+    Route::put('offers/{offer}/publish-type', 'OfferController@updatePublishType');
     Route::delete('offers/{offer}', 'OfferController@delete');
     Route::post('offer-files', 'OfferController@uploadFiles');
     Route::post('offer-images', 'OfferController@uploadImages');
