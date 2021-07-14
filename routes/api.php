@@ -93,5 +93,9 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::get('profile', 'UserController@show');
     Route::put('profile', 'UserController@update');
     Route::post('avatar', 'UserController@updateAvatar');
+    Route::get('users/{user}', 'UserController@showUser');
 
 });
+
+/* Free user */
+Route::get('free-offers', 'OfferController@showFreeOffers');

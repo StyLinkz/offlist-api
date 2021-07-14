@@ -114,7 +114,10 @@ class OfferController extends Controller
             ->with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers']);
 
         /* Filter */
-        if ($request->input('categories') || $request->input('types')) {
+        if ($request->input('categories')
+          || $request->input('types')
+          || $request->input('market_types')
+        ) {
             $query->filter($request);
         }
 
@@ -127,6 +130,13 @@ class OfferController extends Controller
         $user = auth()->user();
         return Offer::auth($user)
             ->with(['user', 'type', 'category', 'tags', 'groups', "wishlistUsers"])
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function showFreeOffers() {
+        return Offer::free()
+            ->with(['type', 'category', 'tags'])
             ->orderByDesc('created_at')
             ->get();
     }

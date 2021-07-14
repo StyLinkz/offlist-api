@@ -171,4 +171,15 @@ class Offer extends Model
         });
     }
 
+    /**
+     * Scope for free offers
+     *
+     * @param $query
+     */
+    public function scopeFree($query)
+    {
+        $query->where(function ($query) {
+            $query->where('is_free', '=', '1');
+        });
+    }
 }

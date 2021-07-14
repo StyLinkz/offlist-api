@@ -1,15 +1,223 @@
-body {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+.v-application .fb-btn {
+  color: $colour-white;
 }
-html {
-    height: -webkit-fill-available;
+
+.popup {
+  visibility: hidden;
+
+  &.active {
+    visibility: visible;
+  }
 }
-.logo {
-    display: inline-block;
-    color: #fff;
-    width: 100px;
+
+.half-map-sec .features_list {
+  margin: 7px 0 50px 0;
 }
-.logo--large {
-    width: 200px;
+
+.half-map-sec {
+  > .container {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.slick-dots {
+  li {
+    &.slick-active {
+      button {
+        background-color: $colour-primary;
+      }
+    }
+  }
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100000;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  @include transition(opacity 0.35s linear, visibility 0.35s linear);
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  i {
+    font-size: 50px;
+    color: $colour-primary;
+
+    @include animation(fa-spin 1.15s infinite linear);
+  }
+}
+
+.notification {
+  width: 300px;
+  font-size: 16px;
+  text-align: center;
+  padding: 12px 0;
+  background-color: $colour-dark;
+  color: $colour-white;
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  z-index: 100001;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 3px;
+
+  @include transform(translate(-50%, calc(100% + 30px)));
+  @include transition(opacity 0.25s ease, visibility 0.25s ease, transform 0.25s linear);
+
+  &.notification--success {
+    background-color: $colour-primary;
+  }
+
+  &.notification--error {
+    background-color: $colour-red;
+  }
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+
+    @include transform(translate(-50%, 0));
+  }
+}
+
+.header .navbar-nav .nav-item .dropdown-menu {
+  border: 1px solid #d5d4d9;
+}
+
+.btn-primary,
+.custom-control-input:checked~.custom-control-label::before {
+  border-color: $colour-primary;
+  background-color: $colour-primary;
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+  background-image: none;
+}
+
+.form-control {
+  &.form-control-date {
+    padding: 0;
+    height: auto;
+    border-color: transparent;
+
+    &.is-invalid {
+      border-color: #dc3545;
+    }
+  }
+}
+
+.pager-sec.bfr {
+  &::before {
+    background-image: url('/images/offer-create-bg.jpg');
+    background-position: center center;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: -1;
+  }
+}
+
+.form-group,
+.form-field {
+  float: none;
+}
+
+.form-group {
+  padding: 0;
+}
+
+.form-group {
+  > label.control-label {
+    color: $colour-dark;
+    margin-bottom: 5px;
+  }
+}
+
+.button-icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: $colour-primary;
+  background-color: $colour-white;
+  border: 1px solid $colour-primary;
+  border-radius: 50%;
+  text-align: center;
+  -webkit-transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  -moz-transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+
+  i {
+    font-size: 16px;
+  }
+
+  &.button-icon--large {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+
+    i {
+      font-size: 18px;
+    }
+  }
+
+  &.button-icon--small {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    i {
+      font-size: 14px;
+    }
+  }
+
+  &:hover {
+    color: $colour-white;
+    background-color: $colour-primary;
+  }
+
+  &.dark {
+    color: $colour-white;
+    background-color: $colour-primary;
+
+    &:hover {
+      border-color: $colour-primary-hovered;
+      background-color: $colour-primary-hovered;
+    }
+  }
+}
+
+.modal-title {
+  font-size: 1rem;
 }

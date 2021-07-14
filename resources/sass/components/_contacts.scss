@@ -1,0 +1,55 @@
+.section-my-contacts {
+  padding: 60px 0 80px;
+}
+
+.contact-item {
+  & + .contact-item {
+    border-top: 1px solid #ddd;
+  }
+}
+
+.contact-item__avatar {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.contact-item__name {
+  color: $colour-dark;
+  font-size: 1.125rem;
+}
+
+.contact-item__email,
+.contact-item__phone {
+  color: $colour-primary;
+
+  i {
+    font-size: 20px;
+    position: relative;
+    top: -1px;
+  }
+}
+
+.contact-new-avatar {
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }
+
+  .upload-contact-avatar-btn {
+    label {
+      -webkit-transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      -moz-transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+
+      &:hover {
+        border-color: $colour-primary;
+        color: $colour-white;
+        background-color: $colour-primary;
+      }
+    }
+  }
+}
+

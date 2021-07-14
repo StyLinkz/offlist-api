@@ -27,6 +27,11 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
+    public function showUser(User $user)
+    {
+        return $user;
+    }
+
     public function updateAvatar(Request $request)
     {
         if ($request->hasFile('file')) {

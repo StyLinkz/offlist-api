@@ -1,0 +1,94 @@
+.section-my-groups {
+  padding: 60px 0 80px;
+}
+
+.group-item {
+  & + .group-item {
+    border-top: 1px solid #ddd;
+  }
+}
+
+.group-item__name {
+  color: $colour-dark;
+  font-size: 1.25rem;
+}
+
+.group-contact {
+  position: relative;
+
+  & + .group-contact {
+    border-top: 1px solid #ddd;
+  }
+}
+
+.group-contact__select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  text-indent: 200%;
+  white-space: nowrap;
+  font-size: 0;
+  -webkit-transition: background-color 0.25s ease;
+  -moz-transition: background-color 0.25s ease;
+  transition: background-color 0.25s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.group-contact__icon {
+  font-size: 20px;
+  font-weight: 700;
+  color: $colour-primary;
+}
+
+.group-contact__avatar {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.group-contact__name {
+  color: $colour-dark;
+  font-size: 0.875rem;
+}
+
+.group-contact__email,
+.group-contact__phone {
+  font-size: 0.75rem;
+  color: $colour-primary;
+
+  i {
+    font-size: 16px;
+    position: relative;
+    top: -1px;
+  }
+}
+
+.modal-edit-group {
+  .modal-body {
+    overflow: hidden;
+  }
+
+  .modal-edit-group__main,
+  .modal-edit-group__add-contacts {
+    -webkit-transition: transform 0.25s ease;
+    -moz-transition: transform 0.25s ease;
+    -o-transition: transform 0.25s ease;
+    transition: transform 0.25s ease;
+  }
+
+  &.add-contact-active {
+    .modal-edit-group__main {
+      -webkit-transform: translateX(calc(-100% - 30px));
+      -moz-transform: translateX(calc(-100% - 30px));
+      -o-transform: translateX(calc(-100% - 30px));
+      transform: translateX(calc(-100% - 30px));
+    }
+  }
+}

@@ -1,0 +1,70 @@
+.popular-listing {
+  .img-block {
+    img {
+      height: 300px;
+    }
+  }
+}
+
+.popular-cities.hp3 {
+  .city--large {
+    .card {
+      height: 510px;
+    }
+  }
+
+  .city--small {
+    .card {
+      height: 240px;
+    }
+  }
+
+  .card {
+    img {
+      max-height: 100%;
+    }
+  }
+}
+
+.explore-feature {
+  .card {
+    &:hover {
+      .card-body {
+        i {
+          @include transform(scale(1));
+        }
+
+        h3 {
+          color: $colour-dark;
+        }
+      }
+    }
+  }
+}
+
+.blog-img {
+  & > a {
+    img {
+      height: 300px;
+    }
+  }
+}
+
+.blog-single-post {
+  a {
+    color: $colour-white;
+  }
+
+  .view-posts {
+    color: $colour-white;
+
+    a {
+      color: $colour-white;
+    }
+  }
+}
+
+.popular-listing-item {
+  padding-left: 15px;
+  padding-right: 15px;
+}

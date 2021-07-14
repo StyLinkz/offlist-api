@@ -96,6 +96,12 @@ License: MIT
  * http://jquery.org/license
  */
 
+/*!
+ * vuex v3.6.2
+ * (c) 2021 Evan You
+ * @license MIT
+ */
+
 /*! ../../../directives/resize */
 
 /*! ../../../directives/ripple */

@@ -1,0 +1,35 @@
+.header .navbar-brand img {
+  width: 100px;
+}
+
+.header .navbar-nav .nav-item .dropdown-menu {
+  top: 78px;
+}
+
+.navbar-nav .dropdown-menu .dropdown-item {
+  color: $colour-dark;
+
+  &:hover {
+    color: #6a7be5;
+  }
+}
+
+.navbar-nav .nav-item-account > .nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav .nav-item-account > .nav-link > img {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #dfdfdf;
+  border-radius: 50%;
+}
+
+.navbar-nav .nav-item-account > .nav-link.dropdown-toggle:after {
+  position: absolute;
+  top: 16px;
+  right: 0;
+  left: auto;
+}

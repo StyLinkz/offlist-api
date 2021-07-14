@@ -1,24 +1,16 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// Common
+@import "variables";
+@import "mixins";
+@import "utils";
+@import "common";
 
-// Variables
-@import 'variables';
-
-// Icons
-@import 'icons';
-
-// Bootstrap
-//@import '~bootstrap/scss/bootstrap';
-
-// Common styles
-@import 'common';
-
-// Utilities
-@import 'utils';
+// Layout
+@import "layout/headers";
 
 // Components
-@import 'components/login';
-@import 'components/offer';
-@import 'components/offerCreate';
-@import 'components/imprint';
+@import "components/home";
+@import "components/offers";
+@import "components/invitations";
+@import "components/contacts";
+@import "components/groups";
 
