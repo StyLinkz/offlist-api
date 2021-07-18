@@ -90,11 +90,46 @@
 }
 
 .half-map-sec .widget-property-search {
-  position: sticky;
+  position: absolute;
   background-color: #fff;
-  top: 0;
+  top: -1px;
   z-index: 100;
-  // border-bottom: 1px solid #dfdfdf;
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  transform: translateY(-100%);
+  -webkit-transition: transform 0.25s ease;
+  -moz-transition: transform 0.25s ease;
+  transition: transform 0.25s ease;
+  border-bottom: 1px solid #dfdfdf;
+
+  &.active {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+.offer-filter-open {
+  padding: 30px 50px;
+
+  > a {
+    font-size: 1rem;
+    color: $colour-primary;
+
+    > i {
+      font-size: 24px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.offer-filter-close {
+  text-decoration: underline;
+  color: $colour-primary;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .offer-market-types {
@@ -103,9 +138,23 @@
 
 .offer-search__action {
   border-top: 1px solid #dfe0e5;
-  padding-top: 20px;
   margin-top: 30px;
 }
+
+// .form-filter-offers {
+//   -webkit-transform: translateY(-100%);
+//   -moz-transform: translateY(-100%);
+//   transform: translateY(-100%);
+//   -webkit-transition: transform 0.25s ease;
+//   -moz-transition: transform 0.25s ease;
+//   transition: transform 0.25s ease;
+
+//   &.active {
+//     -webkit-transform: translateY(0);
+//     -moz-transform: translateY(0);
+//     transform: translateY(0);
+//   }
+// }
 
 .property-thumb-imgs .property-img {
   padding-left: 15px;

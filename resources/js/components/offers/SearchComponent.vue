@@ -1,58 +1,78 @@
 <template>
-  <div class="widget-property-search">
-    <form action="#" class="row banner-search">
-      <div class="offer-market-types w-100">
-        <h3 class="section-search__title mb-3">Types</h3>
-        <div class="row">
-          <div class="col-md-4" v-for="type in types" :key="`offer_type_${type.value}`">
-            <div class="input-field">
-              <input
-                v-model="selectedTypes"
-                type="checkbox"
-                name="market_type"
-                :value="type.value"
-                :id="`searchType_${type.value}`"
-              />
-              <label :for="`searchType_${type.value}`">
-                <span></span>
-                <small>{{ type.label }}</small>
-              </label>
+  <div class="filter-offers">
+    <div class="offer-filter-open d-flex justify-content-end align-items-center">
+      <a
+        href="javascript:void(0);"
+        role="button"
+        class="d-inline-flex align-items-center"
+        id="filterOffersOpen"
+      >
+        <i class="la la-filter"></i>
+        <span>Filter</span>
+      </a>
+    </div>
+    <div class="widget-property-search">
+      <form
+        id="formFilterOffers"
+        action="#"
+        class="row banner-search form-filter-offers"
+      >
+        <div class="offer-market-types w-100">
+          <h3 class="section-search__title mb-3">Types</h3>
+          <div class="row">
+            <div
+              class="col-md-4"
+              v-for="type in types"
+              :key="`offer_type_${type.value}`"
+            >
+              <div class="input-field">
+                <input
+                  v-model="selectedTypes"
+                  type="checkbox"
+                  name="market_type"
+                  :value="type.value"
+                  :id="`searchType_${type.value}`"
+                />
+                <label :for="`searchType_${type.value}`">
+                  <span></span>
+                  <small>{{ type.label }}</small>
+                </label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="offer-market-categories w-100">
-        <h3 class="section-search__title mb-3">Categories</h3>
-        <div class="row">
-          <div
-            class="col-md-4 mb-3"
-            v-for="category in categories"
-            :key="`offer_category_${category.value}`"
-          >
-            <div class="input-field">
-              <input
-                v-model="selectedCategories"
-                type="checkbox"
-                name="category"
-                :value="category.value"
-                :id="`searchCategory_${category.value}`"
-              />
-              <label :for="`searchCategory_${category.value}`">
-                <span></span>
-                <small>{{ category.label }}</small>
-              </label>
+        <div class="offer-market-categories w-100">
+          <h3 class="section-search__title mb-3">Categories</h3>
+          <div class="row">
+            <div
+              class="col-md-4 mb-3"
+              v-for="category in categories"
+              :key="`offer_category_${category.value}`"
+            >
+              <div class="input-field">
+                <input
+                  v-model="selectedCategories"
+                  type="checkbox"
+                  name="category"
+                  :value="category.value"
+                  :id="`searchCategory_${category.value}`"
+                />
+                <label :for="`searchCategory_${category.value}`">
+                  <span></span>
+                  <small>{{ category.label }}</small>
+                </label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- <div class="form_field full">
+        <!-- <div class="form_field full">
         <input
           type="text"
           class="form-control"
           placeholder="Enter Address, City or State"
         />
       </div> -->
-      <!-- <div class="form_field pl-0">
+        <!-- <div class="form_field pl-0">
         <div class="form-group">
           <div class="drop-menu">
             <div class="select">
@@ -121,25 +141,35 @@
           </div>
         </div>
       </div> -->
-      <div class="feat-srch offer-search__action">
-        <!-- <div class="more-feat">
+        <div class="feat-srch offer-search__action mb-0 pt-0">
+          <!-- <div class="more-feat">
           <h3>
             <i class="la la-cog"></i>&nbsp;<span>Show More Features</span>
           </h3>
         </div> -->
-        <!--more-feat end-->
-        <div class="form_field">
-          <a
-            href="javascript:void(0);"
-            class="btn btn-outline-primary"
-            @click="handleSearch"
-          >
-            <span>Search</span>
-          </a>
+          <!--more-feat end-->
+          <div class="d-flex justify-content-between align-items-center py-3">
+            <a
+              href="javascript:void(0);"
+              role="button"
+              id="filterOffersClose"
+              class="offer-filter-close"
+            >
+              Hide
+            </a>
+            <div class="form_field mb-0">
+              <a
+                href="javascript:void(0);"
+                class="btn btn-outline-primary mt-0"
+                @click="handleSearch"
+              >
+                <span>Filter</span>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-      <!--more-feat end-->
-      <!-- <div class="features_list">
+        <!--more-feat end-->
+        <!-- <div class="features_list">
         <ul>
           <li class="input-field">
             <input type="checkbox" name="bb" id="b1" />
@@ -206,10 +236,11 @@
           </li>
         </ul>
       </div> -->
-      <!--features end-->
-    </form>
+        <!--features end-->
+      </form>
+    </div>
+    <!--widget widget-property-searche end-->
   </div>
-  <!--widget widget-property-searche end-->
 </template>
 
 <script>
@@ -217,65 +248,82 @@ export default {
   data: () => ({
     types: [
       {
-          value: 'onmarket',
-          label: 'On Market',
+        value: "onmarket",
+        label: "On Market",
       },
       {
-          value: 'offmarket',
-          label: 'Off Market',
+        value: "offmarket",
+        label: "Off Market",
       },
     ],
     categories: [
       {
-          value: 1,
-          label: 'Real Estate',
+        value: 1,
+        label: "Real Estate",
       },
       {
-          value: 2,
-          label: 'Luxury Cars',
+        value: 2,
+        label: "Luxury Cars",
       },
       {
-          value: 3,
-          label: 'Art',
+        value: 3,
+        label: "Art",
       },
-      {
-          value: 4,
-          label: 'Horses',
-      },
-      {
-          value: 5,
-          label: 'Yachts',
-      },
-      {
-          value: 6,
-          label: 'Private Jets',
-      },
+      // {
+      //     value: 4,
+      //     label: 'Horses',
+      // },
+      // {
+      //     value: 5,
+      //     label: 'Yachts',
+      // },
+      // {
+      //     value: 6,
+      //     label: 'Private Jets',
+      // },
     ],
     selectedTypes: [],
     selectedCategories: [],
   }),
 
-  mounted () {
-    $(".more-feat > h3").on("click", function() {
+  mounted() {
+    $(".more-feat > h3").on("click", function () {
       const $this = $(this);
       const $featuresListEl = $(".features_list");
 
       // Update button text
-      let text = !$featuresListEl.is(':visible') ? 'Hide Features' : 'Show More Features';
-      $this.find('span').text(text);
+      let text = !$featuresListEl.is(":visible")
+        ? "Hide Features"
+        : "Show More Features";
+      $this.find("span").text(text);
 
       // Toggle the feature list
       $featuresListEl.slideToggle();
     });
+
+    // Toggle the filter box
+    $('#filterOffersOpen').on('click', function (e) {
+      $(this)
+        .closest('.offers-wrapper')
+        .find('.widget-property-search')
+        .addClass('active');
+    });
+    $('#filterOffersClose').on('click', function (e) {
+      $(this).closest('.widget-property-search').removeClass('active');
+    });
   },
 
-  created () {},
+  created() {},
 
   methods: {
-    handleSearch () {
-      this.$emit('search', {
-        marketTypes: this.selectedTypes.length ? this.selectedTypes.join(',') : null,
-        types: this.selectedCategories.length ? this.selectedCategories.join(',') : null,
+    handleSearch() {
+      this.$emit("search", {
+        marketTypes: this.selectedTypes.length
+          ? this.selectedTypes.join(",")
+          : null,
+        types: this.selectedCategories.length
+          ? this.selectedCategories.join(",")
+          : null,
       });
     },
   },

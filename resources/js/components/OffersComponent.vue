@@ -143,6 +143,9 @@ export default {
           }
 
           this.$store.commit('setLoading', false);
+
+          // Close the filter box if it's opening
+          $('.widget-property-search').removeClass('active');
         })
         .catch((error) => {
           console.log({ error });
