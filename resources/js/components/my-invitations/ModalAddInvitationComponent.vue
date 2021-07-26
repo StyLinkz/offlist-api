@@ -114,6 +114,7 @@
           <div class="modal-footer">
             <button
               type="button"
+              id="buttonCloseAddInvitationModal"
               class="btn btn-secondary"
               data-dismiss="modal"
             >
@@ -233,6 +234,10 @@ export default {
               type: 'success',
             });
 
+            // Add the new invitation to the list
+            const { data } = response;
+            this.$emit('update', data);
+
             // Redirect to the offer list page
             setTimeout(() => {
               // Clear form
@@ -243,6 +248,9 @@ export default {
 
               // Hide loading
               this.$store.commit('setLoading', false);
+
+              // Close popup
+              this.closeModal();
             }, 2000);
           }
         })
@@ -254,6 +262,11 @@ export default {
             type: 'error',
           });
         });
+    },
+
+    closeModal() {
+      $('#modalAddInvitation').modal('hide');
+      $('.modal-backdrop').remove();
     },
 
     clearForm() {

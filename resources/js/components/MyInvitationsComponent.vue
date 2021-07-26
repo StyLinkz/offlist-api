@@ -26,7 +26,7 @@
         </div>
       </div>
     </section>
-    <modal-add-invitation-component />
+    <modal-add-invitation-component @update="handleAddNewInvitation" />
   </div>
 </template>
 <script>
@@ -91,6 +91,20 @@ export default {
           this.$store.commit('setLoading', false);
         });
     },
+
+    handleAddNewInvitation(newInvitation) {
+      this.invitations.unshift({
+        id: newInvitation.id,
+        code: newInvitation.code,
+        receiver: {
+          prename: newInvitation.receiver_prename,
+          name: newInvitation.receiver_name,
+          email: newInvitation.receiver_email,
+        },
+        createdAt: newInvitation.created_at,
+        expiredAt: newInvitation.expired_at,
+      });
+    }
   },
 }
 </script>

@@ -4467,7 +4467,7 @@ header.fix {
   background-color: #d8d8d9;
   padding: 18px 0 18px 0;
 }
-.popup-form > form {
+.popup-form form {
   float: left;
   width: 100%;
   padding: 40px 0;
@@ -4542,7 +4542,7 @@ header.fix {
   cursor: pointer;
 }
 
-#register-popup .popup-form > form {
+#register-popup .popup-form form {
   padding-bottom: 0;
   border-bottom: 0;
   margin-bottom: 0;

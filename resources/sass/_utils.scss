@@ -27,3 +27,13 @@
 .colour-dark {
   color: $colour-dark;
 }
+
+.popup {
+  &.popup--large {
+    width: 600px;
+  }
+}
+
+.text--error {
+  color: #dc3545;
+}

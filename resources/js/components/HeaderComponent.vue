@@ -34,7 +34,11 @@
                         Home
                       </router-link>
                     </li>
-                    <li class="nav-item" :class="[{active: $route.name === 'offers'}]">
+                    <li
+                      class="nav-item"
+                      :class="[{active: $route.name === 'offers'}]"
+                      v-if="isLoggedIn()"
+                    >
                       <router-link
                         class="nav-link"
                         :to="{name: 'offers'}"
@@ -42,25 +46,6 @@
                         Public Offerboard
                       </router-link>
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                      <a
-                        class="nav-link dropdown-toggle"
-                        href="#"
-                        data-toggle="dropdown"
-                      >
-                        Listing
-                      </a>
-                      <div class="dropdown-menu animated">
-                        <a
-                          class="dropdown-item"
-                          href="21_List_Layout_With_Map.html"
-                        >List Layout with Map</a>
-                        <a
-                          class="dropdown-item"
-                          href="22_List_Layout_With_Sidebar.html"
-                        >List Layout with Sidebar</a>
-                      </div>
-                    </li> -->
                   </ul>
                   <div class="d-inline my-2 my-lg-0">
                     <ul class="navbar-nav">
@@ -68,8 +53,8 @@
                         <a href="#" class="nav-link">
                           <i class="la la-sign-in"></i>
                           <span>
-                            <b class="signin-op" @click="openSignInModal">Sign in</b> or
-                            <b class="reg-op" @click="openSignUpModal">Register</b>
+                            <b class="signin-op" @click="handleClickSignInButton">Sign in</b> or
+                            <b class="reg-op" @click="handleClickSignUpButton">Register</b>
                           </span>
                         </a>
                       </li>
@@ -151,9 +136,16 @@
         </div>
       </div>
       <div class="popup" :class="{ active: isSignInModalOpen }" id="sign-popup">
-        <h3>Sign In to your Account</h3>
+        <h3>
+          {{ isForgotPassword ? 'Forgot Password' : 'Sign In to your Account' }}
+        </h3>
         <div class="popup-form">
-          <form novalidate @submit.prevent="validate" id="formLogin">
+          <form
+            novalidate
+            @submit.prevent="validate"
+            id="formLogin"
+            v-if="!isForgotPassword"
+          >
             <div class="form-field">
               <input
                 v-model="email"
@@ -207,13 +199,26 @@
                   </label>
                 </div>
               </div>
-              <a href="/forgot-password" title="Forgot Password">Forgot Password?</a>
+              <a
+                href="javascript:void(0);"
+                role="button"
+                title="Forgot Password"
+                @click="handleForgotPassword"
+              >
+                Forgot Password?
+              </a>
             </div>
             <!--form-cp end-->
             <button type="submit" class="btn2" :loading="isProcessing">
               Sign In
             </button>
           </form>
+          <div class="forgot-passsword" v-else>
+            <header-forgot-password-form-component
+              @back="handleBackToLogin"
+              @complete="handleCompleteForgotPassword"
+            />
+          </div>
           <!-- <a href="#" title="" class="fb-btn">
             <i class="fa fa-facebook"></i>Sign In With Facebook
           </a> -->
@@ -221,34 +226,25 @@
       </div>
       <!--popup end-->
 
-      <div class="popup" :class="{ active: isSignUpModalOpen }" id="register-popup">
+      <div
+        class="popup"
+        :class="{
+          active: isSignUpModalOpen,
+          'popup--large': !!invitation && !isRegisterSuccess
+        }"
+        id="register-popup"
+      >
         <h3>Register</h3>
         <div class="popup-form">
-          <form>
-            <div class="form-field">
-              <input type="text" name="username" placeholder="Username" />
-            </div>
-            <div class="form-field">
-              <input type="text" name="email" placeholder="Email" />
-            </div>
-            <div class="form-field">
-              <input type="text" name="password" placeholder="Password" />
-            </div>
-            <div class="form-cp">
-              <div class="form-field">
-                <div class="input-field">
-                  <input type="checkbox" name="ccc" id="cc2" />
-                  <label for="cc2">
-                    <span></span>
-                    <small>I agree with terms</small>
-                  </label>
-                </div>
-              </div>
-              <a href="javascript:void(0);" title="Have an account?" class="signin-op">Have an account?</a>
-            </div>
-            <!--form-cp end-->
-            <button type="submit" class="btn2">Register</button>
-          </form>
+          <header-register-invitation-form-component
+            @onSuccess="handleVerifyInvitationCodeSuccess"
+            v-if="!invitation"
+          />
+          <header-register-form-component
+            v-else
+            :invitation="invitation"
+            @registerSuccess="handleRegisterSuccess"
+          />
         </div>
       </div>
       <!--popup end-->
@@ -260,6 +256,11 @@
 import axios from "axios";
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
+
+/* Components */
+import HeaderRegisterFormComponent from "./common/HeaderRegisterFormComponent.vue";
+import HeaderRegisterInvitationFormComponent from "./common/HeaderRegisterInvitationFormComponent.vue";
+import HeaderForgotPasswordFormComponent from "./common/HeaderForgotPasswordFormComponent.vue";
 
 export default {
   name: "FormLogin",
@@ -276,13 +277,21 @@ export default {
       required,
     },
   },
+  components: {
+    HeaderRegisterFormComponent,
+    HeaderRegisterInvitationFormComponent,
+    HeaderForgotPasswordFormComponent,
+  },
 
   data: () => ({
     email: null,
     password: null,
     confirmPassword: null,
     isProcessing: false,
+    invitation: null,
     logoImage: "/images/logo.svg",
+    isRegisterSuccess: false,
+    isForgotPassword: false,
   }),
 
   computed: {
@@ -330,9 +339,9 @@ export default {
 
           // Close modal
           if (activeModalEl.id === 'sign-popup') {
-            this.$store.commit('closeSignInModal');
+            this.closeSignInModal();
           } else if (activeModalEl.id === 'register-popup') {
-            this.$store.commit('closeSignUpModal');
+            this.closeSignUpModal();
           }
         }
       }
@@ -352,14 +361,6 @@ export default {
       this.email = null;
       this.password = null;
       this.confirmPassword = null;
-    },
-
-    openSignInModal () {
-      this.$store.commit('openSignInModal');
-    },
-
-    openSignUpModal () {
-      this.$store.commit('openSignUpModal');
     },
 
     submit () {
@@ -400,7 +401,7 @@ export default {
             this.$router.push('offers');
 
             // Close sign-in popup
-            this.$store.commit('closeSignInModal');
+            this.closeSignInModal();
           }, 2000);
         })
         .catch((error) => {
@@ -418,6 +419,56 @@ export default {
       if (!this.$v.$invalid) {
         this.submit();
       }
+    },
+
+    handleVerifyInvitationCodeSuccess(invitation) {
+      this.invitation = invitation;
+    },
+
+    handleRegisterSuccess() {
+      this.isRegisterSuccess = true;
+    },
+
+    handleForgotPassword() {
+      this.isForgotPassword = true;
+    },
+
+    handleBackToLogin() {
+      this.isForgotPassword = false;
+    },
+
+    handleClickSignInButton () {
+      this.closeSignUpModal();
+      this.openSignInModal();
+    },
+
+    handleClickSignUpButton () {
+      this.closeSignInModal();
+      this.openSignUpModal();
+    },
+
+    handleCompleteForgotPassword () {
+      this.clearForm();
+      this.closeSignInModal();
+      setTimeout(() => {
+        this.isForgotPassword = false;
+      }, 1000);
+    },
+
+    openSignInModal () {
+      this.$store.commit('openSignInModal');
+    },
+
+    closeSignInModal () {
+      this.$store.commit('closeSignInModal');
+    },
+
+    openSignUpModal () {
+      this.$store.commit('openSignUpModal');
+    },
+
+    closeSignUpModal () {
+      this.$store.commit('closeSignUpModal');
     },
 
     logOut() {

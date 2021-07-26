@@ -39,3 +39,15 @@
   right: 0;
   left: auto;
 }
+
+.popup-form .form-field {
+  text-align: left;
+}
+
+.form-register {
+  .form-field {
+    label {
+      color: $colour-dark;
+    }
+  }
+}
