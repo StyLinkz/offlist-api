@@ -221,3 +221,26 @@ body.is-loading {
 .modal-title {
   font-size: 1rem;
 }
+
+.access-wrapper {
+  position: relative;
+}
+
+.access-restricted {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .access-restricted__text {
+    font-size: 40px;
+    color: #000;
+    text-align: center;
+  }
+}
