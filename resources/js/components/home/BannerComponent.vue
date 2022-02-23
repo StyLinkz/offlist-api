@@ -6,13 +6,12 @@
     <div class="overlay-bg"></div>
     <div class="container">
       <div class="bannner_text">
-        <h3>Discover the Best Properties</h3>
+        <h3>The closed off market marketplace</h3>
         <p>
-          Aenean sollicitudin, lorem quis bibendum aucto elit consequat ipsumas
-          nec sagittis sem nibh id elit. Duis sed odio sit amet nibhulpu tate
-          cursus a sit amet mauris. Morbi accumsan ipsum torquent.
+          Access is only possible by personal invitation from an existing user. This protects our offers and keeps the circle elitist, which is in line with our credo.
+          You still want to try to get an access?
         </p>
-        <a href="#" title="" class="btn-default st1">Get Started Now</a>
+        <a href="#" title="" class="btn-default st1">Click here for the application</a>
       </div>
       <!--banner_img end-->
     </div>
