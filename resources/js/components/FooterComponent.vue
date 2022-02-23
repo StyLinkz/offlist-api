@@ -1,18 +1,17 @@
 <template>
   <footer class="footer">
     <div class="footer__inner">
-      <div
-        id="loading"
-        class="loading"
-        :class="{ active: isLoading }"
-      >
+      <div id="loading" class="loading" :class="{ active: isLoading }">
         <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
       </div>
       <!-- END .loading -->
       <div
         id="notification"
         class="notification"
-        :class="[ `notification--${notification.type}`, notification.isActive ? 'active' : '' ]"
+        :class="[
+          `notification--${notification.type}`,
+          notification.isActive ? 'active' : ''
+        ]"
       >
         <span>{{ notification.message }}</span>
       </div>
@@ -22,7 +21,7 @@
           <div class="row">
             <div class="col-xl-12">
               <div class="cta-text">
-                <h2>Discover a home you'll love to stay</h2>
+                <h2>All Good Deals Are Done Behind Closed Doors</h2>
               </div>
             </div>
           </div>
@@ -39,19 +38,19 @@
             </div>
             <div class="col-xl-3 col-sm-6 col-md-3">
               <div class="bottom-list">
-                <h3>Helpful Links</h3>
+                <h3>Quick Links</h3>
                 <ul>
                   <li>
-                    <a href="18_Half_Map.html" title="">Half Map</a>
+                    <a href="#" title="Completed Deals">Completed Deals</a>
                   </li>
                   <li>
-                    <a href="#" title="">Register</a>
+                    <a href="#" title="Offers around you">Offers around you</a>
                   </li>
                   <li>
-                    <a href="#" title="">Pricing</a>
+                    <a href="#" title="Blog">Blog</a>
                   </li>
                   <li>
-                    <a href="#" title="">Add Listing</a>
+                    <a href="#" title="Imprint">Imprint</a>
                   </li>
                 </ul>
               </div>
@@ -59,12 +58,11 @@
             </div>
             <div class="col-xl-5 col-sm-12 col-md-5 pl-0">
               <div class="bottom-desc">
-                <h3>Aditional Information</h3>
+                <h3>About Offlist</h3>
                 <p>
-                  Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non
-                  mauris vitae erat consequat auctor eu in elit. Class aptent
-                  taciti sociosqu ad litora torquent per conubia nostra, per
-                  inceptos.
+                  Offlist offers offmarket deals in closed groups or on the
+                  global offerwall for app users who only come to the app with
+                  an invitation!
                 </p>
               </div>
             </div>
@@ -79,10 +77,12 @@
                 <div class="row justify-content-between">
                   <div class="col-xl-6 col-md-6">
                     <div class="copyright">
-                      <p>&copy; Selio theme made in EU. All Rights Reserved.</p>
+                      <p>
+                        &copy; Offlist. All Rights Reserved. {{ currentYear }}
+                      </p>
                     </div>
                   </div>
-                  <div class="col-xl-3 col-md-6">
+                  <!-- <div class="col-xl-3 col-md-6">
                     <div class="footer-social">
                       <a href="#">
                         <i class="fa fa-facebook"></i>
@@ -97,7 +97,7 @@
                         <i class="fa fa-linkedin"></i>
                       </a>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -112,18 +112,19 @@
 <script>
 export default {
   data: () => ({
-    logoImage: "/images/logo.svg",
+    logoImage: '/images/logo.svg',
+    currentYear: new Date().getFullYear()
   }),
 
   computed: {
-    isLoading () {
+    isLoading() {
       return this.$store.state.isLoading;
     },
-    notification () {
+    notification() {
       return this.$store.state.notification;
-    },
+    }
   },
 
-  methods: {},
+  methods: {}
 };
 </script>
