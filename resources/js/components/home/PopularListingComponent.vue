@@ -4,8 +4,8 @@
       <div class="row justify-content-center">
         <div class="col-xl-6">
           <div class="section-heading">
-            <span>Discover</span>
-            <h3>Popular Listing</h3>
+            <span>Inspiration</span>
+            <h3>Find real estate in your area</h3>
           </div>
         </div>
       </div>
