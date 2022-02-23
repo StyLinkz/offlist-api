@@ -212,6 +212,9 @@
       <!--form-cp end-->
       <div class="mt-5">
         <button type="submit" class="btn2">Register</button>
+        <button type="button" class="btn mt-2" @click="handleClose">
+          Close
+        </button>
       </div>
     </form>
     <div class="form-register-message" v-else>

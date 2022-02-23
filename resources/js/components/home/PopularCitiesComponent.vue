@@ -11,7 +11,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6 city--large">
-          <a href="#">
+          <a href="javascript:void(0);" class="card-wrapper" @click="handleClickCard">
             <div class="card">
               <div class="overlay"></div>
               <div class="overlay-stick"></div>
@@ -30,7 +30,7 @@
         <div class="col-lg-6">
           <div class="row">
             <div class="col-lg-12 city--small">
-              <a href="#">
+              <a href="javascript:void(0);" class="card-wrapper" @click="handleClickCard">
                 <div class="card mgb-30">
                   <div class="overlay"></div>
                   <div class="overlay-stick"></div>
@@ -47,7 +47,7 @@
               </a>
             </div>
             <div class="col-lg-12 city--small">
-              <a href="#">
+              <a href="javascript:void(0);" class="card-wrapper" @click="handleClickCard">
                 <div class="card">
                   <div class="overlay"></div>
                   <div class="overlay-stick"></div>
@@ -84,6 +84,18 @@ export default {
 
   created() {},
 
-  methods: {},
+  methods: {
+    handleClickCard () {
+      this.openSignUpModal();
+    },
+
+    openSignUpModal () {
+      this.$store.commit('openSignUpModal');
+    },
+
+    // closeSignUpModal () {
+    //   this.$store.commit('closeSignUpModal');
+    // },
+  },
 };
 </script>

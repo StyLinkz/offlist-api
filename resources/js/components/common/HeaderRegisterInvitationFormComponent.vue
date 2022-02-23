@@ -1,5 +1,10 @@
 <template>
-  <form novalidate @submit.prevent="validate" id="formRegisterInvitation" class="form-register-invitation">
+  <form
+    novalidate
+    @submit.prevent="validate"
+    id="formRegisterInvitation"
+    class="form-register-invitation"
+  >
     <h4 class="register-invitation-description text-center mb-4">
       This marketplace is closed and is only available to invited users.
     </h4>
@@ -12,7 +17,7 @@
         id="registerInvitationCode"
         :class="{
           'form-control': true,
-          'is-invalid': invitationCodeErrors.length > 0,
+          'is-invalid': invitationCodeErrors.length > 0
         }"
         required
         :error-messages="invitationCodeErrors"
@@ -28,25 +33,28 @@
     </div>
     <div class="mt-4">
       <button type="submit" class="btn2">Continue</button>
+      <button type="button" class="btn mt-2" @click="handleClose">
+        Close
+      </button>
     </div>
   </form>
 </template>
 <script>
-import axios from "axios";
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
+import axios from 'axios';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
-  name: "FormRegisterInvitation",
+  name: 'FormRegisterInvitation',
   mixins: [validationMixin],
   validations: {
     invitationCode: {
-      required,
-    },
+      required
+    }
   },
 
   data: () => ({
-    invitationCode: null,
+    invitationCode: null
   }),
 
   computed: {
@@ -54,9 +62,9 @@ export default {
       const errors = [];
       if (!this.$v.invitationCode.$dirty) return errors;
       !this.$v.invitationCode.required &&
-        errors.push("Please enter your invitation code.");
+        errors.push('Please enter your invitation code.');
       return errors;
-    },
+    }
   },
 
   methods: {
@@ -67,16 +75,16 @@ export default {
       }
     },
 
-    submit () {
+    submit() {
       // Show loading
-      this.$store.commit("setLoading", true);
+      this.$store.commit('setLoading', true);
 
       // Handle submit here
       axios
-        .post("https://offlist.de/api/check-invitation", {
-          code: this.invitationCode,
+        .post('https://offlist.de/api/check-invitation', {
+          code: this.invitationCode
         })
-        .then((response) => {
+        .then(response => {
           const { data } = response;
 
           // Redirect to the offer list page
@@ -97,12 +105,12 @@ export default {
             this.$store.commit('closeSignInModal');
           }, 2000);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log({ error });
-          this.$store.commit("setLoading", false);
-          this.$store.commit("openNotification", {
-            message: "Your invitation code is invalid!",
-            type: "error",
+          this.$store.commit('setLoading', false);
+          this.$store.commit('openNotification', {
+            message: 'Your invitation code is invalid!',
+            type: 'error'
           });
           setTimeout(() => {
             this.$store.commit('closeNotification');
@@ -110,11 +118,14 @@ export default {
         });
     },
 
-    clearForm () {
+    handleClose() {
+      this.$store.commit('closeSignUpModal');
+    },
+
+    clearForm() {
       this.$v.$reset();
       this.invitationCode = null;
-    },
-  },
-}
-
+    }
+  }
+};
 </script>

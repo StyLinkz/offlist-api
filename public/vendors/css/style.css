@@ -1865,7 +1865,8 @@ header.pb .menu-button span {
     transform: scale(1); } }
 
 .cta {
- 	background: #303e94;
+ 	/* background: #303e94; */
+   background-color: rgba(0, 0, 0, 0.9);
 }
 .cta.section-padding {
 	padding: 68px 0 67px 0;
@@ -4470,9 +4471,8 @@ header.fix {
 .popup-form form {
   float: left;
   width: 100%;
-  padding: 40px 0;
+  padding: 40px 0 22px;
   border-bottom: 1px solid #dfe0e5;
-  padding-bottom: 22px;
   margin-bottom: 20px;
 }
 
@@ -4945,6 +4945,16 @@ header.pb .header .navbar-nav .submit-btn a:hover {
   height: 100%;
   background-color: #070f43;
   opacity: 0.81;
+}
+.full-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  opacity: 0.8;
+  z-index: 5;
 }
 
 .explore-feature.hp4 {

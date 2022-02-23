@@ -145,6 +145,7 @@
             @submit.prevent="validate"
             id="formLogin"
             v-if="!isForgotPassword"
+            class="form-login"
           >
             <div class="form-field">
               <input
@@ -209,8 +210,11 @@
               </a>
             </div>
             <!--form-cp end-->
-            <button type="submit" class="btn2" :loading="isProcessing">
+            <button type="submit" class="btn2 mt-4" :loading="isProcessing">
               Sign In
+            </button>
+            <button type="button" class="btn mt-2" @click="closeSignInModal">
+              Close
             </button>
           </form>
           <div class="forgot-passsword" v-else>
@@ -307,6 +311,7 @@ export default {
       return this.$store.state.isSignInModalOpen;
     },
     isSignUpModalOpen () {
+      console.log({ isOpen: this.$store.state.isSignUpModalOpen });
       return this.$store.state.isSignUpModalOpen;
     },
     emailErrors() {
@@ -327,25 +332,26 @@ export default {
   },
 
   mounted () {
-    const htmlEl = document.querySelector('html');
-    htmlEl.addEventListener('click', () => {
-      const loadingEl = document.querySelector('#loading');
-      const isLoadingActive = loadingEl.classList.contains('active');
-      if (!isLoadingActive) {
-        const activeModalEl = document.querySelector('.popup.active');
-        if (activeModalEl) {
-          // Clear form
-          this.clearForm();
+    // const htmlEl = document.querySelector('html');
+    // htmlEl.addEventListener('click', (e) => {
+    //   const loadingEl = document.querySelector('#loading');
+    //   const isLoadingActive = loadingEl.classList.contains('active');
 
-          // Close modal
-          if (activeModalEl.id === 'sign-popup') {
-            this.closeSignInModal();
-          } else if (activeModalEl.id === 'register-popup') {
-            this.closeSignUpModal();
-          }
-        }
-      }
-    })
+    //   if (!isLoadingActive) {
+    //     const activeModalEl = document.querySelector('.popup.active');
+    //     if (activeModalEl) {
+    //       // Clear form
+    //       this.clearForm();
+
+    //       // Close modal
+    //       if (activeModalEl.id === 'sign-popup') {
+    //         this.closeSignInModal();
+    //       } else if (activeModalEl.id === 'register-popup') {
+    //         this.closeSignUpModal();
+    //       }
+    //     }
+    //   }
+    // })
   },
 
   methods: {

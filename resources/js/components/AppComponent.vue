@@ -1,6 +1,6 @@
 <template>
   <div class="access-wrapper">
-    <div class="wrapper" :class="{ 'overlay-bgg': isSignInModalOpen }" v-if="!accessRestricted">
+    <div class="wrapper" :class="{ 'full-overlay': isSignInModalOpen || isSignUpModalOpen }" v-if="!accessRestricted">
       <header-component :isFixed="isHeaderFixed" />
       <main>
         <router-view></router-view>
@@ -112,6 +112,10 @@ export default {
   computed: {
     isSignInModalOpen () {
       return this.$store.state.isSignInModalOpen;
+    },
+
+    isSignUpModalOpen () {
+      return this.$store.state.isSignUpModalOpen;
     },
 
     isHeaderFixed () {
