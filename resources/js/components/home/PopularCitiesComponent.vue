@@ -5,7 +5,7 @@
         <div class="col-xl-6">
           <div class="section-heading">
             <span>Popular Cities</span>
-            <h3>Find Perfect Place</h3>
+            <h3>Location with the most offers</h3>
           </div>
         </div>
       </div>
