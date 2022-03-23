@@ -99,3 +99,4 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
 
 /* Free user */
 Route::get('free-offers', 'OfferController@showFreeOffers');
+Route::get('generate-codes', 'OfferController@generateCodes');
