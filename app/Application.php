@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $sender_name
  * @property string $sender_prename
  * @property string $sender_email
+ * @property string $sender_phone
+ * @property string $sender_message
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Application newModelQuery()
@@ -27,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereSenderName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereSenderPrename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereSenderEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereSenderPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereSenderMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Application whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -45,6 +49,8 @@ class Application extends Model
         'sender_prename',
         'sender_name',
         'sender_email',
+        'sender_phone',
+        'sender_message',
     ];
 
     public function user() {
