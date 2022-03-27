@@ -12,7 +12,7 @@ class VerificationController extends Controller
 {
     use VerifiesEmails;
 
-    protected $redirectTo = '/verify-email-success';
+    protected $redirectTo = '/api/verify-email-success';
 
     /**
      * Show the email verification notice.
