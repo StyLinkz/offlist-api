@@ -155,6 +155,17 @@ class OfferController extends Controller
       ->get();
   }
 
+  public function showGroupOffers(Request $request)
+  {
+    $group_id = $request->input('group_id');
+    return Offer::with(['user', 'type', 'category', 'tags', 'groups', 'wishlistUsers'])
+      ->whereHas('groups', function ($q) use ($group_id) {
+          $q->where('group_id', '=', $group_id);
+      })
+      ->orderByDesc('created_at')
+      ->get();
+  }
+
   public function import(Request $request)
   {
     $requestOffers = $request->input('offers');

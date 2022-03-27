@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::post('offer-images', 'OfferController@uploadImages');
     Route::get('feed-offers', 'OfferController@showFeedOffers');
     Route::get('auth-offers', 'OfferController@showUserOffers');
+    Route::get('group-offers', 'OfferController@showGroupOffers');
 
     /* Application */
     Route::get('applications', 'ApplicationController@index');
