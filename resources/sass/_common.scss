@@ -244,3 +244,16 @@ body.is-loading {
     text-align: center;
   }
 }
+
+.back {
+  display: inline-block;
+  color: $colour-dark;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+
+  @include transition(color 0.25s ease);
+
+  &:hover {
+    color: $colour-primary;
+  }
+}

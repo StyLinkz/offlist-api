@@ -1,6 +1,14 @@
 <template>
   <section class="property-single-pg">
     <div class="container">
+      <a
+        href="javascript:void(0);"
+        role="button"
+        class="back"
+        @click="goBack"
+      >
+        <i class="la la-arrow-left"></i>
+      </a>
       <div class="property-hd-sec">
         <OverviewComponent :offer="form" v-if="form.title" />
       </div>
@@ -306,7 +314,7 @@ export default {
       return index !== -1 ? index : 1;
     },
 
-    getOfferType (typeId) {
+    getOfferType(typeId) {
       const types = [
         'none',
         'real_estate',
@@ -319,11 +327,15 @@ export default {
       return types[typeId] ? types[typeId] : 'real_estate';
     },
 
-    getOfferCategoryId () {
+    getOfferCategoryId() {
       if (['car', 'art'].indexOf(this.form.type) != -1) {
         return 1;
       }
       return this.form.offer_category_id;
+    },
+
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };
