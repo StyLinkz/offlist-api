@@ -85,8 +85,14 @@
       </ul>
     </div>
     <div class="card-footer">
-      <a role="button" href="javascript:void(0);" class="pull-left">
-        <i class="la la-heart-o"></i>
+      <a
+        role="button"
+        href="javascript:void(0);"
+        class="pull-left card-offer__action"
+        @click="handleAddToWishlist($event, offer)"
+      >
+        <i class="la la-star" v-if="isAddedToWishlist"></i>
+        <i class="la la-star-o" v-else></i>
       </a>
       <a
         role="button"
@@ -121,7 +127,9 @@ import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
 
 export default {
-  data: () => ({}),
+  data: () => ({
+    isAddedToWishlist: false,
+  }),
   props: ["offer", "isOwner"],
 
   computed: {
@@ -148,6 +156,7 @@ export default {
 
   created() {
     // console.log({ offer: this.offer });
+    this.isAddedToWishlist = this.offer.isAddedToWishlist;
   },
 
   methods: {
@@ -200,6 +209,42 @@ export default {
             }, 2000);
           });
       }
+    },
+
+    handleAddToWishlist(e, item) {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      this.$store.commit('setLoading', true);
+
+      axios({
+        method: 'POST',
+        url: `https://offlist.de/api/offers/${item.id}/wishlist/add`,
+        headers: {
+          Authorization: `Bearer ${user.api_token}`,
+        },
+      })
+        .then((response) => {
+          this.$store.commit('setLoading', false);
+          if (response.status === 201) {
+            this.isAddedToWishlist = !this.isAddedToWishlist;
+            // setTimeout(() => {
+            //   window.location = location.href;
+            // }, 2000);
+          }
+        })
+        .catch((error) => {
+          console.log({ error });
+
+          this.$store.commit("openNotification", {
+            message: "Add failed! Please try again later",
+            type: "error",
+          });
+
+          setTimeout(() => {
+            this.$store.commit('closeNotification');
+            this.$store.commit('setLoading', false);
+          }, 2000);
+        });
     },
   },
 };

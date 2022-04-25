@@ -198,6 +198,8 @@ export default {
                 primaryData: item.data.primary.data,
                 secondaryData: item.data.secondary ? item.data.secondary.data : null,
                 createdAt: item.created_at,
+                wisthlistUsers: item.wishlist_users,
+                isAddedToWishlist: item.wishlist_users ? !!item.wishlist_users.find((u) => u.id === user.id) : false,
               };
             });
           }
