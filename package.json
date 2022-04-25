@@ -28,6 +28,7 @@
     "gmap-vue": "^1.5.0",
     "jquery-ui": "^1.12.1",
     "papaparse": "^5.2.0",
+    "vue-easy-lightbox": "^0.17.0",
     "vue-google-autocomplete": "^1.1.1",
     "vue-material": "^1.0.0-beta-13",
     "vue-router": "^3.5.1",

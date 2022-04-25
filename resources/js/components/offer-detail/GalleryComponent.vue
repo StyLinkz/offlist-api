@@ -1,50 +1,66 @@
 <template>
-  <div class="property-imgs">
-    <slick
-      ref="galleryMainSlick"
-      class="property-main-img"
-      :options="mainImgSlickOptions"
-    >
-      <div
-        class="property-img"
-        v-for="(image, index) in images"
-        :key="`offerGalleryMain_${index}`"
-      >
-        <img :src="image" :alt="imageAlt" />
-      </div>
-      <!--property-img end-->
-    </slick>
-    <!--property-main-img end-->
-    <div class="property-thumb-imgs">
+  <div class="property-imgs-wrapper">
+    <div class="property-imgs">
       <slick
-        ref="galleryThumbSlick"
-        class="thumb-carous"
-        :options="thumbImgSlickOptions"
+        ref="galleryMainSlick"
+        class="property-main-img"
+        :options="mainImgSlickOptions"
       >
-        <div
+        <a
           v-for="(image, index) in images"
-          :key="`offerGalleryThumb_${index}`"
+          :key="`offerGalleryMain_${index}`"
+          href="javascript:void(0);"
+          role="button"
+          class="property-img"
+          @click="openLightbox"
         >
-          <div class="property-img">
-            <img :src="image" :alt="imageAlt" height="124" style="object-fit: cover;" />
-          </div>
-          <!--property-img end-->
-        </div>
+          <img :src="image" :alt="imageAlt" />
+        </a>
+        <!--property-img end-->
       </slick>
+      <!--property-main-img end-->
+      <div class="property-thumb-imgs">
+        <slick
+          ref="galleryThumbSlick"
+          class="thumb-carous"
+          :options="thumbImgSlickOptions"
+        >
+          <div
+            v-for="(image, index) in images"
+            :key="`offerGalleryThumb_${index}`"
+          >
+            <div class="property-img">
+              <img :src="image" :alt="imageAlt" height="124" style="object-fit: cover;" />
+            </div>
+            <!--property-img end-->
+          </div>
+        </slick>
+      </div>
+      <!--property-thumb-imgs end-->
     </div>
-    <!--property-thumb-imgs end-->
+    <!--property-imgs end-->
+    <vue-easy-lightbox
+      scrollDisabled
+      escDisabled
+      moveDisabled
+      :visible="showLightbox"
+      :imgs="images"
+      :index="lightboxGalleryIndex"
+      @hide="closeLightbox"
+    ></vue-easy-lightbox>
   </div>
-  <!--property-imgs end-->
 </template>
 
 <script>
 import Slick from "vue-slick";
+import VueEasyLightbox from "vue-easy-lightbox";
 
 export default {
   props: ['images', 'imageAlt'],
 
   components: {
-    Slick
+    Slick,
+    VueEasyLightbox,
   },
 
   data: () => ({
@@ -81,6 +97,8 @@ export default {
         }
       ],
     },
+    showLightbox: false,
+    lightboxGalleryIndex: 0,
   }),
 
   mounted () {
@@ -89,6 +107,15 @@ export default {
   created () {
   },
 
-  methods: {},
+  methods: {
+    openLightbox() {
+      this.showLightbox = true;
+      this.lightboxGalleryIndex = this.$refs.galleryMainSlick.currentSlide() || 0;
+    },
+
+    closeLightbox() {
+      this.showLightbox = false;
+    }
+  },
 };
 </script>

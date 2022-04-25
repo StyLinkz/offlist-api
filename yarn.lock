@@ -6772,6 +6772,11 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vue-easy-lightbox@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/vue-easy-lightbox/-/vue-easy-lightbox-0.17.0.tgz#c668fba3d2794c5dfcd58002930617dde8deef2b"
+  integrity sha512-CwFp6da7J4L00DKwLwcFNLWkV3L5ol/OduHZJLuArfREjGZ+MEbHaTJDMb3AplRqoLdB+R0ZKpz9PNlWDXCpeA==
+
 vue-github-buttons@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/vue-github-buttons/-/vue-github-buttons-3.1.0.tgz#eaea2ba0b7e0df5a7fd1c61ba37dabf7553dd79a"

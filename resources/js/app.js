@@ -30,6 +30,10 @@ Vue.use(GmapVue, {
   },
 });
 
+// Vue Easy Lightbox
+import VueEasyLightbox from 'vue-easy-lightbox';
+Vue.use(VueEasyLightbox);
+
 // import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
 // Vue.use(VuetifyGoogleAutocomplete, {
 //     apiKey: 'AIzaSyBmyaXLRg7yZ--rvspkdZAYY1e5OZaGYtU', // Can also be an object. E.g, for Google Maps Premium API, pass `{ client: <YOUR-CLIENT-ID> }`
