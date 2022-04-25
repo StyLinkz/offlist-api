@@ -2,7 +2,9 @@
   <div class="widget widget-form">
     <h3 class="widget-title">Contact Listing Agent</h3>
     <div class="contct-info mb-0">
-      <img :src="offer.seller.avatar" :alt="sellerName" width="80" height="80" class="img--cover" />
+      <div class="contact-image">
+        <img :src="offer.seller.avatar" :alt="sellerName" width="240" height="240" class="img--cover" />
+      </div>
       <div class="contct-nf">
         <h3 class="mb-2">{{ sellerName }}</h3>
         <h4 class="d-flex align-items-center mb-2">
