@@ -1,14 +1,16 @@
 <template>
   <section class="property-single-pg">
     <div class="container">
-      <a
-        href="javascript:void(0);"
-        role="button"
-        class="back"
-        @click="goBack"
-      >
-        <i class="la la-arrow-left"></i>
-      </a>
+      <div class="property-single-header">
+        <a
+          href="javascript:void(0);"
+          role="button"
+          class="back"
+          @click="goBack"
+        >
+          <i class="la la-arrow-left"></i>
+        </a>
+      </div>
       <div class="property-hd-sec">
         <OverviewComponent :offer="form" v-if="form.title" />
       </div>
@@ -42,6 +44,19 @@
         </div>
       </div>
       <!--property-single-page-content end-->
+      <div class="clearfix"></div>
+      <div class="property-single-footer">
+        <div class="psf__buttons">
+          <a :href="`/offers/${prevOfferId}?type=${this.$route.query.type || ''}`" class="btn2" v-if="!!prevOfferId">
+            <i class="la la-angle-left"></i>
+            Previous offer
+          </a>
+          <a :href="`/offers/${nextOfferId}?type=${this.$route.query.type || ''}`" class="btn2" v-if="!!nextOfferId">
+            Next offer
+            <i class="la la-angle-right"></i>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -81,6 +96,8 @@ export default {
     },
     tagOptions: [],
     groupOptions: [],
+    prevOfferId: null,
+    nextOfferId: null,
   }),
 
   components: {
@@ -269,6 +286,26 @@ export default {
 
         console.log({ form: this.form });
       });
+    }
+  },
+
+  mounted() {
+    try {
+      const offerId = parseInt(this.$route.params.offerId);
+      const jsonOffers = localStorage.getItem('offers');
+      const offerList = JSON.parse(jsonOffers);
+      const foundIndex = offerList.findIndex((o) => o.id === offerId);
+      if (foundIndex !== -1) {
+        if (foundIndex > 0) {
+          this.prevOfferId = offerList[foundIndex - 1].id;
+        }
+        if (foundIndex < offerList.length - 1) {
+          this.nextOfferId = offerList[foundIndex + 1].id;
+        }
+      }
+      console.log({ prev: this.prevOfferId, next: this.nextOfferId });
+    } catch (error) {
+      console.log({error});
     }
   },
 

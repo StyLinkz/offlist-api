@@ -474,3 +474,46 @@
   border-radius: 50%;
   overflow: hidden;
 }
+
+.property-single-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.property-single-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  clear: both;
+  border-top: 1px solid #dfe0e5;
+  padding-top: 2rem;
+  margin-top: 4rem;
+
+  .psf__buttons {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 150px;
+
+      &:first-child {
+        margin-right: 1rem;
+
+        i {
+          margin-right: 5px;
+        }
+      }
+
+      &:last-child {
+        i {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}

@@ -18,7 +18,7 @@
                   v-for="offer in offers"
                   :key="`offer_row_${offer.id}`"
                 >
-                  <list-item-component :offer="offer" :isOwner="true" />
+                  <list-item-component :offer="offer" :isOwner="true" type="personal" />
                 </div>
               </div>
             </div>
@@ -205,6 +205,9 @@ export default {
           }
           this.loading = false;
           this.$store.commit('setLoading', false);
+
+          // Save offers to local storage for later use (on the offer detail page)
+          localStorage.setItem('offers', JSON.stringify(this.offers));
         })
         .catch((error) => {
           console.log({ error });

@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <router-link :to="`/offers/${offer.id}`">
+    <router-link :to="`/offers/${offer.id}?type=${type}`">
       <div class="img-block">
         <div class="overlay"></div>
         <img :src="offer.thumbnail" :alt="offer.title" class="img-fluid" />
@@ -15,7 +15,7 @@
     <div class="card-body">
       <router-link
         class="card-offer__title"
-        :to="`/offers/${offer.id}`"
+        :to="`/offers/${offer.id}?type=${type}`"
         :title="offer.title"
       >
         <h3>{{ offer.title }}</h3>
@@ -130,7 +130,8 @@ export default {
   data: () => ({
     isAddedToWishlist: false,
   }),
-  props: ["offer", "isOwner"],
+
+  props: ["offer", "isOwner", "type"],
 
   computed: {
     offerAddress: function () {
@@ -155,7 +156,6 @@ export default {
   },
 
   created() {
-    // console.log({ offer: this.offer });
     this.isAddedToWishlist = this.offer.isAddedToWishlist;
   },
 

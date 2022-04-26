@@ -13,7 +13,7 @@
             v-for="offer in offers"
             :key="`offer_row_${offer.id}`"
           >
-            <list-item-component :offer="offer" />
+            <list-item-component :offer="offer" :type="type" />
           </div>
         </div>
       </div>
@@ -30,6 +30,7 @@
           v-for="offer in offers"
           :key="`offer_grid_${offer.id}`"
           :offer="offer"
+          :type="type"
         />
       </div>
       <!--list_products end-->
@@ -47,6 +48,7 @@ export default {
 
   props: {
     offers: Array,
+    type: String,
   },
 
   components: {

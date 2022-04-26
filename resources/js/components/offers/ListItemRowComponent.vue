@@ -49,7 +49,7 @@
 <script>
 export default {
   data: () => ({}),
-  props: ['offer'],
+  props: ['offer', 'type'],
 
   created () {
     // console.log({ offer: this.offer });

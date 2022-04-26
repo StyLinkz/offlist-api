@@ -23,7 +23,7 @@
               <search-component @search="fetchOffers" />
               <div class="listing-directs">
                 <!-- <list-head-component /> -->
-                <tabs-component v-if="offers.length > 0" :offers="offers" />
+                <tabs-component type="feed" v-if="offers.length > 0" :offers="offers" />
                 <!-- <pagination-component /> -->
               </div>
             </div>
@@ -148,6 +148,9 @@ export default {
 
           // Close the filter box if it's opening
           $('.widget-property-search').removeClass('active');
+
+          // Save offers to local storage for later use (on the offer detail page)
+          localStorage.setItem('offers', JSON.stringify(this.offers));
         })
         .catch((error) => {
           console.log({ error });
