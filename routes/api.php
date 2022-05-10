@@ -53,10 +53,12 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     /* Application */
     Route::get('applications', 'ApplicationController@index');
     Route::get('applications/{application}', 'ApplicationController@show');
+    Route::put('applications/{application}', 'ApplicationController@update');
     Route::post('applications', 'ApplicationController@store');
     Route::delete('applications/{application}', 'ApplicationController@delete');
     Route::get('auth-applications', 'ApplicationController@showAuthApplications');
     Route::get('receive-applications', 'ApplicationController@showReceiveApplications');
+    Route::post('delete-offer-applications', 'ApplicationController@deleteOfferRequests');
 
     /* Group */
     Route::get('groups', 'GroupController@index');

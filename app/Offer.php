@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $available_type
  * @property string $publish_type
  * @property string $privacy
+ * @property string $deleted_reason
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer newModelQuery()
@@ -46,6 +47,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereAvailableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePublishType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePrivacy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereDeletedReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -79,6 +81,7 @@ class Offer extends Model
     'available_type',
     'publish_type',
     'privacy',
+    'deleted_reason',
   ];
 
   public function user()
@@ -157,12 +160,14 @@ class Offer extends Model
     if ($types = $request->input('types')) {
       $query->where(function ($query) use ($types) {
         $query->whereIn('offer_type_id', explode(',', $types));
+        $query->where('status', '=', 'activated');
       });
     }
 
     if ($market_types = $request->input('market_types')) {
       $query->where(function ($query) use ($market_types) {
         $query->whereIn('market_type', explode(',', $market_types));
+        $query->where('status', '=', 'activated');
       });
     }
   }
@@ -191,6 +196,7 @@ class Offer extends Model
   {
     $query->where(function ($query) {
       $query->where('is_free', '=', '1');
+      $query->where('status', '=', 'activated');
     });
   }
 }
