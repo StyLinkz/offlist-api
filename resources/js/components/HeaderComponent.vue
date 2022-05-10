@@ -73,37 +73,43 @@
                             class="dropdown-item"
                             :to="{name: 'myOffers'}"
                           >
-                            My Offers
+                            Offers
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myRequests'}"
                           >
-                            My Requests
+                            Requests
+                          </router-link>
+                          <router-link
+                            class="dropdown-item"
+                            :to="{name: 'myApplications'}"
+                          >
+                            Applications
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myInvitations'}"
                           >
-                            My Invitations
+                            Invitations
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myGroups'}"
                           >
-                            My Groups
+                            Groups
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myFavorites'}"
                           >
-                            My Favorites
+                            Favorites
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myContacts'}"
                           >
-                            My Contacts
+                            Contacts
                           </router-link>
                           <a
                             class="dropdown-item"

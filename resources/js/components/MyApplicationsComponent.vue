@@ -3,7 +3,7 @@
     <section class="pager-sec bfr">
       <div class="container">
         <div class="pager-sec-details">
-          <h3>My Requests</h3>
+          <h3>My Applications</h3>
         </div>
       </div>
     </section>
@@ -11,15 +11,15 @@
       <div class="container">
         <div class="offers-wrapper">
           <div class="listing-directs">
-            <h3 v-if="requests.length === 0">You have no requests at the moment.</h3>
+            <h3 v-if="applications.length === 0">You have no applications at the moment.</h3>
             <div class="list_products" v-else>
               <div class="row">
                 <div
                   class="col-lg-4 col-md-6"
-                  v-for="request in requests"
-                  :key="`request_item_${request.id}`"
+                  v-for="application in applications"
+                  :key="`application_item_${application.id}`"
                 >
-                  <request-component :offer="request.offer" :request="request" />
+                  <application-component :offer="application.offer" :application="application" />
                 </div>
               </div>
             </div>
@@ -34,15 +34,15 @@
 import axios from "axios";
 
 /* Components */
-import RequestComponent from "./my-requests/RequestComponent.vue";
+import ApplicationComponent from "./my-applications/ApplicationComponent.vue";
 
 export default {
   components: {
-    RequestComponent,
+    ApplicationComponent,
   },
 
   data: () => ({
-    requests: [],
+    applications: [],
   }),
 
   created() {
@@ -53,21 +53,21 @@ export default {
       this.$store.commit('setLoading', true);
 
       /* Fetch data */
-      this.fetchRequests();
+      this.fetchApplications();
     }
   },
 
   methods: {
-    fetchRequests() {
+    fetchApplications() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("https://offlist.de/api/receive-applications", {
+        .get("https://offlist.de/api/auth-applications", {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {
           if (response.status === 200) {
             const { data } = response;
-            this.requests = data.map((item) => {
+            this.applications = data.map((item) => {
               const images = Object.values(item.offer.images);
               return {
                 id: item.id,

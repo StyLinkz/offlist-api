@@ -106,9 +106,11 @@
       <a
         role="button"
         href="javascript:void(0);"
+        data-toggle="modal"
+        data-target="#modalDeleteOfferWarning"
         class="pull-left card-offer__action ml-2"
         v-if="isOwner"
-        @click="handleDelete($event, offer)"
+        @click="handlePressDeleteButton($event, offer)"
       >
         <i class="la la-trash"></i>
       </a>
@@ -131,7 +133,7 @@ export default {
     isAddedToWishlist: false,
   }),
 
-  props: ["offer", "isOwner", "type"],
+  props: ["offer", "isOwner", "type", "onPressDeleteButton"],
 
   computed: {
     offerAddress: function () {
@@ -164,50 +166,9 @@ export default {
       this.$router.push({ name: 'offerEdit', params: { offerId: item.id }});
     },
 
-    handleDelete(e, item) {
-      if (confirm("Are you sure you want to delete this offer?")) {
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        // Show loading
-        this.$store.commit('setLoading', true);
-
-        // Delete the offer
-        axios
-          .delete(`https://offlist.de/api/offers/${item.id}`, {
-            headers: { Authorization: `Bearer ${user.api_token}` },
-          })
-          .then((response) => {
-            if (response.status === 204) {
-              this.isDeleteSuccess = true;
-            }
-
-            // Open success notification
-            this.$store.commit("openNotification", {
-              message: "The offer has been deleted successfully!",
-              type: "success",
-            });
-
-            setTimeout(() => {
-              window.location = location.href;
-            }, 2000);
-          })
-          .catch((error) => {
-            console.log({ error });
-
-            // Open success notification
-            this.$store.commit("openNotification", {
-              message: "Delete failed! Please try again later",
-              type: "error",
-            });
-
-            setTimeout(() => {
-              // Close notification
-              this.$store.commit('closeNotification');
-
-              // Hide loading
-              this.$store.commit('setLoading', false);
-            }, 2000);
-          });
+    handlePressDeleteButton(e, item) {
+      if (typeof this.onPressDeleteButton === 'function') {
+        this.onPressDeleteButton(item.id);
       }
     },
 

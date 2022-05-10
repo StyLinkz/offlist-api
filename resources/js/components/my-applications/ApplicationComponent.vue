@@ -1,13 +1,13 @@
 <template>
   <div class="card">
-    <router-link :to="`/requests/${request.id}`">
+    <router-link :to="`/offers/${application.offer.id}`">
       <div class="img-block">
         <div class="overlay"></div>
-        <img :src="request.offer.thumbnail" :alt="request.offer.title" class="img-fluid" />
+        <img :src="application.offer.thumbnail" :alt="application.offer.title" class="img-fluid" />
         <div class="rate-info">
           <h5>{{ formattedPrice }}</h5>
-          <span v-if="request.offer.category === 'real_estate'">
-            {{ request.offer.primaryData.status.value }}
+          <span v-if="application.offer.category === 'real_estate'">
+            {{ application.offer.primaryData.status.value }}
           </span>
         </div>
       </div>
@@ -15,10 +15,10 @@
     <div class="card-body">
       <router-link
         class="card-offer__title"
-        :to="`/requests/${request.id}`"
-        :title="request.offer.title"
+        :to="`/offers/${application.offer.id}`"
+        :title="application.offer.title"
       >
-        <h3>{{ request.offer.title }}</h3>
+        <h3>{{ application.offer.title }}</h3>
         <p class="card-offer__location">
           <i class="la la-map-marker"></i>{{ offerAddress }}
         </p>
@@ -27,33 +27,33 @@
         <li class="d-flex justify-content-between align-items-center">
           <span class="card-offer__attribute__name">Prename:</span>
           <span class="card-offer__attribute__value">
-            {{ request.contact.prename }}
+            {{ application.contact.prename }}
           </span>
         </li>
-        <li class="d-flex justify-content-between align-items-start">
+        <li class="d-flex justify-content-between align-items-center">
           <span class="card-offer__attribute__name">Name:</span>
           <span class="card-offer__attribute__value">
-            {{ request.contact.name }}
+            {{ application.contact.name }}
           </span>
         </li>
         <li class="d-flex justify-content-between align-items-start">
           <span class="card-offer__attribute__name">Email:</span>
           <span class="card-offer__attribute__value">
-            {{ request.contact.email }}
+            {{ application.contact.email }}
           </span>
         </li>
         <li class="d-flex justify-content-between align-items-start">
           <span class="card-offer__attribute__name">Phone:</span>
           <span class="card-offer__attribute__value">
-            {{ request.contact.phone }}
+            {{ application.contact.phone }}
           </span>
         </li>
-        <!-- <li class="d-flex justify-content-between align-items-start">
+        <li class="d-flex justify-content-between align-items-start">
           <span class="card-offer__attribute__name">Message:</span>
           <span class="card-offer__attribute__value text-right">
-            {{ request.contact.message }}
+            {{ application.contact.message }}
           </span>
-        </li> -->
+        </li>
       </ul>
     </div>
     <div class="card-footer p-0"></div>
@@ -63,12 +63,12 @@
 <script>
 export default {
   data: () => ({}),
-  props: ["offer", "request"],
+  props: ["offer", "application"],
 
   computed: {
     offerAddress: function () {
-      return this.request.offer.location && this.request.offer.location.address
-        ? `${this.request.offer.location.address}, ${this.request.offer.location.city}, ${this.request.offer.location.country}`
+      return this.application.offer.location && this.application.offer.location.address
+        ? `${this.application.offer.location.address}, ${this.application.offer.location.city}, ${this.application.offer.location.country}`
         : "Not specified";
     },
     formattedPrice: function () {
@@ -77,7 +77,7 @@ export default {
         currency: "EUR",
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
-      }).format(this.request.offer.price);
+      }).format(this.application.offer.price);
       return formattedPrice;
     },
   },

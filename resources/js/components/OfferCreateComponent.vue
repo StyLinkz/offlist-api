@@ -3147,12 +3147,15 @@ export default {
           this.savingPublishType = false;
           this.handleClosePublishTypeDialog();
 
-          this.showNotification = true;
-          this.notificationMessage = "Your offer has been saved!";
-          this.notificationColor = "success";
+          // Open success notification
+          this.$store.commit("openNotification", {
+            message: "Your offer has been saved!",
+            type: "success",
+          });
 
-          /* Redirect to the offer list page */
-          setTimeout(function () {
+          /* Redirect to the my offers page */
+          setTimeout(() => {
+            this.$store.commit("closeNotification");
             window.location.replace("/offers");
           }, 2000);
         })
@@ -3161,9 +3164,15 @@ export default {
           this.savingPublishType = false;
           this.handleClosePublishTypeDialog();
 
-          this.showNotification = true;
-          this.notificationMessage = "Save failed! Please try again later.";
-          this.notificationColor = "error";
+          // Open error notification
+          this.$store.commit("openNotification", {
+            message: "Save failed! Please try again later.",
+            type: "error",
+          });
+
+          setTimeout(() => {
+            this.$store.commit("closeNotification");
+          }, 2000);
         });
     },
 
@@ -3210,6 +3219,7 @@ export default {
 
             /* Redirect to the my offers page */
             setTimeout(() => {
+              this.$store.commit("closeNotification");
               this.$router.push({ name: 'myOffers'});
             }, 2000);
           }
@@ -3220,11 +3230,15 @@ export default {
           this.$store.commit('setLoading', false);
           this.isCreateSuccess = false;
 
-          // Open success notification
+          // Open error notification
           this.$store.commit("openNotification", {
             message: "Save failed! Please try again later.",
             type: "error",
           });
+
+          setTimeout(() => {
+            this.$store.commit("closeNotification");
+          }, 2000);
         });
     },
 

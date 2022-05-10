@@ -256,3 +256,18 @@ body.is-loading {
     color: $colour-primary;
   }
 }
+
+.btn-delete {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.custom-radio .custom-control-label::before,
+.custom-radio .custom-control-label::after {
+  top: 0.15rem;
+}

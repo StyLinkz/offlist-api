@@ -152,7 +152,7 @@ export default {
           this.form.offer_category_id = data.offer_category_id;
           this.form.type = this.getOfferType(data.offer_type_id);
           this.form.status = data.status === "activated";
-          this.form.tags = data.tags.map((tag) => tag.id);
+          this.form.tags = data.tags ? data.tags.map((tag) => tag.id) : [];
           this.form.price = data.price;
           this.form.commission = data.commission;
           this.form.seller = data.seller;
@@ -161,12 +161,14 @@ export default {
           /* Privacy */
           this.form.privacy = data.privacy;
           if (data.privacy === "private") {
-            this.form.privacyGroups = data.groups.map((group) => {
-              const index = this.groupOptions.findIndex(
-                (item) => item.id === group.id
-              );
-              return index;
-            });
+            this.form.privacyGroups = data.groups
+              ? data.groups.map((group) => {
+                const index = this.groupOptions.findIndex(
+                  (item) => item.id === group.id
+                );
+                return index;
+              })
+              : [];
           }
 
           /* Populate location */

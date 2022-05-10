@@ -58,7 +58,7 @@
                 data-dismiss="modal"
                 @click="handleSubmitListing"
               >
-                Save
+                Continue
               </button>
             </div>
           </div>

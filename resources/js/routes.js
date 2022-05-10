@@ -8,6 +8,8 @@ import MyContactsComponent from './components/MyContactsComponent.vue';
 import MyInvitationsComponent from './components/MyInvitationsComponent.vue';
 import MyGroupsComponent from './components/MyGroupsComponent.vue';
 import MyFavoritesComponent from './components/MyFavoritesComponent.vue';
+import MyApplicationsComponent from './components/MyApplicationsComponent.vue';
+import RequestDetailComponent from './components/my-requests/RequestDetailComponent.vue';
 
 const routes = [
   {
@@ -44,6 +46,16 @@ const routes = [
     path: '/my-requests',
     component: MyRequestsComponent,
     name: 'myRequests',
+  },
+  {
+    path: '/requests/:requestId',
+    component: RequestDetailComponent,
+    name: 'requestDetail',
+  },
+  {
+    path: '/my-applications',
+    component: MyApplicationsComponent,
+    name: 'myApplications',
   },
   {
     path: '/my-contacts',

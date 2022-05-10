@@ -18,7 +18,12 @@
                   v-for="offer in offers"
                   :key="`offer_row_${offer.id}`"
                 >
-                  <list-item-component :offer="offer" :isOwner="true" type="personal" />
+                  <list-item-component
+                    :offer="offer"
+                    :isOwner="true"
+                    :onPressDeleteButton="handlePressDeleteButton"
+                    type="personal"
+                  />
                 </div>
               </div>
             </div>
@@ -27,6 +32,7 @@
         </div>
       </div>
     </section>
+    <offer-delete-modal-component :offerId="deletedOfferId" :onDeleteSuccess="handleDeleteSuccess" />
   </div>
 </template>
 <script>
@@ -35,10 +41,12 @@ import Papa from "papaparse";
 
 /* Components */
 import ListItemComponent from "./offers/ListItemComponent.vue";
+import OfferDeleteModalComponent from "./OfferDeleteModalComponent.vue";
 
 export default {
   components: {
     ListItemComponent,
+    OfferDeleteModalComponent,
   },
 
   data: () => ({
@@ -128,6 +136,7 @@ export default {
     ],
     importOfferLocations: [],
     importOffers: [],
+    deletedOfferId: null,
   }),
 
   created() {
@@ -239,41 +248,12 @@ export default {
         });
     },
 
-    handleDelete(item) {
-      if (confirm("Are you sure to delete this offer?")) {
-        const user = JSON.parse(localStorage.getItem("user"));
+    handlePressDeleteButton(offerId) {
+      this.deletedOfferId = offerId;
+    },
 
-        /* Update deleting status */
-        this.deleting = true;
-
-        /* Delete the offer */
-        axios
-          .delete(`https://offlist.de/api/offers/${item.id}`, {
-            headers: { Authorization: `Bearer ${user.api_token}` },
-          })
-          .then((response) => {
-            if (response.status === 204) {
-              this.isDeleteSuccess = true;
-
-              /* Remove the item from table */
-              this.offers = this.offers.filter((offer) => offer.id != item.id);
-            }
-
-            /* Update state */
-            this.deleting = false;
-            this.showNotification = true;
-            this.notificationColor = "success";
-            this.notificationMessage =
-              "The offer has been deleted successfully!";
-          })
-          .catch((error) => {
-            console.log({ error });
-            this.deleting = false;
-            this.showNotification = true;
-            this.notificationColor = "error";
-            this.notificationMessage = "Delete failed! Please try again later";
-          });
-      }
+    handleDeleteSuccess() {
+      this.offers = this.offers.filter((offer) => offer.id != this.deletedOfferId);
     },
 
     handleImportOffers() {
