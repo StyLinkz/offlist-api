@@ -99,14 +99,15 @@ export default {
   }),
 
   created() {
-    const { query } = this.$route;
-    const allowAccess = localStorage.getItem('allowAccess');
-    if ((!query.type || query.type !== 'dev') && (!allowAccess || allowAccess === '0')) {
-      this.accessRestricted = true;
-      localStorage.setItem('allowAccess', '0');
-    } else {
-      localStorage.setItem('allowAccess', '1');
-    }
+    this.accessRestricted = false;
+    // const { query } = this.$route;
+    // const allowAccess = localStorage.getItem('allowAccess');
+    // if ((!query.type || query.type !== 'dev') && (!allowAccess || allowAccess === '0')) {
+    //   this.accessRestricted = true;
+    //   localStorage.setItem('allowAccess', '0');
+    // } else {
+    //   localStorage.setItem('allowAccess', '1');
+    // }
   },
 
   computed: {
