@@ -16,7 +16,8 @@ composer update -n
 composer install -n
 
 # configure apache
-sudo ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/default.conf
+sudo rm -Rf /var/www/html/* # removes the default website
+sudo ln -s /etc/apache2/sites-available/laravel.conf /etc/apache2/sites-enabled/laravel.conf
 sudo systemctl start apache2
 sudo systemctl enable apache2
 
@@ -29,10 +30,9 @@ if [[ ! -f /vagrant/.env ]] ; then
     cp /vagrant/.env.example /vagrant/.env
     sed -i s/DB_PASSWORD=/DB_PASSWORD=secret/ .env
     sed -i s/DB_DATABASE=laravel/DB_DATABASE=homestead/ .env
-
-    # generates the apikey
-    php /vagrant/artisan key:generate
-    # runs the migration scripts
-    php /vagrant/artisan migrate:fresh
 fi
 
+# generates the apikey
+php /vagrant/artisan key:generate
+# runs the migration scripts
+php /vagrant/artisan migrate
