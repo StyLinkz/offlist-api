@@ -19,7 +19,7 @@ class AddsExtraInfoToUsersTable extends Migration
             $table->string('city')->after('address')->nullable();
             $table->string('zip_code')->after('city')->nullable();
             $table->string('website')->after('zip_code')->nullable();
-            $table->int('invitation_limit')->after('password')->default(5);
+            $table->integer('invitation_limit')->after('password')->default(5);
         });
     }
 
