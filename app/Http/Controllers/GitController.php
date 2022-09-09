@@ -13,8 +13,8 @@ class GitController extends Controller
         $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
 
         $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
-        $commitDate->setTimezone(new \DateTimeZone('UTC'));
+        $commitDate->setTimezone(new \DateTimeZone('Europe/Berlin'));
 
-        return sprintf('%s (%s)', $commitHash, $commitDate->format('Y-m-d H:i:s'));
+        return sprintf('%s (%s UTC+2)', $commitHash, $commitDate->format('Y-m-d H:i:s'));
     }
 }
