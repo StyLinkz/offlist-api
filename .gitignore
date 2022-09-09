@@ -16,9 +16,5 @@ yarn-error.log
 .idea/*
 .vscode
 .vagrant/
-info.php<<<<<<< HEAD
-info.php
-=======
 info.php
 *.code-workspace
->>>>>>> origin/migrations-not-working-as-expected
