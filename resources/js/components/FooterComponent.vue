@@ -78,7 +78,7 @@
                   <div class="col-xl-6 col-md-6">
                     <div class="copyright">
                       <p>
-                        &copy; Offlist. All Rights Reserved. {{ currentYear }}
+                        &copy; Offlist. All Rights Reserved. {{ currentYear }} | {{ gitVersion }}
                       </p>
                     </div>
                   </div>
@@ -113,7 +113,8 @@
 export default {
   data: () => ({
     logoImage: '/images/logo.svg',
-    currentYear: new Date().getFullYear()
+    currentYear: new Date().getFullYear(),
+    gitVersion: null
   }),
 
   computed: {
@@ -123,6 +124,10 @@ export default {
     notification() {
       return this.$store.state.notification;
     }
+  },
+
+  mounted () {
+    axios.get('/api/git/version').then((response) => this.gitVersion = response.data);
   },
 
   methods: {}

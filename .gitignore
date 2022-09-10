@@ -18,3 +18,5 @@ yarn-error.log
 .vagrant/
 info.php
 *.code-workspace
+public/js/app.js
+public/css/app.css
