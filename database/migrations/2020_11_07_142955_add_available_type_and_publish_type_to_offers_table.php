@@ -15,7 +15,6 @@ class AddAvailableTypeAndPublishTypeToOffersTable extends Migration
     {
         Schema::table('offers', function (Blueprint $table) {
             $table->string('available_type')->after('market_type');
-            $table->string('publish_type')->after('available_type');
         });
     }
 

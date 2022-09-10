@@ -15,6 +15,7 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('publish_type');
             $table->string('title');
             $table->text('description')->nullable();
             $table->timestamps();

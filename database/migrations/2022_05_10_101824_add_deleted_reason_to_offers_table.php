@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDeleteReasonToOffersTable extends Migration
+class AddDeletedReasonToOffersTable extends Migration
 {
     /**
      * Run the migrations.

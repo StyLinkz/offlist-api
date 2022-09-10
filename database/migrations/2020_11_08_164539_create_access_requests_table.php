@@ -16,15 +16,15 @@ class CreateAccessRequestsTable extends Migration
         Schema::create('access_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('prename')->after('id');
-            $table->string('phone')->after('email')->nullable();
+            $table->string('prename');
+            $table->string('phone')->nullable();
             $table->string('email')->unique();
-            $table->string('company')->after('phone')->nullable();
-            $table->string('address')->after('company')->nullable();
-            $table->string('city')->after('address')->nullable();
-            $table->string('zip_code')->after('city')->nullable();
-            $table->string('website')->after('zip_code')->nullable();
-            $table->text('reason')->after('website')->nullable();
+            $table->string('company')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('website')->nullable();
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
     }
