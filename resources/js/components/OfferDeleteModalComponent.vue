@@ -108,7 +108,7 @@ export default {
       // Delete all relevant offer requests (applications) first
       axios({
         method: 'post',
-        url: `https://offlist.de/api/delete-offer-applications`,
+        url: `${window.location.origin}/api/delete-offer-applications`,
         data: {
           offerId: this.offerId,
         },
@@ -121,7 +121,7 @@ export default {
             // Delete the offer
             axios({
               method: 'put',
-              url: `https://offlist.de/api/offers/${this.offerId}`,
+              url: `${window.location.origin}/api/offers/${this.offerId}`,
               data: {
                 status: 'deleted',
                 deleted_reason: this.selectedReason,

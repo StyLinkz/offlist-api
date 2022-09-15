@@ -59,7 +59,7 @@ export default {
     fetchContacts() {
       const user = JSON.parse(localStorage.getItem('user'));
       axios
-        .get('https://offlist.de/api/contacts', {
+        .get(`${window.location.origin}/api/contacts`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {

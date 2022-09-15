@@ -304,7 +304,7 @@
             fetchTags () {
                 const user = JSON.parse(localStorage.getItem('user'));
                 axios.get(
-                    'https://offlist.de/api/tags',
+                    `${window.location.origin}/api/tags`,
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
@@ -326,7 +326,7 @@
             fetchOffers () {
                 const user = JSON.parse(localStorage.getItem('user'));
                 axios.get(
-                    'https://offlist.de/api/auth-offers',
+                    `${window.location.origin}/api/auth-offers`,
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
@@ -365,7 +365,7 @@
 
                 const user = JSON.parse(localStorage.getItem('user'));
                 axios.put(
-                    `https://offlist.de/api/offers/${item.id}/status`,
+                    `${window.location.origin}/api/offers/${item.id}/status`,
                     {
                         status: item.status ? 'activated' : 'deactivated',
                     },
@@ -391,7 +391,7 @@
 
                     /* Delete the offer */
                     axios.delete(
-                        `https://offlist.de/api/offers/${item.id}`,
+                        `${window.location.origin}/api/offers/${item.id}`,
                         {
                             headers: { Authorization: `Bearer ${user.api_token}` }
                         }
@@ -423,7 +423,7 @@
             handleLogout () {
                 const user = JSON.parse(localStorage.getItem('user'));
                 axios.post(
-                    'https://offlist.de/api/logout',
+                    `${window.location.origin}/api/logout`,
                     {
                         headers: { Authorization: `Bearer ${user.api_token}` }
                     }
@@ -558,7 +558,7 @@
                                     /* Import the offers */
                                     axios({
                                         method: 'post',
-                                        url: 'https://offlist.de/api/offers/import',
+                                        url: `${window.location.origin}/api/offers/import`,
                                         data: {
                                             offers,
                                         },

@@ -81,7 +81,7 @@ export default {
 
       // Handle submit here
       axios
-        .post('https://offlist.de/api/check-invitation', {
+        .post(`${window.location.origin}/api/check-invitation`, {
           code: this.invitationCode
         })
         .then(response => {

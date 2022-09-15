@@ -212,7 +212,7 @@ export default {
       this.$store.commit('setLoading', true);
 
       const user = JSON.parse(localStorage.getItem('user'));
-      const url = 'https://offlist.de/api/invitations';
+      const url = `${window.location.origin}/api/invitations`;
       const data = {
         receiver_prename: this.prename,
         receiver_name: this.name,

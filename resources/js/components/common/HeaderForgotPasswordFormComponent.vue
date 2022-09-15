@@ -105,7 +105,7 @@ export default {
 
       // Handle submit here
       axios
-        .post("https://offlist.de/api/password/email", {
+        .post(`${window.location.origin}/api/password/email`, {
           email: this.email,
         })
         .then((response) => {

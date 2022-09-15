@@ -79,7 +79,7 @@ export default {
 
       // Handle submit here
       axios
-        .post("https://offlist.de/api/password/verify", {
+        .post(`${window.location.origin}/api/password/verify`, {
           token: this.code,
           email: this.email,
         })

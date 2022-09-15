@@ -320,21 +320,21 @@ export default {
 
     async getOffer(offerId) {
       const user = JSON.parse(localStorage.getItem("user"));
-      return axios.get(`https://offlist.de/api/offers/${offerId}`, {
+      return axios.get(`${window.location.origin}/api/offers/${offerId}`, {
         headers: { Authorization: `Bearer ${user.api_token}` },
       });
     },
 
     async fetchTags() {
       const user = JSON.parse(localStorage.getItem("user"));
-      return axios.get("https://offlist.de/api/tags", {
+      return axios.get(`${window.location.origin}/api/tags`, {
         headers: { Authorization: `Bearer ${user.api_token}` },
       });
     },
 
     async fetchGroups() {
       const user = JSON.parse(localStorage.getItem("user"));
-      return axios.get("https://offlist.de/api/groups", {
+      return axios.get(`${window.location.origin}/api/groups`, {
         headers: { Authorization: `Bearer ${user.api_token}` },
       });
     },

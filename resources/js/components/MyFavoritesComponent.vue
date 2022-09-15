@@ -108,7 +108,7 @@ export default {
     fetchTags() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("https://offlist.de/api/tags", {
+        .get(`${window.location.origin}/api/tags`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {
@@ -128,7 +128,7 @@ export default {
     fetchFavorites() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("https://offlist.de/api/wishlist", {
+        .get(`${window.location.origin}/api/wishlist`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {

@@ -61,7 +61,7 @@ export default {
     fetchApplications() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("https://offlist.de/api/auth-applications", {
+        .get(`${window.location.origin}/api/auth-applications`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {

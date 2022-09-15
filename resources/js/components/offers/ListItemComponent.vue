@@ -179,7 +179,7 @@ export default {
 
       axios({
         method: 'POST',
-        url: `https://offlist.de/api/offers/${item.id}/wishlist/add`,
+        url: `${window.location.origin}/api/offers/${item.id}/wishlist/add`,
         headers: {
           Authorization: `Bearer ${user.api_token}`,
         },

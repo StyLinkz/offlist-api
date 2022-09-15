@@ -53,7 +53,7 @@ export default {
         return markers;
       }, []);
 
-      console.log({ mapMarkers });
+      // console.log({ mapMarkers });
 
       return mapMarkers;
     },

@@ -248,7 +248,7 @@
                                     <div align="center" class="img-container center fixedwidth " style="padding-right: 0px;  padding-left: 0px;">
                                         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px;line-height:0px;"><td style="padding-right: 0px; padding-left: 0px;" align="center"><![endif]-->
                                         <div style="line-height:20px;font-size:1px">&#160;</div>  <a href="{{ env('APP_URL') }}" target="_blank">
-                                            <img class="center fixedwidth" align="center" border="0" src="http://offlist.de/logo.png" alt="offlist logo" title="offlist logo" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 85px" width="85">
+                                            <img class="center fixedwidth" align="center" border="0" src="https://dev.offlist.de/logo.png" alt="offlist logo" title="offlist logo" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 85px" width="85">
                                         </a>
                                         <div style="line-height:30px;font-size:1px">&#160;</div><!--[if mso]></td></tr></table><![endif]-->
                                     </div>

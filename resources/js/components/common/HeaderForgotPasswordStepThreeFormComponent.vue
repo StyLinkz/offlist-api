@@ -127,7 +127,7 @@ export default {
 
       // Handle submit here
       axios
-        .post("https://offlist.de/api/password/reset", {
+        .post(`${window.location.origin}/api/password/reset`, {
           token: this.code,
           email: this.email,
           password: this.password,

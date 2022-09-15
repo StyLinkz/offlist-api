@@ -156,7 +156,7 @@ export default {
     fetchTags() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("https://offlist.de/api/tags", {
+        .get(`${window.location.origin}/api/tags`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {
@@ -176,7 +176,7 @@ export default {
     fetchOffers() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("https://offlist.de/api/auth-offers", {
+        .get(`${window.location.origin}/api/auth-offers`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {
@@ -231,7 +231,7 @@ export default {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
         .put(
-          `https://offlist.de/api/offers/${item.id}/status`,
+          `${window.location.origin}/api/offers/${item.id}/status`,
           {
             status: item.status ? "activated" : "deactivated",
           },
@@ -356,7 +356,7 @@ export default {
                 /* Import the offers */
                 axios({
                   method: "post",
-                  url: "https://offlist.de/api/offers/import",
+                  url: `${window.location.origin}/api/offers/import`,
                   data: {
                     offers,
                   },

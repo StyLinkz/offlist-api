@@ -121,7 +121,7 @@ export default {
       this.$store.commit('setLoading', true);
 
       const user = JSON.parse(localStorage.getItem('user'));
-      const url = `https://offlist.de/api/applications/${this.request.id}`;
+      const url = `${window.location.origin}/api/applications/${this.request.id}`;
       const data = {
         "status": this.status,
       };

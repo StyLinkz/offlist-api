@@ -94,7 +94,7 @@ export default {
       // Show loading
       this.$store.commit('setLoading', true);
 
-      let url = 'https://offlist.de/api/feed-offers';
+      let url = `${window.location.origin}/api/feed-offers`;
       if (searchParams) {
         if (searchParams.marketTypes && searchParams.types) {
           url += `?market_types=${searchParams.marketTypes}&types=${searchParams.types}`;

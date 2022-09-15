@@ -35,7 +35,7 @@ export default {
     // generateOfferCodes() {
     //   axios({
     //     method: 'get',
-    //     url: 'https://offlist.de/api/generate-codes',
+    //     url: `${window.location.origin}/api/generate-codes`,
     //   })
     //     .then(response => {
     //       console.log({ response });

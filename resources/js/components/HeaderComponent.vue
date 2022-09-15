@@ -317,7 +317,7 @@ export default {
       return this.$store.state.isSignInModalOpen;
     },
     isSignUpModalOpen () {
-      console.log({ isOpen: this.$store.state.isSignUpModalOpen });
+      // console.log({ isOpen: this.$store.state.isSignUpModalOpen });
       return this.$store.state.isSignUpModalOpen;
     },
     emailErrors() {
@@ -381,7 +381,7 @@ export default {
 
       // Handle submit here
       axios
-        .post("https://offlist.de/api/login", {
+        .post(`${window.location.origin}/api/login`, {
           email: this.email,
           password: this.password,
         })

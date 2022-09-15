@@ -232,8 +232,8 @@ export default {
 
       const user = JSON.parse(localStorage.getItem('user'));
       const url = this.group
-        ? `https://offlist.de/api/groups/${this.group.id}`
-        : 'https://offlist.de/api/groups';
+        ? `${window.location.origin}/api/groups/${this.group.id}`
+        : `${window.location.origin}/api/groups`;
       const method = this.group ? 'put' : 'post';
       const data = {
         user_id: user.id.toString(),

@@ -281,7 +281,7 @@ export default {
 
       const uploadedAvatar = await this.handleUploadAvatar();
       const user = JSON.parse(localStorage.getItem('user'));
-      const url = `https://offlist.de/api/contacts/${this.contact.id}`;
+      const url = `${window.location.origin}/api/contacts/${this.contact.id}`;
       const data = {
         prename: this.prename,
         name: this.name,
@@ -342,7 +342,7 @@ export default {
         const formData = new FormData();
         formData.append("file[]", this.uploadedAvatar);
         contactAvatar = await axios
-          .post("https://offlist.de/api/offer-images", formData, {
+          .post(`${window.location.origin}/api/offer-images`, formData, {
             headers: {
               Authorization: `Bearer ${user.api_token}`,
             },

@@ -2966,21 +2966,21 @@ export default {
   methods: {
     async getOffer(offerId) {
       const user = JSON.parse(localStorage.getItem("user"));
-      return axios.get(`https://offlist.de/api/offers/${offerId}`, {
+      return axios.get(`${window.location.origin}/api/offers/${offerId}`, {
         headers: { Authorization: `Bearer ${user.api_token}` },
       });
     },
 
     async fetchTags() {
       const user = JSON.parse(localStorage.getItem("user"));
-      return axios.get("https://offlist.de/api/tags", {
+      return axios.get(`${window.location.origin}/api/tags`, {
         headers: { Authorization: `Bearer ${user.api_token}` },
       });
     },
 
     async fetchGroups() {
       const user = JSON.parse(localStorage.getItem("user"));
-      return axios.get("https://offlist.de/api/groups", {
+      return axios.get(`${window.location.origin}/api/groups`, {
         headers: { Authorization: `Bearer ${user.api_token}` },
       });
     },
@@ -2988,7 +2988,7 @@ export default {
     handleLogout() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
-        .post("https://offlist.de/api/logout", {
+        .post(`${window.location.origin}/api/logout`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {
@@ -3126,7 +3126,7 @@ export default {
       const data = {
         publish_type: this.form.publishType,
       };
-      const url = `https://offlist.de/api/offers/${this.form.newId}/publish-type`;
+      const url = `${window.location.origin}/api/offers/${this.form.newId}/publish-type`;
 
       /* Show loading state */
       this.savingPublishType = true;
@@ -3185,8 +3185,8 @@ export default {
       const user = JSON.parse(localStorage.getItem("user"));
       const submittedData = await this.getSubmittedData();
       const submittedUrl = this.form.id
-        ? `https://offlist.de/api/offers/${this.form.id}`
-        : "https://offlist.de/api/offers";
+        ? `${window.location.origin}/api/offers/${this.form.id}`
+        : `${window.location.origin}/api/offers`;
       const submittedMethod = this.form.id ? "put" : "post";
 
       axios({
@@ -3263,7 +3263,7 @@ export default {
             formData.append("file[]", file);
           });
           uploadedImages = await axios
-            .post("https://offlist.de/api/offer-images", formData, {
+            .post(`${window.location.origin}/api/offer-images`, formData, {
               headers: {
                 Authorization: `Bearer ${user.api_token}`,
               },
@@ -3297,7 +3297,7 @@ export default {
               formData.append("file[]", file);
             });
             uploadedFloorPlan = await axios
-              .post("https://offlist.de/api/offer-files", formData, {
+              .post(`${window.location.origin}/api/offer-files`, formData, {
                 headers: {
                   Authorization: `Bearer ${user.api_token}`,
                 },
@@ -3332,7 +3332,7 @@ export default {
               formData.append("file[]", file);
             });
             uploadedDocuments = await axios
-              .post("https://offlist.de/api/offer-files", formData, {
+              .post(`${window.location.origin}/api/offer-files`, formData, {
                 headers: {
                   Authorization: `Bearer ${user.api_token}`,
                 },
@@ -3359,7 +3359,7 @@ export default {
         const formData = new FormData();
         formData.append("file[]", this.form.sellerAvatar);
         sellerAvatar = await axios
-          .post("https://offlist.de/api/offer-images", formData, {
+          .post(`${window.location.origin}/api/offer-images`, formData, {
             headers: {
               Authorization: `Bearer ${user.api_token}`,
             },

@@ -337,7 +337,7 @@ export default {
 
       // Handle submit here
       axios
-        .post("https://offlist.de/api/register", {
+        .post(`${window.location.origin}/api/register`, {
           prename: this.prename,
           name: this.name,
           email: this.email,
@@ -352,7 +352,7 @@ export default {
 
           // Update invitation
           axios
-            .post(`https://offlist.de/api/update-invitation/${this.invitation.id}`, {
+            .post(`${window.location.origin}/api/update-invitation/${this.invitation.id}`, {
               status: 'accepted',
               contact_prename: this.prename,
               contact_name: this.name,

@@ -93,7 +93,7 @@ export default {
     fetchGroups() {
       const user = JSON.parse(localStorage.getItem('user'));
       return axios
-        .get('https://offlist.de/api/groups', {
+        .get(`${window.location.origin}/api/groups`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         });
     },
@@ -101,7 +101,7 @@ export default {
     fetchContacts() {
       const user = JSON.parse(localStorage.getItem('user'));
       return axios
-        .get('https://offlist.de/api/contacts', {
+        .get(`${window.location.origin}/api/contacts`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         });
     },
@@ -123,7 +123,7 @@ export default {
         this.$store.commit('setLoading', true);
 
         const user = JSON.parse(localStorage.getItem('user'));
-        const url = `https://offlist.de/api/groups/${group.id}`
+        const url = `${window.location.origin}/api/groups/${group.id}`
         axios({
           url,
           method: 'delete',

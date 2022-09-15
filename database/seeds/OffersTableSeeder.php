@@ -65,15 +65,15 @@ class OffersTableSeeder extends Seeder
             $documents = [
                 'terms_of_use' => [
                     'name' => 'Terms of use',
-                    'link' => 'http://offlist.de/sample.pdf',
+                    'link' => 'https://dev.offlist.de/sample.pdf',
                 ],
                 'privacy_policy' => [
                     'name' => 'Privacy policy',
-                    'link' => 'http://offlist.de/sample.pdf',
+                    'link' => 'https://dev.offlist.de/sample.pdf',
                 ],
                 'benefit' => [
                     'name' => 'Benefit',
-                    'link' => 'http://offlist.de/sample.pdf',
+                    'link' => 'https://dev.offlist.de/sample.pdf',
                 ],
             ];
 

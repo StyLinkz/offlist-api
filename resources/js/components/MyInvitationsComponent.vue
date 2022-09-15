@@ -62,7 +62,7 @@ export default {
     fetchInvitations() {
       const user = JSON.parse(localStorage.getItem('user'));
       axios
-        .get('https://offlist.de/api/auth-invitations', {
+        .get(`${window.location.origin}/api/auth-invitations`, {
           headers: { Authorization: `Bearer ${user.api_token}` },
         })
         .then((response) => {
