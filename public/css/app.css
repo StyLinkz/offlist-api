@@ -329,9 +329,10 @@ body.is-loading {
 
 .navbar-nav .nav-item-account > .nav-link.dropdown-toggle:after {
   position: absolute;
-  top: 16px;
+  top: 50%;
   right: 0;
   left: auto;
+  transform: translate(0, -50%);
 }
 
 .popup-form .form-field {
