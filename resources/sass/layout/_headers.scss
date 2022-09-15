@@ -4,8 +4,14 @@
   z-index: 1000;
   background-color: $colour-white;
 }
+
 .header .navbar-brand img {
   width: 100px;
+}
+
+.header .navbar-nav {
+  display: flex;
+  align-items: center;
 }
 
 .header .navbar-nav .nav-item .dropdown-menu {
