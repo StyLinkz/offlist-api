@@ -307,10 +307,6 @@ body.is-loading {
   align-items: center;
 }
 
-.header .navbar-nav .nav-item .dropdown-menu {
-  top: 78px;
-}
-
 .navbar-nav .dropdown-menu .dropdown-item {
   color: #242526;
 }
