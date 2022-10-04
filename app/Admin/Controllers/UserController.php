@@ -93,13 +93,13 @@ class UserController extends AdminController
         $show->field('website', __('Website'));
         $show->field('offer_types', __('Offer types'));
         $show->field('role', __('Role'));
-        $show->field('email_verified_at', __('Email verified at'));
-        $show->field('password', __('Password'));
         $show->field('invitation_limit', __('Invitation limit'));
-        $show->field('remember_token', __('Remember token'));
-        $show->field('api_token', __('Api token'));
-        $show->field('reset_password_token', __('Reset password token'));
-        $show->field('reset_password_token_expired_at', __('Reset password token expired at'));
+        // $show->field('password', __('Password'));
+        // $show->field('email_verified_at', __('Email verified at'));
+        // $show->field('remember_token', __('Remember token'));
+        // $show->field('api_token', __('Api token'));
+        // $show->field('reset_password_token', __('Reset password token'));
+        // $show->field('reset_password_token_expired_at', __('Reset password token expired at'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -127,13 +127,13 @@ class UserController extends AdminController
         $form->text('website', __('Website'));
         $form->text('offer_types', __('Offer types'));
         $form->text('role', __('Role'))->default('user');
-        $form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
-        $form->password('password', __('Password'));
-        $form->number('invitation_limit', __('Invitation limit'))->default(5);
-        $form->text('remember_token', __('Remember token'));
-        $form->text('api_token', __('Api token'));
-        $form->text('reset_password_token', __('Reset password token'));
-        $form->datetime('reset_password_token_expired_at', __('Reset password token expired at'))->default(date('Y-m-d H:i:s'));
+        // $form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
+        // $form->password('password', __('Password'));
+        // $form->number('invitation_limit', __('Invitation limit'))->default(5);
+        // $form->text('remember_token', __('Remember token'));
+        // $form->text('api_token', __('Api token'));
+        // $form->text('reset_password_token', __('Reset password token'));
+        // $form->datetime('reset_password_token_expired_at', __('Reset password token expired at'))->default(date('Y-m-d H:i:s'));
 
         return $form;
     }
