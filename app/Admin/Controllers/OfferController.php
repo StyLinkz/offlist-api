@@ -132,33 +132,20 @@ class OfferController extends AdminController
         $form = new Form(new Offer());
 
         $form->text('title', __('Title'));
-        $form->text('user_id', __('User id'))->readonly();
-        $form->text('offer_type_id', __('Offer type id'))->readonly();
-        $form->text('offer_category_id', __('Offer category id'))->readonly();
-        $form->text('price', __('Price'));
-        $form->text('price_tax', __('Price tax'));
+        $form->number('user_id', __('User id'));
+        $form->number('offer_type_id', __('Offer type id'));
+        $form->number('offer_category_id', __('Offer category id'));
+        $form->number('price', __('Price'));
+        $form->number('price_tax', __('Price tax'));
         $form->text('commission', __('Commission'));
         $form->textarea('images', __('Images'));
         $form->textarea('location', __('Location'));
         $form->textarea('documents', __('Documents'));
         $form->textarea('seller', __('Seller'));
         $form->textarea('data', __('Data'));
-
-        $form->select('privacy')->options(array(
-          'public' => __('Public'),
-          'private' => __('Private'),
-        ));
-
-        $form->select('status')->options(array(
-          'activated' => __('Activated'),
-          'deactivated' => __('Deactivated'),
-        ));
-
-        $form->select('market_type')->options(array(
-          'offmarket' => __('Onmarket'),
-          'onmarket' => __('Offmarket'),
-        ));
-
+        $form->text('privacy', __('Privacy'))->default('public');
+        $form->text('status', __('Status'))->default('activated');
+        $form->text('market_type', __('Market type'))->default('onmarket');
         $form->text('available_type', __('Available type'));
         $form->text('publish_type', __('Publish type'));
         $form->switch('is_free', __('Is free'));
