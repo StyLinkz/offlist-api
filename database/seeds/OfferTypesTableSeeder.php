@@ -26,8 +26,7 @@ class OfferTypesTableSeeder extends Seeder
         ];
         foreach ($types as $name => $display_name) {
             OfferType::create([
-                'name' => $name,
-                'display_name' => $display_name,
+                'name' => $name
             ]);
         }
     }
