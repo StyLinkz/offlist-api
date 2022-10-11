@@ -14,8 +14,8 @@ class AddIsFreeAndIsVerifiedToOffersTable extends Migration
     public function up()
     {
         Schema::table('offers', function (Blueprint $table) {
-            $table->tinyInteger('is_free')->after('publish_type');
-            $table->tinyInteger('is_verified')->after('is_free');
+            $table->tinyInteger('is_free')->after('publish_type')->default(1);
+            $table->tinyInteger('is_verified')->after('is_free')->default(0);
         });
     }
 
