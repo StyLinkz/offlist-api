@@ -13,7 +13,7 @@ class CreateOfferTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('offer_tag', function (Blueprint $table) {
+        Schema::create('offer_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('offer_id');
             $table->bigInteger('tag_id');
