@@ -198,6 +198,7 @@ class OffersTableSeeder extends Seeder
             ];
 
             Offer::create([
+                'user_id' => 1,
                 'offer_type_id' => 1,
                 'offer_category_id' => 1,
                 'title' => $faker->sentence,
@@ -210,7 +211,7 @@ class OffersTableSeeder extends Seeder
                 'documents' => json_encode($documents),
                 'seller' => json_encode($seller),
                 'data' => json_encode($data),
-                'publish_type' => 'public',
+                'publish_type' => 1,
                 'status' => 'activated',
             ]);
         }
