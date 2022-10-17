@@ -3,6 +3,8 @@
 namespace App\Admin\Controllers;
 
 use App\Offer;
+use App\OfferCategory;
+use App\OfferType;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -27,7 +29,9 @@ class OfferController extends AdminController
         $grid = new Grid(new Offer());
 
         $grid->column('id', __('Id'));
-        $grid->column('title', __('Title'));
+        $grid->column('title', __('Title'))->display(function ($title) {
+          return '<a href="/admin/offers/' . $this->id . '/edit">' . $title . '</a>';
+        });
 
         $grid->column('images')->display(function ($images) {
           $display_images = array();
@@ -39,8 +43,41 @@ class OfferController extends AdminController
           return !empty($display_images) ? $display_images[0] : array();
         })->image();
 
-        $grid->column('price', __('Price'));
+        $grid->column('price', __('Price'))->display(function ($price) {
+          $currency = $this->data && isset($this->data['primary'])
+            ? $this->data['primary']['data']['currency']['value']
+            : 'USD';
+          switch ($currency) {
+            case 'EUR':
+              $symbol = '€';
+              break;
+            case 'GBP':
+              $symbol = '£';
+              break;
+            case 'USD':
+              $symbol = '$';
+              break;
+            case 'RMB':
+              $symbol = '¥';
+              break;
+            case 'JPY':
+              $symbol = '¥';
+              break;
+            default:
+              $symbol = '$';
+              break;
+          }
+          return $symbol . number_format($price);
+        });
 
+        $grid->column('is_free', __('Type'))
+          ->display(function ($is_free) {
+            return $is_free ? 'FREE' : 'LIMITED';
+          })
+          ->label(array(
+            '1' => 'success',
+            '0' => 'warning',
+          ));
 
         $grid->column('market_type', __('Market type'))
           ->display(function ($market_type) {
@@ -73,14 +110,6 @@ class OfferController extends AdminController
           ->display(function ($created_at) {
             return date('Y-m-d', strtotime($created_at));
           });
-
-        // $grid->column('description', __('Description'));
-        // $grid->column('commission', __('Commission'));
-        // $grid->column('available_type', __('Available type'));
-        // $grid->column('publish_type', __('Publish type'));
-        // $grid->column('is_free', __('Is free'));
-        // $grid->column('is_verified', __('Is verified'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -130,19 +159,32 @@ class OfferController extends AdminController
     protected function form()
     {
         $form = new Form(new Offer());
+        $offer_types = OfferType::all();
+        $offer_categories = OfferCategory::all();
+
+        $offer_type_options = array();
+        foreach ($offer_types as $offer_type) {
+          $offer_type_options[$offer_type->id] = $offer_type->display_name;
+        }
+
+        $offer_category_options = array();
+        foreach ($offer_categories as $offer_category) {
+          $offer_category_options[$offer_category->id] = $offer_category->display_name;
+        }
 
         $form->text('title', __('Title'));
         $form->text('user_id', __('User id'))->readonly();
-        $form->text('offer_type_id', __('Offer type id'))->readonly();
-        $form->text('offer_category_id', __('Offer category id'))->readonly();
+
+        $form->select('offer_type_id', __('Offer type'))->options($offer_type_options);
+        $form->select('offer_category_id', __('Offer category'))->options($offer_category_options);
         $form->text('price', __('Price'));
         $form->text('price_tax', __('Price tax'));
         $form->text('commission', __('Commission'));
-        $form->textarea('images', __('Images'));
-        $form->textarea('location', __('Location'));
-        $form->textarea('documents', __('Documents'));
-        $form->textarea('seller', __('Seller'));
-        $form->textarea('data', __('Data'));
+        $form->textarea('images', __('Images'))->readonly();
+        $form->textarea('location', __('Location'))->readonly();
+        $form->textarea('documents', __('Documents'))->readonly();
+        $form->textarea('seller', __('Seller'))->readonly();
+        $form->textarea('data', __('Data'))->readonly();
 
         $form->select('privacy')->options(array(
           'public' => __('Public'),
@@ -155,15 +197,41 @@ class OfferController extends AdminController
         ));
 
         $form->select('market_type')->options(array(
-          'offmarket' => __('Onmarket'),
-          'onmarket' => __('Offmarket'),
+          'onmarket' => __('Onmarket'),
+          'offmarket' => __('Offmarket'),
         ));
 
-        $form->text('available_type', __('Available type'));
-        $form->text('publish_type', __('Publish type'));
-        $form->switch('is_free', __('Is free'));
-        $form->switch('is_verified', __('Is verified'));
+        $form->select('available_type', __('Available type'))->options(array(
+          'private' => __('Private'),
+          'nonpublic' => __('Non-public'),
+          'public' => __('Public'),
+        ));
+
+        $form->select('publish_type', __('Publish type'))->options(array(
+          'auto' => __('Auto'),
+          'manual' => __('Manual'),
+        ));
+
+        $form->select('is_free')->options(array(
+          1 => __('Yes'),
+          0 => __('No'),
+        ));
+
+        $form->select('is_verified')->options(array(
+          1 => __('Yes'),
+          0 => __('No'),
+        ));
+
         $form->textarea('description', __('Description'));
+
+        /* TODO: Ignore all JSON fields before saving onto the database for now */
+        $form->submitted(function (Form $form) {
+          $form->ignore('images');
+          $form->ignore('location');
+          $form->ignore('documents');
+          $form->ignore('seller');
+          $form->ignore('data');
+        });
 
         return $form;
     }
