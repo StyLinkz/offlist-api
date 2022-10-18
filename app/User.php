@@ -28,6 +28,7 @@ use Livijn\MultipleTokensAuth\Traits\HasApiTokens;
  * @property string $offer_types
  * @property string $role
  * @property string $password
+ * @property string $raw_password
  * @property int $invitation_limit
  * @property string|null $remember_token
  * @property string|null $api_token
@@ -50,6 +51,7 @@ use Livijn\MultipleTokensAuth\Traits\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRawPassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -83,9 +85,11 @@ class User extends Authenticatable
         'website',
         'offer_types',
         'password',
+        'raw_password',
         'role',
 //        'api_token',
         'invitation_limit',
+        'email_verified_at',
     ];
 
     /**

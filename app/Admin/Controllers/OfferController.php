@@ -5,10 +5,13 @@ namespace App\Admin\Controllers;
 use App\Offer;
 use App\OfferCategory;
 use App\OfferType;
+use App\User;
+use Carbon\Carbon;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Mail;
 
 class OfferController extends AdminController
 {
@@ -222,10 +225,12 @@ class OfferController extends AdminController
           0 => __('No'),
         ));
 
+        $form->hidden('verified_at', __('Verified at'));
+
         $form->textarea('description', __('Description'));
 
-        /* TODO: Ignore all JSON fields before saving onto the database for now */
         $form->submitted(function (Form $form) {
+          // TODO: Ignore all JSON fields before saving onto the database for now
           $form->ignore('images');
           $form->ignore('location');
           $form->ignore('documents');
@@ -233,6 +238,55 @@ class OfferController extends AdminController
           $form->ignore('data');
         });
 
+        $form->saving(function (Form $form) {
+          /**
+           * Check if the current offer is free or not
+           * If it's a free offer, continue checking if it's verified by the admin or not
+           * And if it does, just send a welcome message to the free user who created this offer along with his login credentials
+           */
+          // dump($form->is_free);
+          // dump($form->is_verified);
+          // dump($form->verified_at);
+          // dump($form->user_id);
+          // dump($form->is_free && $form->is_verified && !$form->verified_at);
+          // die;
+          if ($form->is_free && $form->is_verified && !$form->verified_at) {
+            $user = User::find($form->user_id);
+            if ($user) {
+              // Set verified_at property
+              $form->verified_at = Carbon::now()->toDateTimeString();
+
+              // Also verify user account
+              $user->update([
+                'email_verified_at' => Carbon::now()->toDateTimeString(),
+              ]);
+
+              // Send a welcome message to the free user
+              $this->_sendFreeAccountWelcomeNotification($user);
+            }
+          }
+        });
+
         return $form;
+    }
+
+    protected function _sendFreeAccountWelcomeNotification(User $user)
+    {
+        $to_name = $user->prename . ' ' . $user->name;
+        $to_email = $user->email;
+        $data = [
+          'name' => $to_name,
+          'email' => $to_email,
+          'password' => $user->raw_password,
+        ];
+        Mail::send(
+          'templates.mail.freeAccountWelcomeNotification',
+          $data,
+          function ($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+              ->subject('[Offlist] Register Account Success');
+            $message->from('info@offlist.de', 'Offlist');
+          }
+        );
     }
 }

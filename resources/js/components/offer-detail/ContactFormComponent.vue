@@ -1,17 +1,17 @@
 <template>
   <div class="widget widget-form">
-    <h3 class="widget-title">Contact Listing Agent</h3>
+    <h3 class="widget-title">{{ isLoggedIn() && isRegularUser() ? 'Contact Listing Agent' : 'Supplier Information' }}</h3>
     <div class="contct-info mb-0">
       <div class="contact-image">
         <img :src="offer.seller.avatar" :alt="sellerName" width="240" height="240" class="img--cover" />
       </div>
       <div class="contct-nf">
         <h3 class="mb-2">{{ sellerName }}</h3>
-        <h4 class="d-flex align-items-center mb-2">
+        <h4 class="d-flex align-items-center mb-2" v-if="offer.seller && offer.seller.company">
           <i class="la la-building"></i>
           {{ offer.seller.company }}
         </h4>
-        <h4 class="d-flex align-items-center mb-2">
+        <h4 class="d-flex align-items-center mb-2" v-if="offer.seller && offer.seller.address">
           <i class="la la-map-marker"></i>
           {{ `${offer.seller.address}, ${offer.seller.city}, ${offer.seller.zipcode}` }}
         </h4>
@@ -39,7 +39,7 @@
       </div>
     </div>
     <!--contct-info end-->
-    <div class="post-comment-sec">
+    <div class="post-comment-sec" v-if="isLoggedIn() && isRegularUser()">
       <form novalidate @submit.prevent="validate" id="formOfferRequest">
         <div class="form-field">
           <input
@@ -184,6 +184,18 @@ export default {
   created() {},
 
   methods: {
+    isRegularUser () {
+      const user = JSON.parse(localStorage.getItem('user'))
+      return user && user.role === 'user';
+    },
+
+    isLoggedIn () {
+      const user = localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user'))
+        : null;
+      return user && user.api_token;
+    },
+
     clearForm () {
       this.$v.$reset();
       this.prename = '';

@@ -27,6 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $publish_type
  * @property string $privacy
  * @property string $deleted_reason
+ * @property int $is_free
+ * @property int $is_verified
+ * @property string $verified_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer newModelQuery()
@@ -48,6 +51,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePublishType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer wherePrivacy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereDeletedReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereIsFree($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereIsVerified($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Offer whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -82,6 +88,9 @@ class Offer extends Model
     'publish_type',
     'privacy',
     'deleted_reason',
+    'is_free',
+    'is_verified',
+    'verified_at',
   ];
 
   public function user()
