@@ -7,6 +7,14 @@
     you can visit http://localhost:8085 to visit the page.
 1. The database ist available at `localhost:3365`, with user `root` and password `secret`.
 
+## After migration
+
+After the `artisan migration:fresh --seeds`command, we have to run also the following:
+
+```
+php artisan admin:install
+```
+
 ## Presentation
 
 For presentation we use grok, https://ngrok.com/. With that tool you can redirect traffic from a subdomain to your local network.
