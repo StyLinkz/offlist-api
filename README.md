@@ -7,15 +7,13 @@
     you can visit http://localhost:8085 to visit the page.
 1. The database ist available at `localhost:3365`, with user `root` and password `secret`.
 
-## After migration
+# Fresh migration
 
-After the `artisan migration:fresh --seeds`command, we have to run also the following:
+For a fresh migration we have to run `php artisan migrate:fresh --seed && php artisan admin:install && php artisan db:seed --class=AdminMenuSeeder`.
 
-```
-php artisan admin:install
-```
+The AdminMenuSeeder have to be run again because the table does exists after the `admin:install` command. Otherwise the Menu does not exists.
 
-## Presentation
+# Presentation
 
 For presentation we use grok, https://ngrok.com/. With that tool you can redirect traffic from a subdomain to your local network.
 

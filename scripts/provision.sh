@@ -35,4 +35,6 @@ fi
 # generates the apikey
 php /vagrant/artisan key:generate
 # runs the migration scripts
-php /vagrant/artisan migrate
+php artisan migrate:fresh --seed &&
+  php artisan admin:install &&
+  php artisan db:seed --class=AdminMenuSeeder
