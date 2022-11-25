@@ -440,7 +440,7 @@
                                     <div class="">
                                         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 25px; padding-bottom: 35px;"><![endif]-->
                                         <div style="color:#BEBEBE;line-height:120%;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 25px; padding-bottom: 35px;">
-                                            <div style="font-size:12px;line-height:14px;color:#BEBEBE;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 12px; line-height: 14px;">Sent by OFFLIST&#160;© 2020</span></p></div>
+                                            <div style="font-size:12px;line-height:14px;color:#BEBEBE;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 12px; line-height: 14px;">Sent by OFFLIST&#160;© {{ date('Y') }}</span></p></div>
                                         </div>
                                         <!--[if mso]></td></tr></table><![endif]-->
                                     </div>

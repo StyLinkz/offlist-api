@@ -47,8 +47,6 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::put('offers/{offer}/status', 'OfferController@updateStatus');
     Route::put('offers/{offer}/publish-type', 'OfferController@updatePublishType');
     Route::delete('offers/{offer}', 'OfferController@delete');
-    Route::post('offer-files', 'OfferController@uploadFiles');
-    Route::post('offer-images', 'OfferController@uploadImages');
     Route::get('feed-offers', 'OfferController@showFeedOffers');
     Route::get('auth-offers', 'OfferController@showUserOffers');
     Route::get('group-offers', 'OfferController@showGroupOffers');
@@ -93,20 +91,27 @@ Route::group(['middleware' => ['auth:api', 'verified']], function () {
     Route::get('invitation-limit', 'InvitationController@getInvitationLimit');
     Route::put('invitation-limit', 'InvitationController@updateInvitationLimit');
 
-    /* Tags */
-    Route::get('tags', 'TagController@index');
-
     /* User */
     Route::get('profile', 'UserController@show');
     Route::put('profile', 'UserController@update');
     Route::post('avatar', 'UserController@updateAvatar');
     Route::get('users/{user}', 'UserController@showUser');
+    Route::put('change-password', 'UserController@updatePassword');
 
+    /* Free offers */
+    // Route::put('free-offers/{offer}', 'OfferController@updateOffer');
 });
 
 /* Free user */
 Route::get('free-offers', 'OfferController@showFreeOffers');
+Route::post('free-offers', 'OfferController@createFreeOffer');
+Route::post('offer-files', 'OfferController@uploadFiles');
+Route::post('offer-images', 'OfferController@uploadImages');
 Route::get('generate-codes', 'OfferController@generateCodes');
 Route::get('verify-email-success', function () {
   return view('auth/verifyEmailSuccess');
 });
+
+/* Tags */
+Route::get('tags', 'TagController@index');
+

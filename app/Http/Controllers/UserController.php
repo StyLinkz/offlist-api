@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use JD\Cloudder\Facades\Cloudder;
 
@@ -30,6 +31,29 @@ class UserController extends Controller
     public function showUser(User $user)
     {
         return $user;
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $current_password = $request->input('current_password') ?: '';
+        $new_password = $request->input('password') ?: '';
+
+        if (!Hash::check($current_password, $user->password)) {
+          return response()->json('Current password is not correct', 422);
+        }
+
+        $this->validate($request, [
+            'current_password' => 'required',
+            'password' => 'required',
+            'confirm_password' => 'required',
+            // 'confirm_password' => 'confirmed',
+        ]);
+        $user->update([
+          'password' => Hash::make($new_password)
+        ]);
+        return response()->json($user, 200);
     }
 
     public function updateAvatar(Request $request)
