@@ -10,6 +10,9 @@ import MyGroupsComponent from './components/MyGroupsComponent.vue';
 import MyFavoritesComponent from './components/MyFavoritesComponent.vue';
 import MyApplicationsComponent from './components/MyApplicationsComponent.vue';
 import RequestDetailComponent from './components/my-requests/RequestDetailComponent.vue';
+import FreeOfferCreateComponent from './components/FreeOfferCreateComponent.vue';
+import MyProfileComponent from './components/MyProfileComponent.vue';
+import ChangePasswordComponent from './components/ChangePasswordComponent.vue';
 
 const routes = [
   {
@@ -33,9 +36,19 @@ const routes = [
     name: 'offerCreate',
   },
   {
+    path: '/submit-free-listing',
+    component: FreeOfferCreateComponent,
+    name: 'freeOfferCreate',
+  },
+  {
     path: '/offers/:offerId/edit',
     component: OfferCreateComponent,
     name: 'offerEdit',
+  },
+  {
+    path: '/free-offers/:offerId/edit',
+    component: FreeOfferCreateComponent,
+    name: 'freeOfferEdit',
   },
   {
     path: '/my-offers',
@@ -76,6 +89,16 @@ const routes = [
     path: '/my-favorites',
     component: MyFavoritesComponent,
     name: 'myFavorites',
+  },
+  {
+    path: '/my-profile',
+    component: MyProfileComponent,
+    name: 'myProfile',
+  },
+  {
+    path: '/change-password',
+    component: ChangePasswordComponent,
+    name: 'changePassword',
   },
 ];
 

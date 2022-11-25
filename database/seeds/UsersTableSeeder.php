@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -24,12 +25,26 @@ class UsersTableSeeder extends Seeder
         // will be too slow
         $password = Hash::make('offlist');
 
+        // User::create([
+        //     'prename' => 'Admin',
+        //     'name' => 'Admin',
+        //     'email' => 'offlist@mailinator.com',
+        //     'password' => $password,
+        //     'role' => 'admin',
+        //     'email_verified_at' => Carbon::now(),
+        // ]);
+
         User::create([
-            'prename' => 'Admin',
-            'name' => 'Admin',
-            'email' => 'offlist@mailinator.com',
+            'name' => $faker->firstName,
+            'prename' => $faker->lastName,
+            'company' => $faker->company,
+            'phone' => $faker->phoneNumber,
+            'email' => 'offlist.customer@mailinator.com',
             'password' => $password,
-            'role' => 'admin',
+            'role' => 'user',
+            'offer_types' => '1,2,3',
+            'api_token' => Str::random(60),
+            'email_verified_at' => Carbon::now(),
         ]);
 
         // And now let's generate a few dozen users for our app
@@ -44,6 +59,7 @@ class UsersTableSeeder extends Seeder
                 'role' => 'user',
                 'offer_types' => '1,2,3',
                 'api_token' => Str::random(60),
+                'email_verified_at' => Carbon::now(),
             ]);
         }
     }

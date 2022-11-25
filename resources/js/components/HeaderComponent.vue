@@ -37,7 +37,7 @@
                     <li
                       class="nav-item"
                       :class="[{active: $route.name === 'offers'}]"
-                      v-if="isLoggedIn()"
+                      v-if="isLoggedIn() && isRegularUser()"
                     >
                       <router-link
                         class="nav-link"
@@ -78,38 +78,56 @@
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myRequests'}"
+                            v-if="isRegularUser()"
                           >
                             Requests
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myApplications'}"
+                            v-if="isRegularUser()"
                           >
                             Applications
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myInvitations'}"
+                            v-if="isRegularUser()"
                           >
                             Invitations
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myGroups'}"
+                            v-if="isRegularUser()"
                           >
                             Groups
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myFavorites'}"
+                            v-if="isRegularUser()"
                           >
                             Favorites
                           </router-link>
                           <router-link
                             class="dropdown-item"
                             :to="{name: 'myContacts'}"
+                            v-if="isRegularUser()"
                           >
                             Contacts
+                          </router-link>
+                          <router-link
+                            class="dropdown-item"
+                            :to="{name: 'myProfile'}"
+                          >
+                            My profile
+                          </router-link>
+                          <router-link
+                            class="dropdown-item"
+                            :to="{name: 'changePassword'}"
+                          >
+                            Change password
                           </router-link>
                           <a
                             class="dropdown-item"
@@ -125,16 +143,28 @@
                           class="my-2 my-sm-0 nav-link sbmt-btn"
                           data-toggle="modal"
                           data-target="#modalSubmitListing"
+                          v-if="isLoggedIn() && isRegularUser()"
                         >
                           <i class="icon-plus"></i>
                           <span>Submit Listing</span>
                         </a>
+                        <a
+                          role="button"
+                          href="javascript:void(0);"
+                          class="my-2 my-sm-0 nav-link sbmt-btn"
+                          data-toggle="modal"
+                          data-target="#modalSubmitFreeListing"
+                          v-if="!isLoggedIn() || !isRegularUser()"
+                        >
+                          <i class="icon-plus"></i>
+                          <span>Submit Your Free Offer</span>
+                        </a>
                       </li>
                     </ul>
                   </div>
-                  <a href="#" title="" class="close-menu"
-                    ><i class="la la-close"></i
-                  ></a>
+                  <a href="#" title="" class="close-menu">
+                    <i class="la la-close"></i>
+                  </a>
                 </div>
               </nav>
             </div>
@@ -361,6 +391,11 @@ export default {
   },
 
   methods: {
+    isRegularUser () {
+      const user = JSON.parse(localStorage.getItem('user'))
+      return user && user.role === 'user';
+    },
+
     isLoggedIn () {
       const user = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user'))
@@ -410,7 +445,11 @@ export default {
             this.$store.commit('setLoading', false);
 
             // Move to Offers screen
-            this.$router.push('offers');
+            if (data.role === 'user') {
+              this.$router.push('offers');
+            } else {
+              this.$router.push('my-offers');
+            }
 
             // Close sign-in popup
             this.closeSignInModal();

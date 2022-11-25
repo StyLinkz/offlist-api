@@ -230,7 +230,9 @@
   padding-left: 1px;
 }
 
-.offer-create-page {
+.offer-create-page,
+.my-profile-page,
+.change-password-page {
   .blog-standard.section-padding {
     padding: 80px 0 110px;
   }
@@ -432,6 +434,7 @@
 }
 
 .modal-available-type,
+.modal-save-success,
 .modal-publish-type {
   .modal-title {
     > .la {

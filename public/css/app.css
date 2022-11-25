@@ -395,6 +395,45 @@ body.is-loading {
   padding-bottom: 0;
 }
 
+.home-free-listings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 105px;
+  padding: 90px 0;
+}
+
+.home-free-listings__title {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 480px) {
+  .home-free-listings__title {
+    font-size: 1.5rem;
+  }
+}
+
+.home-free-listings__description {
+  font-size: 1rem;
+  color: #fff;
+  margin-top: 1.25rem;
+  margin-bottom: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+}
+
+.home-free-listings__button {
+  float: none;
+  display: inline-block;
+  color: #fff;
+  background-color: #6a7be7;
+  border-color: transparent;
+}
+
 .list_products .card .card-offer__title {
   line-height: 1.5;
 }
@@ -595,43 +634,65 @@ body.is-loading {
   padding-left: 1px;
 }
 
-.offer-create-page .blog-standard.section-padding {
+.offer-create-page .blog-standard.section-padding,
+.my-profile-page .blog-standard.section-padding,
+.change-password-page .blog-standard.section-padding {
   padding: 80px 0 110px;
 }
 
-.offer-create-page .post_info {
+.offer-create-page .post_info,
+.my-profile-page .post_info,
+.change-password-page .post_info {
   border-top: 1px solid #dfe0e5;
 }
 
 .offer-create-page .form-group,
-.offer-create-page .form-field {
+.offer-create-page .form-field,
+.my-profile-page .form-group,
+.my-profile-page .form-field,
+.change-password-page .form-group,
+.change-password-page .form-field {
   float: none;
 }
 
-.offer-create-page .form-group {
+.offer-create-page .form-group,
+.my-profile-page .form-group,
+.change-password-page .form-group {
   margin-bottom: 1.5rem;
   padding: 0;
 }
 
-.offer-create-page .form-group label {
+.offer-create-page .form-group label,
+.my-profile-page .form-group label,
+.change-password-page .form-group label {
   margin-bottom: 0.25rem !important;
 }
 
-.offer-create-page .form-group label.custom-control-label {
+.offer-create-page .form-group label.custom-control-label,
+.my-profile-page .form-group label.custom-control-label,
+.change-password-page .form-group label.custom-control-label {
   margin-bottom: 0 !important;
 }
 
 .offer-create-page .form-group label.custom-control-label::before,
-.offer-create-page .form-group label.custom-control-label::after {
+.offer-create-page .form-group label.custom-control-label::after,
+.my-profile-page .form-group label.custom-control-label::before,
+.my-profile-page .form-group label.custom-control-label::after,
+.change-password-page .form-group label.custom-control-label::before,
+.change-password-page .form-group label.custom-control-label::after {
   margin-top: -1px;
 }
 
-.offer-create-page .form-group > label {
+.offer-create-page .form-group > label,
+.my-profile-page .form-group > label,
+.change-password-page .form-group > label {
   color: #242526;
   margin-bottom: 0.5rem !important;
 }
 
-.offer-create-page .offer-tags .input-field label {
+.offer-create-page .offer-tags .input-field label,
+.my-profile-page .offer-tags .input-field label,
+.change-password-page .offer-tags .input-field label {
   margin-bottom: 1rem !important;
 }
 
@@ -773,16 +834,19 @@ body.is-loading {
 }
 
 .modal-available-type .modal-title > .la,
+.modal-save-success .modal-title > .la,
 .modal-publish-type .modal-title > .la {
   font-size: 24px;
 }
 
 .modal-available-type .modal-body p,
+.modal-save-success .modal-body p,
 .modal-publish-type .modal-body p {
   font-size: 0.875rem;
 }
 
 .modal-available-type label,
+.modal-save-success label,
 .modal-publish-type label {
   font-weight: 400;
 }

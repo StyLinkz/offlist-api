@@ -3,6 +3,7 @@
     <banner-component />
     <popular-listing-component />
     <popular-cities-component />
+    <free-listing-component />
     <recent-posts-component />
   </div>
 </template>
@@ -11,6 +12,7 @@
 import PopularListingComponent from './home/PopularListingComponent.vue';
 import BannerComponent from './home/BannerComponent.vue';
 import PopularCitiesComponent from './home/PopularCitiesComponent.vue';
+import FreeListingComponent from './home/FreeListingComponent.vue';
 import RecentPostsComponent from './home/RecentPostsComponent.vue';
 
 export default {
@@ -22,6 +24,7 @@ export default {
     PopularListingComponent,
     BannerComponent,
     PopularCitiesComponent,
+    FreeListingComponent,
     RecentPostsComponent,
   },
 

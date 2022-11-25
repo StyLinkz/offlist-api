@@ -65,6 +65,65 @@
         </div>
       </div>
       <!-- END modal-submit-listing -->
+      <div
+        class="modal modal-submit-listing modal-submit-free-listing fade"
+        id="modalSubmitFreeListing"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="modalSubmitFreeListingLabel"
+        aria-hidden="true"
+        data-backdrop="static"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalSubmitFreeListingLabel">
+                Select type of your free offer
+              </h5>
+            </div>
+            <div class="modal-body">
+              <div class="offer-submit-listing-options mt-3">
+                <div
+                  class="custom-control custom-radio"
+                  v-for="type in offerTypes"
+                  :key="type.value"
+                >
+                  <input
+                    v-model="selectedOfferType"
+                    :value="type.value"
+                    type="radio"
+                    :id="`offerType_${type.value}`"
+                    name="offer_type"
+                    class="custom-control-input"
+                  />
+                  <label
+                    class="custom-control-label"
+                    :for="`offerType_${type.value}`"
+                  >{{ type.label }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-dismiss="modal"
+                @click="handleSubmitFreeListing"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END modal-submit-free-listing -->
     </div>
     <div class="access-restricted" v-else>
       <p class="access-restricted__text">Offlist is coming soon...</p>
@@ -132,6 +191,9 @@ export default {
   methods: {
     handleSubmitListing () {
       this.$router.push(`/submit-listing?type=${this.selectedOfferType}`);
+    },
+    handleSubmitFreeListing () {
+      this.$router.push(`/submit-free-listing?type=${this.selectedOfferType}`);
     },
   },
 };

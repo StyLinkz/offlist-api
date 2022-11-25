@@ -163,7 +163,15 @@ export default {
 
   methods: {
     handleEdit(e, item) {
-      this.$router.push({ name: 'offerEdit', params: { offerId: item.id }});
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) {
+        return;
+      }
+      if (user.role === 'free_user') {
+        this.$router.push({ name: 'freeOfferEdit', params: { offerId: item.id }});
+      } else {
+        this.$router.push({ name: 'offerEdit', params: { offerId: item.id }});
+      }
     },
 
     handlePressDeleteButton(e, item) {
