@@ -9,7 +9,7 @@
 
 # Fresh migration
 
-For a fresh migration we have to run `php artisan migrate:fresh --seed && php artisan admin:install && php artisan db:seed --class=AdminMenuSeeder`.
+For a fresh migration we have to run `php artisan migrate:fresh --seed && php artisan admin:install && php artisan db:seed`.
 
 The AdminMenuSeeder have to be run again because the table does exists after the `admin:install` command. Otherwise the Menu does not exists.
 

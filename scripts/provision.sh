@@ -32,6 +32,9 @@ if [[ ! -f /vagrant/.env ]] ; then
     sed -i s/DB_DATABASE=laravel/DB_DATABASE=homestead/ .env
 fi
 
+mysql -uroot -psecret -e "UPDATE mysql.user SET host='%' WHERE user='root';"
+systemctl restart mysql
+
 # generates the apikey
 php /vagrant/artisan key:generate
 # runs the migration scripts
