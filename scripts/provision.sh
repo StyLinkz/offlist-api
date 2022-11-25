@@ -37,4 +37,4 @@ php /vagrant/artisan key:generate
 # runs the migration scripts
 php artisan migrate:fresh --seed &&
   php artisan admin:install &&
-  php artisan db:seed --class=AdminMenuSeeder
+  php artisan db:seed
