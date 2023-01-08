@@ -100,7 +100,7 @@ class Offer extends Model
 
   public function type()
   {
-    return $this->hasOne('App\OfferType',  'id', 'offer_type_id');
+    return $this->hasOne('App\OfferType', 'id', 'offer_type_id');
   }
 
   public function category()
@@ -110,13 +110,13 @@ class Offer extends Model
 
   public function tags()
   {
-    return $this->belongsToMany('App\Tag')
+    return $this->belongsToMany('App\Tag', 'offer_tags', 'offer_id', 'tag_id')
       ->withTimestamps();
   }
 
   public function groups()
   {
-    return $this->belongsToMany('App\Group')
+    return $this->belongsToMany('App\Group', 'offer_groups', 'offer_id', 'group_id')
       ->withTimestamps();
   }
 

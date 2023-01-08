@@ -28,6 +28,6 @@ class CreateOfferTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offer_tag');
+        Schema::dropIfExists('offer_tags');
     }
 }
