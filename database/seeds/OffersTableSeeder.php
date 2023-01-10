@@ -20,34 +20,24 @@ class OffersTableSeeder extends Seeder
         // And now, let's create a few offers in our database
         for ($i = 0; $i < 5; $i++) {
 
-            // Images
-            $images = [
-                'overview' => [
-                    'url' => 'https://via.placeholder.com/300x150',
-                ],
-                'bedroom' => [
-                    'url' => 'https://via.placeholder.com/300x150',
-                ],
-                'bathroom' => [
-                    'url' => 'https://via.placeholder.com/300x150',
-                ],
-                'garden' => [
-                    'url' => 'https://via.placeholder.com/300x150',
-                ],
+            // Seller
+            $seller = [
+                'avatar' => 'https://placehold.co/150x150.png',
+                'prename' => 'Minh',
+                'name' => 'Duc',
+                'email' => 'ducnm@malinator.com',
+                'phone' => '+496912345678',
+                'company' => 'Freelancer',
+                'website' => 'offlist.de',
+                'address' => '123 Berlin',
+                'city' => 'Berlin',
+                'zipcode' => '10115',
+                'contact_mode' => 'new',
+                // 'country' => '1',
             ];
 
             // Location
             $location = [
-// @TODO Make it as ID instead of raw string
-//                'country' => [
-//                    'id' => 82,
-//                    'code' => 'DE',
-//                    'name' => 'Germany',
-//                ],
-//                'state' => [
-//                    'id' => 1359,
-//                    'name' => 'Berlin',
-//                ],
                 'country' => 'Germany',
                 'city' => 'Berlin',
                 'street' => 'Bayern Munich',
@@ -58,63 +48,77 @@ class OffersTableSeeder extends Seeder
                     'long' => '13.3679928',
                 ],
                 'description' => 'This is a location description',
-                'display_mode' => 'all',
+            ];
+
+            // Images
+            $images = [
+                'file_0' => [
+                    'name' => 'overview',
+                    'url' => 'https://placehold.co/300x150.png',
+                ],
+                'file_1' => [
+                    'name' => 'bedroom',
+                    'url' => 'https://placehold.co/300x150.png',
+                ],
+                'file_2' => [
+                    'name' => 'bathroom',
+                    'url' => 'https://placehold.co/300x150.png',
+                ],
+                'file_3' => [
+                    'name' => 'garden',
+                    'url' => 'https://placehold.co/300x150.png',
+                ],
             ];
 
             // Documents
             $documents = [
-                'terms_of_use' => [
+                'file_0' => [
                     'name' => 'Terms of use',
-                    'link' => 'https://dev.offlist.de/sample.pdf',
+                    'url' => 'https://dev.offlist.de/sample.pdf',
                 ],
-                'privacy_policy' => [
+                'file_1' => [
                     'name' => 'Privacy policy',
-                    'link' => 'https://dev.offlist.de/sample.pdf',
+                    'url' => 'https://dev.offlist.de/sample.pdf',
                 ],
-                'benefit' => [
+                'file_2' => [
                     'name' => 'Benefit',
-                    'link' => 'https://dev.offlist.de/sample.pdf',
+                    'url' => 'https://dev.offlist.de/sample.pdf',
                 ],
-            ];
-
-            // Seller
-            $seller = [
-                'avatar' => 'https://via.placeholder.com/150x150',
-                'prename' => 'Minh',
-                'name' => 'Duc',
-                'company' => 'Freelancer',
-                'country' => '1',
-                'city' => '1',
-                'street' => '123 Berlin',
-                'zip_code' => '10115',
-                'phone' => '+496912345678',
-                'email' => 'ducnm@malinator.com',
-                'website' => 'offlist.de',
             ];
 
             // Data
             $data = [
-//                'main' => [
-//                    'data' => [
-//                        'rooms' => '10',
-//                        'area' => '120',
-//                    ],
-//                ],
-                'general' => [
+                'primary' => [
                     'data' => [
-                        'property_type' => [
-                            'name' => 'Property Type',
-                            'value' => 'Apartment',
+                        'currency' => [
+                            'name' => 'Currency',
+                            'value' => 'EUR',
                         ],
+                        'size' => [
+                            'name' => 'Size',
+                            'value' => "$faker->randomNumber(2)",
+                        ],
+                        'year_of_construction' => [
+                            'name' => 'Year of creation',
+                            'value' => '1990',
+                        ],
+                        'free_from' => [
+                            'name' => 'Free from',
+                            'value' => '2022-12-01',
+                        ],
+                        'status' => [
+                            'name' => 'Status',
+                            'value' => 'For sale',
+                        ],
+                    ],
+                ],
+                'secondary' => [
+                    'data' => [
                         'rooms' => [
                             'name' => 'Rooms',
                             'value' => '10',
                         ],
-                        'living_space' => [
-                            'name' => 'Living space',
-                            'value' => '200',
-                        ],
-                        'bed_room' => [
+                        'bedroom' => [
                             'name' => 'Bedroom',
                             'value' => '6',
                         ],
@@ -123,7 +127,7 @@ class OffersTableSeeder extends Seeder
                             'value' => '3',
                         ],
                         'living_room' => [
-                            'name' => 'Living Room',
+                            'name' => 'Living room',
                             'value' => '3',
                         ],
                         'cellars' => [
@@ -138,14 +142,6 @@ class OffersTableSeeder extends Seeder
                             'name' => 'Parking space',
                             'value' => '100m2',
                         ],
-                        'free_from' => [
-                            'name' => 'Free from',
-                            'value' => '15/03/2020',
-                        ],
-                        'status' => [
-                            'name' => 'Status',
-                            'value' => 'Available',
-                        ],
                     ],
                 ],
                 'building_fabric' => [
@@ -153,19 +149,19 @@ class OffersTableSeeder extends Seeder
                     'data' => [
                         'object_state' => [
                             'name' => 'Object state',
-                            'value' => 'Full',
+                            'value' => 'First occupancy',
                         ],
                         'equipment' => [
                             'name' => 'Equipment',
-                            'value' => 'Full',
+                            'value' => 'Standard',
                         ],
                         'energy_source' => [
                             'name' => 'Energy source',
-                            'value' => 'Full',
+                            'value' => 'Natural gas',
                         ],
                         'heating_type' => [
                             'name' => 'Heating type',
-                            'value' => 'Modern',
+                            'value' => 'Heat pump',
                         ],
                     ],
                 ],
@@ -179,40 +175,36 @@ class OffersTableSeeder extends Seeder
                 ],
                 'floor_plan' => [
                     'name' => 'Floor plan',
-                    'type' => 'images',
+                    // 'type' => 'images',
                     'data' => [
-                        'first_floor' => [
-                            'name' => 'First floor',
-                            'value' => 'https://via.placeholder.com/300x150',
-                        ],
-                        'second_floor' => [
-                            'name' => 'Second floor',
-                            'value' => 'https://via.placeholder.com/300x150',
-                        ],
-                        'third_floor' => [
-                            'name' => 'Third floor',
-                            'value' => 'https://via.placeholder.com/300x150',
-                        ],
+                      'images' => [
+                        'value' => null
+                      ],
                     ],
                 ],
             ];
 
             Offer::create([
-                'user_id' => 1,
-                'offer_type_id' => 1,
-                'offer_category_id' => 1,
+                'user_id' => '1',
+                'offer_type_id' => '1',
+                'offer_category_id' => '1',
+                'privacy' => 'public',
+                'market_type' => 'offmarket',
+                'available_type' => 'private',
+                'publish_type' => 'auto',
+                'status' => 'activated',
                 'title' => $faker->sentence,
                 'description' => $faker->paragraph,
-                'price' => $faker->randomNumber(6),
-                'commission' => $faker->randomNumber(2) . '%',
-                'price_tax' => $faker->randomNumber(7),
+                'price' => "$faker->randomNumber(6)",
+                'price_tax' => "$faker->randomNumber(6)",
+                'commission' => "$faker->randomNumber(2)",
+                'tags' => json_encode([]),
+                'groups' => json_encode([]),
                 'images' => json_encode($images),
                 'location' => json_encode($location),
                 'documents' => json_encode($documents),
-                'seller' => json_encode($seller),
                 'data' => json_encode($data),
-                'publish_type' => 1,
-                'status' => 'activated',
+                'seller' => json_encode($seller),
             ]);
         }
     }
