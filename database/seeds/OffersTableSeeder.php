@@ -96,7 +96,7 @@ class OffersTableSeeder extends Seeder
                         ],
                         'size' => [
                             'name' => 'Size',
-                            'value' => "$faker->randomNumber(2)",
+                            'value' => $faker->randomNumber(2),
                         ],
                         'year_of_construction' => [
                             'name' => 'Year of creation',
